@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Faculty;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -12,26 +14,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('firstName', null, [
+                'label' => 'Prénom'
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom'
+            ])
             ->add('email', null, [
                 'label' => 'Adresse mail de l\'IUT'
             ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'label' => "Accepter conditions d'utilisation",
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-            ])
             ->add('role', ChoiceType::class, [
-                'label' => "Je suis...",
+                'label' => "Je suis... ",
                 'choices' => [
                         'Étudiant' => 1,
                         'Étudiant tuteur' => 2,
@@ -44,10 +44,24 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('year', ChoiceType::class, [
+                'label' => "En... ",
+                'choices' => [
+                        '1ère année' => 1,
+                        '2ème année' => 2,
+                        '3ème année' => 3
+                ],
+            ])
+            ->add('faculty', EntityType::class, [
+                'label' => "Département d'enseignement : ",
+                'class' => Faculty::class,
+                'choice_label' => 'Name'
+            ])
+            ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'label' => 'Mot de passe',
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe ne coincident pas. Veuillez réessayer',
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -59,6 +73,17 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
+                    ]),
+                ],
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Vérifier le mot de passe'],
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'label' => "Accepter conditions d'utilisation",
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You should agree to our terms.',
                     ]),
                 ],
             ])

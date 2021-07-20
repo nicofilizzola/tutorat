@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -28,19 +29,44 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        function manageFormData(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
+            function managePassword(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
+                // encode the plain password
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            }
+            function manageAdminYear(User $user, $form){
+                if ($form->get('year')->getData() === null){
+                    $user->setYear(4);
+                }
+            }
+            function manageRoles(User $user, $form){
+                require('Requires/Roles.php');
+                $userRoles = [];
+                for ($i = 0; $i < $form->get('role')->getData() - 1; $i++){
+                    array_push($userRoles, $roles[$i]);
+                }
+                $user->setRoles($userRoles);
+            }
+
+            managePassword($user, $form, $passwordEncoder);
+            $user->setIsValid(1); // 1 == invalid
+            manageAdminYear($user, $form);
+            manageRoles($user, $form);
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
+            
+            manageFormData($user, $form, $passwordEncoder);
+        
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

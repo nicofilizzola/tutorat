@@ -57,11 +57,7 @@ class RegistrationFormType extends AbstractType
                         'Administrateur' => 3
                 ],
                 'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez accepter les conditions de service.',
-                    ]),
-                ],
+
             ])
             ->add('year', ChoiceType::class, [
                 'label' => "En... ",

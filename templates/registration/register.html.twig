@@ -13,6 +13,11 @@
         {{ form_row(registrationForm.firstName) }}
         {{ form_row(registrationForm.lastName) }}
         {{ form_row(registrationForm.role) }}
+        {{ form_row(registrationForm.adminCode, {
+            'attr': {
+                'disabled': true
+            }
+        }) }}
         {{ form_row(registrationForm.year) }}
         {{ form_row(registrationForm.faculty) }}
         {{ form_row(registrationForm.email) }}

@@ -59,6 +59,10 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
 
             ])
+            ->add('adminCode', PasswordType::class, [
+                'label' => "Insérez le code d'administrateur",
+                'mapped' => false
+            ])
             ->add('year', ChoiceType::class, [
                 'label' => "En... ",
                 'choices' => [

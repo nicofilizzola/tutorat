@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\AdminCodeRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, AdminCodeRepository $adminCodeRepository): Response
     {
         function manageFormData(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
             function managePassword(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
@@ -66,7 +67,11 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             manageFormData($user, $form, $passwordEncoder);
-        
+            if ($form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy(null, ['id' => 'DESC'])){
+                $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
+                $this->redirectToRoute('app_register');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

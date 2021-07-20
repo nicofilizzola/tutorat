@@ -41,16 +41,16 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('email', null, [
-                'label' => 'Adresse mail de l\'IUT',
+                'label' => 'Adresse email universitaire',
                 'constraints' => [
                     new Regex([
                         'pattern' => "/[a-zA-Z]+@iut-tarbes.fr/i",
-                        "message" => "L'adresse email renseignée est invalide."
+                        "message" => "Email universitaire recquis."
                     ])
                 ]
             ])
             ->add('role', ChoiceType::class, [
-                'label' => "Je suis... ",
+                'label' => "Rôle",
                 'choices' => [
                         'Étudiant' => 1,
                         'Étudiant tuteur' => 2,
@@ -60,7 +60,7 @@ class RegistrationFormType extends AbstractType
 
             ])
             ->add('year', ChoiceType::class, [
-                'label' => "En... ",
+                'label' => "Année",
                 'choices' => [
                         '1ère année' => 1,
                         '2ème année' => 2,
@@ -68,7 +68,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('faculty', EntityType::class, [
-                'label' => "Département d'enseignement : ",
+                'label' => "Département d'enseignement",
                 'class' => Faculty::class,
                 'choice_label' => 'Name'
             ])
@@ -76,16 +76,16 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe ne coincident pas. Veuillez réessayer',
+                'invalid_message' => 'Les mots de passe ne sont pas identiques.',
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez entrer un mot de passe',
+                        'message' => 'Veuillez entrer un mot de passe.',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
+                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -94,7 +94,7 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Vérifier le mot de passe'],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => "Accepter conditions d'utilisation",
+                'label' => "Accepter les conditions d'utilisation",
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([

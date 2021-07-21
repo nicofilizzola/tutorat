@@ -17,7 +17,7 @@ class AdminController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
             return $this->redirectToRoute('app_home');
         }
 
@@ -44,7 +44,7 @@ class AdminController extends AbstractController
      */
     public function validate(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
             return $this->redirectToRoute('app_home');
         }
 
@@ -67,7 +67,7 @@ class AdminController extends AbstractController
      */
     public function cancel(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
             return $this->redirectToRoute('app_home');
         }
 

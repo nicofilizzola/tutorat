@@ -3,7 +3,8 @@
 <p>
     Please confirm your email address by clicking the following link: <br><br>
     <a href="{{ signedUrl }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    {# This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. #}
+    This link will expire in 1 week.
 </p>
 
 <p>

@@ -80,7 +80,6 @@ class RegistrationController extends AbstractController
                 $this->redirectToRoute('app_register');
             }
 
-            dd($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

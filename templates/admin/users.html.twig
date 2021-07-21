@@ -10,10 +10,10 @@
                 <p>{{ user.firstName | capitalize }} {{ user.lastName | upper }}</p>
                 <p>{{ user.email | lower }}</p>
                 <p>{{ user.roles[user.roles | length - 2] }}</p>
-                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-validate-form').submit();">Valider</a>
-                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form').submit();">Supprimer</a>
+                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit();">Valider</a>
+                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit();">Supprimer</a>
                 <form 
-                    id="js-user-validate-form"
+                    id="js-user-validate-form-{{ user.id }}"
                     display="none" 
                     action="{{ path('app_user_validate', {"id": user.id}) }}" 
                     method="POST">
@@ -21,7 +21,7 @@
                     {# <input type="hidden" name="_method" value="PUT"/> #}
                 </form>
                 <form 
-                    id="js-user-cancel-form"
+                    id="js-user-cancel-form-{{ user.id }}"
                     display="none" 
                     action="{{ path('app_user_cancel', {"id": user.id}) }}" 
                     method="POST">

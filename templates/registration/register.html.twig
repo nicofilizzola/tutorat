@@ -7,20 +7,50 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <div class="menuBurger">
+        <span class="menuNotHovered"></span>
+        <span class="menuNotHovered"></span>
+    </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.firstName) }}
-        {{ form_row(registrationForm.lastName) }}
-        {{ form_row(registrationForm.role) }}
-        {{ form_row(registrationForm.year) }}
-        {{ form_row(registrationForm.faculty) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <div class="form--container">
+        <div class="form--role">
+            <div class="form--login">
+                <span>Se connecter</span>
+            </div>
+            <div class="form--register active">
+                <span>S'inscricre</span>
+            </div>
+        </div>
 
-        <button type="submit" class="btn">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+        <div class="form--content">
+            {{ form_start(registrationForm) }}
+                <div class="collapse">
+                    {{ form_row(registrationForm.firstName) }}
+                    {{ form_row(registrationForm.lastName) }}
+                </div>
+
+                {{ form_row(registrationForm.role) }}
+
+                <div class="collapse">
+                    {{ form_row(registrationForm.year) }}
+                    {{ form_row(registrationForm.faculty) }}
+                </div>
+
+                {{ form_row(registrationForm.email) }}
+                {# {{ form_errors(registrationForm.email) }} #}
+
+                {{ form_row(registrationForm.plainPassword) }}
+                
+                <div class="agreeTerms--container">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                </div>
+
+                <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+
 
     {{ encore_entry_script_tags('app_register') }}
 {% endblock %}

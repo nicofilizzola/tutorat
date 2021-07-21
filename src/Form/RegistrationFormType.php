@@ -28,6 +28,9 @@ class RegistrationFormType extends AbstractType
                     new Regex([
                         'pattern' => "/^[a-zA-Z]+$/i",
                         "message" => "Le nom renseigné est invalide."
+                    ]),
+                    new NotBlank([
+                        'message' => "Veuillez entrer un prénom"
                     ])
                 ]
             ])
@@ -37,6 +40,9 @@ class RegistrationFormType extends AbstractType
                     new Regex([
                         'pattern' => "/^[a-zA-Z]+$/i",
                         "message" => "Le prénom renseigné est invalide."
+                    ]),
+                    new NotBlank([
+                        'message' => "Veuillez entrer un nom"
                     ])
                 ]
             ])
@@ -47,6 +53,9 @@ class RegistrationFormType extends AbstractType
                     new Regex([
                         'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]$/i",
                         "message" => "L'adresse email renseignée est invalide."
+                    ]),
+                    new NotBlank([
+                        'message' => "Veuillez entrer une adresse email"
                     ])
                 ]
             ])

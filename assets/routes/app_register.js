@@ -1,8 +1,7 @@
-import '../sass/utils/register.scss';
+import '../sass/utils/form.scss';
 
 const formContainer = document.querySelector(".form--container .form--content form");
 const adminOrYearContainer = document.getElementById("adminOrYear--container");
-// const passwordsContainer = document.getElementById("passwords--container");
 const yearInput = document.getElementById("registration_form_year");
 const adminCodeInput = document.getElementById("registration_form_adminCode");
 const roleInput = document.getElementById("registration_form_role");
@@ -11,7 +10,7 @@ const fields = []
 
 const manageAdminYearRole = () => {
   const manageDisabledInputs = (roleInputValue) => {
-    
+
     if (roleInputValue == 3) {
       adminOrYearContainer.children[0].style.display = 'flex'
       adminOrYearContainer.children[0].hidden = false
@@ -35,7 +34,7 @@ const manageAdminYearRole = () => {
   });
 };
 
-SendFormBtn.addEventListener('click', () => {
+const fieldsError = () => {
   formContainer.children.forEach(field => {
     if (field.classList.contains('collapse')) {
       field.children.forEach(fieldChildren => {
@@ -57,6 +56,11 @@ SendFormBtn.addEventListener('click', () => {
       field.children[2].classList.remove('errorField')
     }
   });
+}
+
+SendFormBtn.addEventListener('click', () => {
+  fieldsError()
 })
 
+fieldsError()
 manageAdminYearRole();

@@ -64,6 +64,10 @@ class RegistrationController extends AbstractController
             manageRoles($user, $form);
         }
 
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

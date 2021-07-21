@@ -51,7 +51,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Adresse email universitaire',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]$/i",
+                        'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]+$/i",
                         "message" => "L'adresse email renseignée est invalide."
                     ]),
                     new NotBlank([

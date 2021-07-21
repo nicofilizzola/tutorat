@@ -17,6 +17,10 @@ class AdminController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_home');
+        }
+
         $validatedUsers = $userRepository->findBy([
             'isValid' => 1,
             'isVerified' => 1    
@@ -40,6 +44,10 @@ class AdminController extends AbstractController
      */
     public function validate(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_home');
+        }
+
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('validate-user' . $user->getId(), $submittedToken)) {
             $user->setIsValid(2);
@@ -59,6 +67,10 @@ class AdminController extends AbstractController
      */
     public function cancel(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_home');
+        }
+
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('cancel-user' . $user->getId(), $submittedToken)) {
             $user->setIsValid(3);

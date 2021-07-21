@@ -14,10 +14,10 @@
 
     <div class="form--container">
         <div class="form--role">
-            <div class="form--login">
+            <div class="form--login notActive">
                 <span>Se connecter</span>
             </div>
-            <div class="form--register active">
+            <div class="form--register">
                 <span>S'inscricre</span>
             </div>
         </div>
@@ -32,15 +32,26 @@
                 {{ form_row(registrationForm.role) }}
 
                 <div class="collapse">
-                    {{ form_row(registrationForm.year) }}
+                    <div id="adminOrYear--container">
+                        {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
+                        {{ form_row(registrationForm.year) }}
+                    </div>
                     {{ form_row(registrationForm.faculty) }}
                 </div>
 
-                {{ form_row(registrationForm.email) }}
-                <span>@iut-tarbes.fr</span>
-                {# {{ form_errors(registrationForm.email) }} #}
 
-                {{ form_row(registrationForm.plainPassword) }}
+                <div class="mail--container">
+                    {{ form_row(registrationForm.email) }}
+                    <div>
+                        <span>@iut-tarbes.fr</span>
+                    </div>
+                </div>
+
+                {# {{ form_errors(registrationForm.plainPassword) }} #}
+                {# <div class="collapse"> #}
+                    {{ form_row(registrationForm.plainPassword) }}
+                {# </div> #}
+
                 
                 <div class="agreeTerms--container">
                     {{ form_widget(registrationForm.agreeTerms) }}

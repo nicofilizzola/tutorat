@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Prénom',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^[a-zA-Z]+$/i",
+                        'pattern' => "/^[A-Za-zÀ-ÖØ-öø-ÿ]+$/i",
                         "message" => "Le nom renseigné est invalide."
                     ]),
                     new NotBlank([
@@ -38,7 +38,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Nom',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^[a-zA-Z]+$/i",
+                        'pattern' => "/^[A-Za-zÀ-ÖØ-öø-ÿ]+$/i",
                         "message" => "Le prénom renseigné est invalide."
                     ]),
                     new NotBlank([

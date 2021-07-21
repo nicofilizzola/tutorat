@@ -41,11 +41,12 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('email', null, [
+                'mapped' => false,
                 'label' => 'Adresse email universitaire',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/[a-zA-Z]+@iut-tarbes.fr/i",
-                        "message" => "Email universitaire recquis."
+                        'pattern' => "/[a-zA-Z]+/i",
+                        "message" => "L'adresse email renseignée est invalide."
                     ])
                 ]
             ])

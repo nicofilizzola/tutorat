@@ -7,6 +7,24 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import './sass/main.scss';
 
 // start the Stimulus application
 import './bootstrap';
+
+
+const menuBurger = document.querySelector('.menuBurger')
+const menuBurgerLines = menuBurger.querySelectorAll('span')
+
+menuBurger.addEventListener('mouseenter', () => {
+   menuBurgerLines.forEach(line => {
+      line.classList.toggle('menuHovered')
+      line.classList.toggle('menuNotHovered')
+   })
+})
+menuBurger.addEventListener('mouseleave', () => {
+   menuBurgerLines.forEach(line => {
+      line.classList.toggle('menuHovered')
+      line.classList.toggle('menuNotHovered')
+   })
+})

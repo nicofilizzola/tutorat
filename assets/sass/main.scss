@@ -217,6 +217,10 @@ body {
       }
    }
 
+   // #passwords--container {
+   //    margin-bottom: 0;
+   // }
+
    .agreeTerms--container {
       display: flex;
       flex-direction: row;
@@ -230,6 +234,12 @@ body {
          margin-left: 5px;
       }
    }
+}
+
+.errorField {
+   background-color: rgba($primaryRed, .3);
+   border: 1px solid $primaryRed;
+   border-radius: 2px;
 }
 
 .form--btn {

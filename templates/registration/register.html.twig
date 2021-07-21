@@ -47,11 +47,7 @@
                     </div>
                 </div>
 
-                {# {{ form_errors(registrationForm.plainPassword) }} #}
-                {# <div class="collapse"> #}
-                    {{ form_row(registrationForm.plainPassword) }}
-                {# </div> #}
-
+                {{ form_row(registrationForm.plainPassword) }}
                 
                 <div class="agreeTerms--container">
                     {{ form_widget(registrationForm.agreeTerms) }}

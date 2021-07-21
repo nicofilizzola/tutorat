@@ -1,9 +1,13 @@
 import '../sass/utils/register.scss';
 
+const formContainer = document.querySelector(".form--container .form--content form");
 const adminOrYearContainer = document.getElementById("adminOrYear--container");
+// const passwordsContainer = document.getElementById("passwords--container");
 const yearInput = document.getElementById("registration_form_year");
 const adminCodeInput = document.getElementById("registration_form_adminCode");
 const roleInput = document.getElementById("registration_form_role");
+const SendFormBtn = document.querySelector(".form--btn");
+const fields = []
 
 const manageAdminYearRole = () => {
   const manageDisabledInputs = (roleInputValue) => {
@@ -30,5 +34,29 @@ const manageAdminYearRole = () => {
     manageDisabledInputs(roleInput.value);
   });
 };
+
+SendFormBtn.addEventListener('click', () => {
+  formContainer.children.forEach(field => {
+    if (field.classList.contains('collapse')) {
+      field.children.forEach(fieldChildren => {
+        fields.push(fieldChildren)
+        // console.log(fieldChildren)
+      });
+    } else {
+      fields.push(field)
+      // console.log(field)
+    }
+    // console.log(fields)
+  });
+
+  fields.forEach(field => {
+    if (field.children[1] instanceof HTMLUListElement) {
+      // console.log('sheeeeesh')
+      field.children[2].classList.add('errorField')
+    } else if (field.children[2]) {
+      field.children[2].classList.remove('errorField')
+    }
+  });
+})
 
 manageAdminYearRole();

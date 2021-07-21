@@ -11,6 +11,11 @@ body {
    background-color: #fff;
 }
 
+a {
+   text-decoration: none;
+   color: #000;
+}
+
 // Menu
 .menuBurger {
    position: absolute;
@@ -78,4 +83,21 @@ body {
    100% {
       transform: translateY(0px);
    }
+}
+
+.menu--container {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: #494949;
+   z-index: 9;
+   clip-path: circle(0% at 97% 6%);
+   transition: clip-path .75s ease-in-out;
+}
+
+.menuActive {
+   clip-path: circle(141.2% at 90% 10%);
+   transition: clip-path .75s ease-in-out;
 }

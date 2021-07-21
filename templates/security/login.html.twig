@@ -2,40 +2,108 @@
 
 {% block title %}Log in!{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app_login') }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+    {# <div class="menuBurger">
+        <span class="menuNotHovered"></span>
+        <span class="menuNotHovered"></span>
+    </div> #}
+
+    <div class="container">
+        <div class="form--container">
+            <div class="form--role">
+                <a href="{{ path('app_login') }}">
+                    <div class="form--login">
+                        <span>Se connecter</span>
+                    </div>
+                </a>
+                <a href="{{ path('app_register') }}">
+                    <div class="form--register notActive">
+                        <span>S'inscricre</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="form--content">
+                <form method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="mb-3">
+                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    {% endif %}
+                    {# {{ form_start(registrationForm) }}
+                        <div class="collapse">
+                            {{ form_row(registrationForm.firstName) }}
+                            {{ form_row(registrationForm.lastName) }}
+                        </div>
+
+                        {{ form_row(registrationForm.role) }}
+
+                        <div class="collapse">
+                            <div id="adminOrYear--container">
+                                {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
+                                {{ form_row(registrationForm.year) }}
+                            </div>
+                            {{ form_row(registrationForm.faculty) }}
+                        </div>
+
+
+                        <div class="mail--container">
+                            {{ form_row(registrationForm.email) }}
+                            <div>
+                                <span>@iut-tarbes.fr</span>
+                            </div>
+                        </div>
+
+                        {{ form_row(registrationForm.plainPassword) }}
+                        
+                        <div class="agreeTerms--container">
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            {{ form_label(registrationForm.agreeTerms) }}
+                        </div>
+
+                        <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
+                    {{ form_end(registrationForm) }} #}
+                    <div class="mail--container">
+                        <div>
+                            <label for="inputEmail">Adresse mail IUT</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                        </div>
+                        <div>
+                            <span>@iut-tarbes.fr</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="inputPassword">Mot de passe</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                    See https://symfony.com/doc/current/security/remember_me.html #}
+
+                    <div class="agreeTerms--container">
+                        <input type="checkbox" id="_remember_me" name="_remember_me">
+                        <label for="_remember_me">Se souvenir de moi </label>
+
+                        {# <input type="checkbox" id="registration_form_agreeTerms" name="registration_form[agreeTerms]" required="required" value="1">
+                        <label for="registration_form_agreeTerms" class="required">Accepter les conditions d'utilisation</label> #}
+                    </div>
+    
+
+                    <button class="form--btn form--btn__login" type="submit">Se connecter</button>
+                </form>
+            </div>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Adresse mail IUT</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-        value="{{ csrf_token('authenticate') }}"
-    >
-
-    {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-    See https://symfony.com/doc/current/security/remember_me.html #}
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Se souvenir de moi
-        </label>
     </div>
-   
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
 {% endblock %}

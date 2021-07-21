@@ -2,6 +2,11 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app_register') }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
@@ -12,43 +17,52 @@
         <span class="menuNotHovered"></span>
     </div>
 
-    <div class="form--container">
-        <div class="form--role">
-            <div class="form--login">
-                <span>Se connecter</span>
+    <div class="container">
+        <div class="form--container">
+            <div class="form--role">
+                <div class="form--login notActive">
+                    <span>Se connecter</span>
+                </div>
+                <div class="form--register">
+                    <span>S'inscricre</span>
+                </div>
             </div>
-            <div class="form--register active">
-                <span>S'inscricre</span>
+
+            <div class="form--content">
+                {{ form_start(registrationForm) }}
+                    <div class="collapse">
+                        {{ form_row(registrationForm.firstName) }}
+                        {{ form_row(registrationForm.lastName) }}
+                    </div>
+
+                    {{ form_row(registrationForm.role) }}
+
+                    <div class="collapse">
+                        <div id="adminOrYear--container">
+                            {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
+                            {{ form_row(registrationForm.year) }}
+                        </div>
+                        {{ form_row(registrationForm.faculty) }}
+                    </div>
+
+
+                    <div class="mail--container">
+                        {{ form_row(registrationForm.email) }}
+                        <div>
+                            <span>@iut-tarbes.fr</span>
+                        </div>
+                    </div>
+
+                    {{ form_row(registrationForm.plainPassword) }}
+                    
+                    <div class="agreeTerms--container">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        {{ form_label(registrationForm.agreeTerms) }}
+                    </div>
+
+                    <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
+                {{ form_end(registrationForm) }}
             </div>
-        </div>
-
-        <div class="form--content">
-            {{ form_start(registrationForm) }}
-                <div class="collapse">
-                    {{ form_row(registrationForm.firstName) }}
-                    {{ form_row(registrationForm.lastName) }}
-                </div>
-
-                {{ form_row(registrationForm.role) }}
-
-                <div class="collapse">
-                    {{ form_row(registrationForm.year) }}
-                    {{ form_row(registrationForm.faculty) }}
-                </div>
-
-                {{ form_row(registrationForm.email) }}
-                <span>@iut-tarbes.fr</span>
-                {# {{ form_errors(registrationForm.email) }} #}
-
-                {{ form_row(registrationForm.plainPassword) }}
-                
-                <div class="agreeTerms--container">
-                    {{ form_widget(registrationForm.agreeTerms) }}
-                    {{ form_label(registrationForm.agreeTerms) }}
-                </div>
-
-                <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
-            {{ form_end(registrationForm) }}
         </div>
     </div>
 

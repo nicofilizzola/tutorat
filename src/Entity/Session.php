@@ -55,6 +55,17 @@ class Session
      */
     private $students;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Classroom::class, inversedBy="sessions")
+     */
+    private $classroom;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Subject::class, inversedBy="sessions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $subject;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -157,6 +168,30 @@ class Session
     public function removeStudent(User $student): self
     {
         $this->students->removeElement($student);
+
+        return $this;
+    }
+
+    public function getClassroom(): ?Classroom
+    {
+        return $this->classroom;
+    }
+
+    public function setClassroom(?Classroom $classroom): self
+    {
+        $this->classroom = $classroom;
+
+        return $this;
+    }
+
+    public function getSubject(): ?Subject
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(?Subject $subject): self
+    {
+        $this->subject = $subject;
 
         return $this;
     }

@@ -14,12 +14,49 @@
         {% endblock %}
     </head>
     <body>
-        <div class="menuBurger">
-            <span class="menuNotHovered"></span>
-            <span class="menuNotHovered"></span>
+        <div class="cursor"></div>
+
+        <div class="menuBurger hoveredItems">
+            <div>
+                <span class="menuNotHovered cross__1"></span>
+                <span class="menuNotHovered cross__2"></span>
+            </div>
+
+            <div>
+                <span class="menuNotHovered"></span>
+                <span class="menuNotHovered"></span>
+            </div>
         </div>
 
-        <div class="menu--container"></div>
+        <div class="menuContent--container">
+            <div class="middle--container">
+                    <div class="labels">
+
+                    </div>
+                    <div class="website">
+                        <span>bla bla bla bla</span>
+                    </div>
+                    <div class="helpers">
+                        <span>06.xx.xx.xx.xx</span>
+                        <span>sheeesh@iut-tarbes.fr</span>
+                    </div>
+            </div>
+            <div class="bottom--container">
+                    <div class="labels">
+                        <img src="../assets/img/UT3.png"/>
+                        <img src="../assets/img/tlp.png"/>
+                    </div>
+                    <div class="website">
+                        <span>bla bla bla bla</span>
+                    </div>
+                    <div class="helpers">
+                        <span>06.xx.xx.xx.xx</span>
+                        <span>sheeesh@iut-tarbes.fr</span>
+                    </div>
+            </div>
+        </div>
+        <div class="menu--background"></div>
+
             
         {% include "components/_flashMessages.html.twig" %} 
         {% block body %}{% endblock %}

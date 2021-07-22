@@ -9,11 +9,6 @@
 
 {% block body %}
 
-    {# <div class="menuBurger">
-        <span class="menuNotHovered"></span>
-        <span class="menuNotHovered"></span>
-    </div> #}
-
     <div class="container">
         <div class="form--container">
             <div class="form--role">
@@ -40,43 +35,10 @@
                             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     {% endif %}
-                    {# {{ form_start(registrationForm) }}
-                        <div class="collapse">
-                            {{ form_row(registrationForm.firstName) }}
-                            {{ form_row(registrationForm.lastName) }}
-                        </div>
-
-                        {{ form_row(registrationForm.role) }}
-
-                        <div class="collapse">
-                            <div id="adminOrYear--container">
-                                {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
-                                {{ form_row(registrationForm.year) }}
-                            </div>
-                            {{ form_row(registrationForm.faculty) }}
-                        </div>
-
-
-                        <div class="mail--container">
-                            {{ form_row(registrationForm.email) }}
-                            <div>
-                                <span>@iut-tarbes.fr</span>
-                            </div>
-                        </div>
-
-                        {{ form_row(registrationForm.plainPassword) }}
-                        
-                        <div class="agreeTerms--container">
-                            {{ form_widget(registrationForm.agreeTerms) }}
-                            {{ form_label(registrationForm.agreeTerms) }}
-                        </div>
-
-                        <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
-                    {{ form_end(registrationForm) }} #}
                     <div class="mail--container">
                         <div>
                             <label for="inputEmail">Adresse mail IUT</label>
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control hoveredItems" autocomplete="email" required autofocus>
                         </div>
                         <div>
                             <span>@iut-tarbes.fr</span>
@@ -84,7 +46,7 @@
                     </div>
                     <div>
                         <label for="inputPassword">Mot de passe</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                        <input type="password" name="password" id="inputPassword" class="form-control hoveredItems" autocomplete="current-password" required>
                     </div>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -94,14 +56,11 @@
 
                     <div class="agreeTerms--container">
                         <input type="checkbox" id="_remember_me" name="_remember_me">
-                        <label for="_remember_me">Se souvenir de moi </label>
-
-                        {# <input type="checkbox" id="registration_form_agreeTerms" name="registration_form[agreeTerms]" required="required" value="1">
-                        <label for="registration_form_agreeTerms" class="required">Accepter les conditions d'utilisation</label> #}
+                        <label for="_remember_me" class="hoveredItems">Se souvenir de moi </label>
                     </div>
     
 
-                    <button class="form--btn form--btn__login" type="submit">Se connecter</button>
+                    <button class="form--btn form--btn__login hoveredItems" type="submit">Se connecter</button>
                 </form>
             </div>
         </div>

@@ -63,19 +63,8 @@ SendFormBtn.addEventListener("click", () => {
   fieldsError();
 });
 
-const manageEmailInputOnSubmit = () => {
-  document
-    .querySelector("#registration_form")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      const emailInput = document.querySelector("#registration_form_email");
-      emailInput.value = emailInput.value + "@iut-tarbes.fr";
-
-      event.target.submit();
-    });
-};
+import manageEmailInputOnSubmit from "../functions/manageEmailInputOnSubmit";
 
 fieldsError();
 manageAdminYearRole();
-manageEmailInputOnSubmit();
+manageEmailInputOnSubmit("#registration_form", "#registration_form_email");

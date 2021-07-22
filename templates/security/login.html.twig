@@ -9,11 +9,6 @@
 
 {% block body %}
 
-    {# <div class="menuBurger">
-        <span class="menuNotHovered"></span>
-        <span class="menuNotHovered"></span>
-    </div> #}
-
     <div class="container">
         <div class="form--container">
             <div class="form--role">
@@ -30,7 +25,7 @@
             </div>
 
             <div class="form--content">
-                <form method="post">
+                <form method="post" id="login_form">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
@@ -44,7 +39,7 @@
                     <div class="mail--container">
                         <div>
                             <label for="inputEmail">Adresse mail IUT</label>
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                            <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
                         </div>
                         <div>
                             <span>@iut-tarbes.fr</span>
@@ -74,4 +69,6 @@
             </div>
         </div>
     </div>
+
+    {{ encore_entry_script_tags('app_login') }}
 {% endblock %}

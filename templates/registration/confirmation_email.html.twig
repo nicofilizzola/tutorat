@@ -1,11 +1,16 @@
-<h1>Hi! Please confirm your email!</h1>
+<h1>Vérification de compte</h1>
 
 <p>
-    Please confirm your email address by clicking the following link: <br><br>
-    <a href="{{ signedUrl }}">Confirm my Email</a>.
-    This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    Vérifie ton compte de Tutorat en cliquant sur le lien ci-dessous : <br><br>
+    <a href="{{ signedUrl }}">Vérifier mon compte</a>.
+    {# This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. #}
+    Ce lien ne marchera plus après une semaine.
 </p>
 
 <p>
-    Cheers!
+    Si tu as créé un compte d'étudiant tuteur ou d'administrateur, tu n'auras accès qu'aux fonctionnalités de base jusqu'à ce que ton compte soit validé par ton département d'enseignement.
+</p>
+
+<p>
+    À de suite
 </p>

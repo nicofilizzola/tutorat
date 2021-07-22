@@ -64,6 +64,10 @@ class RegistrationController extends AbstractController
             manageRoles($user, $form);
         }
 
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -71,12 +75,11 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             manageFormData($user, $form, $passwordEncoder);
-            if ($form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
+            if ($form->get('role')->getData() == 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
                 $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
                 $this->redirectToRoute('app_register');
             }
 
-            dd($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -91,12 +94,10 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_register_after', ['id' => $user->getId()]);
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->render('registration/register.html.twig', ['registrationForm' => $form->createView()]);
     }
 
     /**
@@ -116,8 +117,18 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
         return $this->redirectToRoute('app_register');
+    }
+
+    /**
+     * @Route("/register/{id<\d+>}/after", name="app_register_after", methods="GET")
+     */
+    public function after(User $user): Response
+    {
+        return $this->render('registration/after.html.twig', [
+            'user' => $user
+        ]);
     }
 }

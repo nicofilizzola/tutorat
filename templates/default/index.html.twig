@@ -5,8 +5,12 @@
 {% block body %}
 
     {% if app.user %}
-        <p>You're connected</p>
+        <p>Vous êtes connecté !</p>
         <a href="{{ path('app_logout') }}">Se déco</a>
+        <a href="{{ path('app_users') }}">Users [admin only]</a>
+    {% else %}
+        <a href="{{ path('app_register') }}">Inscription</a>
+        <a href="{{ path('app_login') }}">Se co</a>
     {% endif %}
     <h1>Hi</h1>
 

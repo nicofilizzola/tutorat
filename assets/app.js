@@ -28,3 +28,7 @@ menuBurger.addEventListener('mouseleave', () => {
       line.classList.toggle('menuNotHovered')
    })
 })
+
+menuBurger.addEventListener('click', () => {
+   document.querySelector('.menu--container').classList.toggle('menuActive')
+})

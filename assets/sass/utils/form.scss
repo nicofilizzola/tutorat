@@ -25,12 +25,15 @@
    width: 100%;
    margin-bottom: 50px;
    border-bottom: 1px solid $lessOpacityGrey;
+   
+   a {
+      width: 50%;
+   }
 
    div {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 50%;
       height: 60px;
       text-align: center;
       font-weight: bold;
@@ -152,6 +155,7 @@
    .agreeTerms--container {
       display: flex;
       flex-direction: row;
+      align-items: center;
 
       input {
          transform: scale(1.1);

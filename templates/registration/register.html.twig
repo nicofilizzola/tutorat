@@ -12,20 +12,24 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <div class="menuBurger">
+    {# <div class="menuBurger">
         <span class="menuNotHovered"></span>
         <span class="menuNotHovered"></span>
-    </div>
+    </div> #}
 
     <div class="container">
         <div class="form--container">
             <div class="form--role">
-                <div class="form--login notActive">
-                    <span>Se connecter</span>
-                </div>
-                <div class="form--register">
-                    <span>S'inscricre</span>
-                </div>
+                <a href="{{ path('app_login') }}">
+                    <div class="form--login notActive">
+                        <span>Se connecter</span>
+                    </div>
+                </a>
+                <a href="{{ path('app_register') }}">
+                    <div class="form--register">
+                        <span>S'inscricre</span>
+                    </div>
+                </a>
             </div>
 
             <div class="form--content">

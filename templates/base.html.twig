@@ -14,6 +14,13 @@
         {% endblock %}
     </head>
     <body>
+        <div class="menuBurger">
+            <span class="menuNotHovered"></span>
+            <span class="menuNotHovered"></span>
+        </div>
+
+        <div class="menu--container"></div>
+            
         {% include "components/_flashMessages.html.twig" %} 
         {% block body %}{% endblock %}
     </body>

@@ -29,9 +29,26 @@ class Faculty
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Classroom::class, mappedBy="faculty")
+     */
+    private $classrooms;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Subject::class, mappedBy="faculty", orphanRemoval=true)
+     */
+    private $subjects;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $short;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->classrooms = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,6 +94,78 @@ class Faculty
                 $user->setFaculty(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Classroom[]
+     */
+    public function getClassrooms(): Collection
+    {
+        return $this->classrooms;
+    }
+
+    public function addClassroom(Classroom $classroom): self
+    {
+        if (!$this->classrooms->contains($classroom)) {
+            $this->classrooms[] = $classroom;
+            $classroom->setFaculty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClassroom(Classroom $classroom): self
+    {
+        if ($this->classrooms->removeElement($classroom)) {
+            // set the owning side to null (unless already changed)
+            if ($classroom->getFaculty() === $this) {
+                $classroom->setFaculty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Subject[]
+     */
+    public function getSubjects(): Collection
+    {
+        return $this->subjects;
+    }
+
+    public function addSubject(Subject $subject): self
+    {
+        if (!$this->subjects->contains($subject)) {
+            $this->subjects[] = $subject;
+            $subject->setFaculty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubject(Subject $subject): self
+    {
+        if ($this->subjects->removeElement($subject)) {
+            // set the owning side to null (unless already changed)
+            if ($subject->getFaculty() === $this) {
+                $subject->setFaculty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getShort(): ?string
+    {
+        return $this->short;
+    }
+
+    public function setShort(string $short): self
+    {
+        $this->short = $short;
 
         return $this;
     }

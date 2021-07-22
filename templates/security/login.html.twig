@@ -40,39 +40,7 @@
                             You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     {% endif %}
-                    {# {{ form_start(registrationForm) }}
-                        <div class="collapse">
-                            {{ form_row(registrationForm.firstName) }}
-                            {{ form_row(registrationForm.lastName) }}
-                        </div>
-
-                        {{ form_row(registrationForm.role) }}
-
-                        <div class="collapse">
-                            <div id="adminOrYear--container">
-                                {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
-                                {{ form_row(registrationForm.year) }}
-                            </div>
-                            {{ form_row(registrationForm.faculty) }}
-                        </div>
-
-
-                        <div class="mail--container">
-                            {{ form_row(registrationForm.email) }}
-                            <div>
-                                <span>@iut-tarbes.fr</span>
-                            </div>
-                        </div>
-
-                        {{ form_row(registrationForm.plainPassword) }}
-                        
-                        <div class="agreeTerms--container">
-                            {{ form_widget(registrationForm.agreeTerms) }}
-                            {{ form_label(registrationForm.agreeTerms) }}
-                        </div>
-
-                        <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
-                    {{ form_end(registrationForm) }} #}
+                
                     <div class="mail--container">
                         <div>
                             <label for="inputEmail">Adresse mail IUT</label>

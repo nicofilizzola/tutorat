@@ -31,9 +31,6 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, AdminCodeRepository $adminCodeRepository): Response
     {
         function manageFormData(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
-            function manageEmail(User $user, $form){
-                $user->setEmail($form->get('email')->getData() . "@iut-tarbes.fr");
-            }
             function managePassword(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
                 // encode the plain password
                 $user->setPassword(
@@ -57,7 +54,6 @@ class RegistrationController extends AbstractController
                 $user->setRoles($userRoles);
             }
 
-            manageEmail($user, $form);
             managePassword($user, $form, $passwordEncoder);
             $user->setIsValid(1); // 1 == invalid
             manageAdminYear($user, $form);

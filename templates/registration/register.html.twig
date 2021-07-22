@@ -33,7 +33,9 @@
             </div>
 
             <div class="form--content">
-                {{ form_start(registrationForm) }}
+                {{ form_start(registrationForm, {"attr": {
+                    "id": "registration_form"
+                }}) }}
                     <div class="collapse">
                         {{ form_row(registrationForm.firstName) }}
                         {{ form_row(registrationForm.lastName) }}

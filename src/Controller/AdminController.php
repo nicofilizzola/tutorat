@@ -12,23 +12,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
+    private function isAdmin(){
+        if (!$this->getUser() || !in_array("ROLE_ADMIN", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @Route("/users", name="app_users")
      */
     public function index(UserRepository $userRepository): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
+        if (!$this->isAdmin()){
             return $this->redirectToRoute('app_home');
         }
 
-        $validatedUsers = $userRepository->findBy([
+        $verifiedUsers = $userRepository->findBy([
             'isValid' => 1,
             'isVerified' => 1    
         ],
         ['id' => 'ASC']);
 
         $users = [];
-        foreach ($validatedUsers as $user){
+        foreach ($verifiedUsers as $user){
             if (in_array("ROLE_TUTOR", $user->getRoles())){
                 array_push($users, $user);
             }
@@ -44,7 +51,7 @@ class AdminController extends AbstractController
      */
     public function validate(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
+        if (!$this->isAdmin()){
             return $this->redirectToRoute('app_home');
         }
 
@@ -67,7 +74,7 @@ class AdminController extends AbstractController
      */
     public function cancel(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser() || !in_array("ROLE_ADMIN" ,$this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2){
+        if (!$this->isAdmin()){
             return $this->redirectToRoute('app_home');
         }
 

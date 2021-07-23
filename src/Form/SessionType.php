@@ -57,7 +57,8 @@ class SessionType extends AbstractType
                     ])
                 ],
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
+                'data' => true
             ])
             ->add('link', TextType::class, [
                 'constraints' => [

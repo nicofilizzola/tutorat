@@ -47,16 +47,16 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('email', null, [
-                'mapped' => false,
+                // 'mapped' => false,
                 'label' => 'Adresse email universitaire',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]+$/i",
+                        'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]+@iut-tarbes.fr$/i",
                         "message" => "L'adresse email renseignée est invalide."
                     ]),
                     new NotBlank([
                         'message' => "Veuillez entrer une adresse email"
-                    ])
+                    ]),
                 ]
             ])
             ->add('role', ChoiceType::class, [

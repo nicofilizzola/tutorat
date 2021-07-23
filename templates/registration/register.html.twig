@@ -28,7 +28,9 @@
             </div>
 
             <div class="form--content">
-                {{ form_start(registrationForm) }}
+                {{ form_start(registrationForm, {"attr": {
+                    "id": "registration_form"
+                }}) }}
                     <div class="collapse">
                         {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
                         {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
@@ -64,7 +66,6 @@
             </div>
         </div>
     </div>
-
 
     {{ encore_entry_script_tags('app_register') }}
 {% endblock %}

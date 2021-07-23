@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class SessionType extends AbstractType
 {
@@ -54,7 +55,9 @@ class SessionType extends AbstractType
                     new NotBlank([
                         'message' => "Ce champs ne peut pas être vide."
                     ])
-                ]
+                ],
+                'expanded' => true,
+                'multiple' => false
             ])
             ->add('link', TextType::class, [
                 'constraints' => [
@@ -88,6 +91,10 @@ class SessionType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => "Ce champs ne peut pas être vide."
+                    ]),
+                    new GreaterThan([
+                        'value' => 'today',
+                        'message' => "Le cours doit être proposé au moins un jour avant"
                     ])
                 ]
             ])

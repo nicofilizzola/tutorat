@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Session;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,7 +45,7 @@ class SessionController extends AbstractController
     /**
      * @Route("/session/create", name="app_session_create", methods={"GET", "POST"})
      */
-    public function create(Request $request): Response
+    public function create(Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isTutor()){
             return $this->redirectToRoute('app_login');
@@ -54,6 +55,16 @@ class SessionController extends AbstractController
         $form = $this->createForm(SessionType::class, $session);
         $form->handleRequest($request);
         $formView = $form->createView();
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $session->setTutor($this->getUser());
+            $session->updateTimestamp();
+            $em->persist($session);
+            $em->flush();
+
+            $this->addFlash('success', 'Ton cours de ' . $session->getSubject() . ' a bien été proposé !');
+            return $this->redirectToRoute("app_session_create");
+        }
 
         return $this->render('session/create.html.twig', [
             'form' => $formView

@@ -36,7 +36,7 @@ class Subject
     private $faculty;
 
     /**
-     * @ORM\OneToMany(targetEntity=Session::class, mappedBy="Subject", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Session::class, mappedBy="subject", orphanRemoval=true)
      */
     private $sessions;
 

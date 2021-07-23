@@ -69,6 +69,11 @@ class Session
      */
     private $subject;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateTime;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -195,6 +200,18 @@ class Session
     public function setSubject(?Subject $subject): self
     {
         $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function getDateTime(): ?\DateTimeInterface
+    {
+        return $this->dateTime;
+    }
+
+    public function setDateTime(\DateTimeInterface $dateTime): self
+    {
+        $this->dateTime = $dateTime;
 
         return $this;
     }

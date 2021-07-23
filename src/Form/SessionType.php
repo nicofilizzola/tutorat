@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Session;
 use App\Entity\Subject;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Classroom;
 use App\Repository\SubjectRepository;
+use App\Repository\ClassroomRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,10 +40,16 @@ class SessionType extends AbstractType
                 ]
             ])
             ->add('link')
-            ->add('classroom')
+            ->add('classroom', EntityType::class, [
+                'class' => Classroom::class,
+                'choice_label' => "name",
+                'query_builder' => function (ClassroomRepository $classroomRepository) {
+                    return $classroomRepository->createQueryBuilder('c')
+                        ->where('c.faculty = ' . $this->security->getUser()->getFaculty()->getId());
+                }
+            ]) // !faceToFace ? classroom == null
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,
-                'choice_label' => 'title',
                 'query_builder' => function (SubjectRepository $subjectRepository) {
                     return $subjectRepository->createQueryBuilder('s')
                         ->where('s.faculty = ' . $this->security->getUser()->getFaculty()->getId());

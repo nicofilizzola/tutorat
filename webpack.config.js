@@ -21,6 +21,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('app_home', './assets/app_home.js')
     .addEntry('app_register', './assets/routes/app_register.js')
     .addEntry('app_login', './assets/routes/app_login.js')
     .addEntry('app_session', './assets/routes/app_session.js')
@@ -74,6 +75,18 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-;
+
+    .copyFiles({
+        from: './assets/img',
+
+        // optional target path, relative to the output dir
+        to: 'images/[name].[ext]',
+
+        // if versioning is enabled, add the file hash too
+        //to: 'images/[path][name].[hash:8].[ext]',
+
+        // only copy files matching this pattern
+        pattern: /\.(png|jpg|jpeg)$/
+    });
 
 module.exports = Encore.getWebpackConfig();

@@ -5,6 +5,10 @@ html {
    font-size: 16px;
 }
 
+::-webkit-scrollbar {
+   display: none;
+}
+
 body {
    margin: 0;
    padding: 0;
@@ -15,6 +19,33 @@ body {
 a {
    text-decoration: none;
    color: #000;
+}
+
+.lineHoverEffect {
+   position: relative;
+   margin: 0;
+
+   span {
+      mix-blend-mode: difference;
+
+      &::after {
+         content: '';
+         position: absolute;
+         width: 100%;
+         height: 1px;
+         bottom: 0;
+         left: 0;
+         background: #fff;
+         transform: scaleX(0);
+         transform-origin: bottom right;
+         transition: transform 0.75s ease;
+      }
+   }
+
+   &:hover span::after {
+      transform-origin: bottom left;
+      transform: scaleX(1);
+   }
 }
 
 // Cursor
@@ -51,7 +82,7 @@ a {
             &:nth-child(1) {
                height: 30px;
             }
-      
+
             &:nth-child(2) {
                height: 30px;
                transition-delay: .05s;
@@ -64,7 +95,7 @@ a {
             &:nth-child(1) {
                height: 20px;
             }
-      
+
             &:nth-child(2) {
                height: 30px;
                transition-delay: .05s;
@@ -83,7 +114,8 @@ a {
 }
 
 // Menu Background
-.menu--background, .cursor {
+.menu--background,
+.cursor {
    position: fixed;
    top: 0;
    left: 0;
@@ -110,7 +142,7 @@ a {
 
 // Menu Content
 .menuContent--container {
-   position: absolute;
+   position: fixed;
    display: flex;
    flex-direction: column;
    justify-content: space-between;
@@ -130,7 +162,8 @@ a {
    }
 }
 
-.bottom--container, .middle--container {
+.bottom--container,
+.middle--container {
    display: flex;
    flex-direction: row;
    justify-content: space-between;

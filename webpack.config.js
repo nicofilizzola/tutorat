@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('app_home', './assets/routes/app_home.js')
     .addEntry('app_register', './assets/routes/app_register.js')
+    .addEntry('app_register_after', './assets/routes/app_register_after.js')
     .addEntry('app_login', './assets/routes/app_login.js')
     .addEntry('app_session', './assets/routes/app_session.js')
     .addEntry('app_session_create', './assets/routes/app_session_create.js')

@@ -55,9 +55,10 @@ class RegistrationController extends AbstractController
             }
 
             managePassword($user, $form, $passwordEncoder);
-            $user->setIsValid(1); // 1 == invalid
             manageAdminYear($user, $form);
             manageRoles($user, $form);
+            $user->setIsValid(1); // 1 == invalid
+            $user->updateTimestamp();
         }
 
         if ($this->getUser()) {

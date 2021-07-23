@@ -7,28 +7,25 @@ const SendFormBtn = document.querySelector(".form--btn");
 const fields = [];
 
 const fieldsError = () => {
-  formContainer.children.forEach((field) => {
-    if (field.classList.contains("collapse")) {
-      field.children.forEach((fieldChildren) => {
-        fields.push(fieldChildren);
-        // console.log(fieldChildren)
-      });
+  formContainer.children.forEach(field => {
+    if (field.classList.contains('mail--container')) {
+      field.children.forEach(fieldChildren => {
+        fields.push(fieldChildren)
+      })
     } else {
-      fields.push(field);
-      // console.log(field)
+      fields.push(field)
     }
-    // console.log(fields)
-  });
+  })
 
   fields.forEach((field) => {
     if (field.children[1] instanceof HTMLUListElement) {
-      // console.log('sheeeeesh')
-      field.children[2].classList.add("errorField");
+      field.children[2].classList.add('errorField')
     } else if (field.children[2]) {
       field.children[2].classList.remove("errorField");
     }
-  });
-};
+  })
+}
+
 
 SendFormBtn.addEventListener("click", () => {
   fieldsError();

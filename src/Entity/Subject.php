@@ -40,6 +40,11 @@ class Subject
      */
     private $sessions;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $short;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -112,6 +117,18 @@ class Subject
                 $session->setSubject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShort(): ?string
+    {
+        return $this->short;
+    }
+
+    public function setShort(string $short): self
+    {
+        $this->short = $short;
 
         return $this;
     }

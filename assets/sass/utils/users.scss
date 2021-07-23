@@ -1,0 +1,147 @@
+@import 'var';
+
+.title {
+   position: fixed;
+   top: 50px;
+   left: 2.5%;
+   margin: 0;
+   font-size: 13vw;
+   opacity: .6;
+   z-index: -1;
+}
+
+// Cartes
+.container {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width: 100vw;
+}
+
+.content--container {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-start;
+   align-items: center;
+   flex-wrap: wrap;
+   width: 90%;
+   margin-top: 10vh;
+}
+
+.card--container {
+   // margin: 0 65px 70px 65px;
+   margin: 0 2vw 5% 2vw;
+}
+
+.card {
+   position: relative;
+   display: flex;
+   height: 170px;
+   width: 400px;
+   background-color: #fff;
+   padding: 20px;
+   border: 1px solid #000;
+   border-radius: 2px;
+}
+
+.card--content {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: flex-start;
+   height: 100%;
+   
+   .name {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      span {
+
+         &:nth-child(1) {
+            font-weight: bold;
+            font-size: 60px;
+         }
+         
+         &:nth-child(2) {
+            margin-top: -15px;
+            font-size: 20px;
+         }
+      }
+   }
+
+   #mail {
+      font-weight: 300;
+   }
+}
+
+.card--buttons {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   position: absolute;
+   height: 50%;
+   right: -20px;
+   top: 40%;
+   overflow: hidden;
+
+   button {
+      cursor: pointer;
+      outline: none;
+      height: 45px;
+      width: 70px;
+      background-color: #000;
+      border: 1px solid #000;
+      border-radius: 2px;
+      color: #fff;
+      // filter: grayscale(100%) brightness(3);
+
+      &::before {
+         content: '';
+         position: absolute;
+         width: 70px;
+         height: 45px;
+         border-radius: 2px;
+         left: 0;
+         transition: top .3s ease-in-out;
+      }
+      
+      &:nth-child(1) {
+         &::before {
+            background-color: green;
+            top: -45px;
+         }
+         
+         &:hover {
+            &::before {
+               top: 0;
+               transition: top .25s ease-out;
+            }
+         }
+         // background-color: lightgreen;
+      }
+      
+      &:nth-child(2) {
+         &::before {
+            background-color: red;
+            top: 105px;
+         }
+
+         &:hover {
+            &::before {
+               top: 60px;
+               transition: top .25s ease-out;
+            }
+         }
+         // background-color: lightgreen;
+         // background-color: $primaryRed;
+      }
+   }
+
+   span {
+      position: relative;
+      filter: grayscale(100%) brightness(3);
+      // z-index: 2;
+   }
+}

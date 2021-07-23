@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+// import './styles/app.css';
 import './sass/main.scss';
 
 // start the Stimulus application
@@ -50,7 +50,7 @@ let lowestElapsedTime = 0
 // Get mouse postition
 document.addEventListener('mousemove', (mouse) => {
    posX = mouse.pageX
-   posY = mouse.pageY
+   posY = mouse.pageY - window.scrollTop
 })
 
 // Interactive cursor custom position

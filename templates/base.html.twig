@@ -14,39 +14,10 @@
         {% endblock %}
     </head>
     <body>
+        {% include "components/_menu.html.twig" %} 
+
         <div class="cursor"></div>
-
-        <div class="menuBurger hoveredItems">
-            <div>
-                <span class="menuNotHovered cross__1"></span>
-                <span class="menuNotHovered cross__2"></span>
-            </div>
-
-            <div>
-                <span class="menuNotHovered"></span>
-                <span class="menuNotHovered"></span>
-            </div>
-        </div>
-
-        <div class="menuContent--container">
-            <div class="middle--container">
-            </div>
-            <div class="bottom--container">
-                    <div class="labels">
-                        <img src="{{ asset('./build/images/UT3.png') }}"/>
-                        <img src="{{ asset('./build/images/tlp.png') }}"/>
-                    </div>
-                    <div class="website">
-                        <a href="https://www.iut-tarbes.fr/" target="_blank" class="hoveredItems lineHoverEffect"><span>Site officiel</span></a>
-                    </div>
-                    <div class="mail">
-                        <a href="mailto:frederique.girard@iut-tarbes.fr" class="hoveredItems lineHoverEffect"><span>frederique.girard@iut-tarbes.fr</span></a>
-                    </div>
-            </div>
-        </div>
-        <div class="menu--background"></div>
-
-            
+        
         {% include "components/_flashMessages.html.twig" %} 
         {% block body %}{% endblock %}
     </body>

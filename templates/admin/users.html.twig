@@ -2,35 +2,58 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app_users') }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
 
-    {% if users is empty == false %}
-        {% for user in users %}
-            <div>
-                <p>{{ user.firstName | capitalize }} {{ user.lastName | upper }}</p>
-                <p>{{ user.email | lower }}</p>
-                <p>{{ user.roles[user.roles | length - 2] }}</p>
-                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit();">Valider</a>
-                <a href="#" onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit();">Supprimer</a>
-                <form 
-                    id="js-user-validate-form-{{ user.id }}"
-                    display="none" 
-                    action="{{ path('app_user_validate', {"id": user.id}) }}" 
-                    method="POST">
-                    <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
-                    {# <input type="hidden" name="_method" value="PUT"/> #}
-                </form>
-                <form 
-                    id="js-user-cancel-form-{{ user.id }}"
-                    display="none" 
-                    action="{{ path('app_user_cancel', {"id": user.id}) }}" 
-                    method="POST">
-                    <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
-                    {# <input type="hidden" name="_method" value="PUT"/> #}
-                </form>
-            </div>
-        {% endfor %}
-    {% else %}
-        <h2>Pas d'utilisateurs à valider</h2>
-    {% endif %}
+    <div class="container" data-lg-smooth>
+        <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
+            {% if users is empty == false %}
+                {% for user in users %}
+                    <div class="card--container">
+                        <div class="card">
+                            <div class="card--content">
+                                <div class="name">
+                                    <span>{{ user.firstName | upper }}</span>
+                                    <span>{{ user.lastName | capitalize }}</span>
+                                </div>
+                                <span id="mail">{{ user.email | lower }}</span>
+                                <span>{{ user.roles[user.roles | length - 2] }}</span>
+                            </div>
+                            <div class="card--buttons">
+                                <button class="hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit();"><span>✔️</span></button>
+                                <button class="hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit();"><span>❌</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <form 
+                        id="js-user-validate-form-{{ user.id }}"
+                        display="none" 
+                        action="{{ path('app_user_validate', {"id": user.id}) }}" 
+                        method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
+                        {# <input type="hidden" name="_method" value="PUT"/> #}
+                    </form>
+                    <form 
+                        id="js-user-cancel-form-{{ user.id }}"
+                        display="none" 
+                        action="{{ path('app_user_cancel', {"id": user.id}) }}" 
+                        method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
+                        {# <input type="hidden" name="_method" value="PUT"/> #}
+                    </form>
+                {% endfor %}
+
+            {% else %}
+                <h2>Pas d'utilisateurs à valider</h2>
+            {% endif %}
+        </div>
+        <h1 class="title" data-lg-sticky="top">UTILISATEURS</h1>
+    </div>
+
 {% endblock %}

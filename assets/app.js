@@ -22,7 +22,9 @@ const domCache = {
    menuBurgerCrossLine1: document.querySelector('.cross__1'),
    menuBurgerCrossLine2: document.querySelector('.cross__2'),
    hoveredItems: document.querySelectorAll('.hoveredItems'),
-   cursor: document.querySelector('.cursor')
+   cursor: document.querySelector('.cursor'),
+   
+   menuContentContainer: document.querySelector('.menuContent--container')
 }
 
 let state = {
@@ -45,11 +47,13 @@ let lowestElapsedTime = 0
 //    })
 // })
 
+// Get mouse postition
 document.addEventListener('mousemove', (mouse) => {
    posX = mouse.pageX
    posY = mouse.pageY
 })
 
+// Interactive cursor custom position
 domCache.hoveredItems.forEach(item => {
    item.addEventListener('mouseenter', (e) => {
       state.isMouseHovering = true
@@ -57,13 +61,7 @@ domCache.hoveredItems.forEach(item => {
       const itemPosX = rect.x + rect.width - 20
       const itemPosY = rect.y + 10
 
-      gsap.to(domCache.cursor, .5, {
-         css: {
-            left: itemPosX,
-            top: itemPosY
-         },
-         ease: 'Power3.easeInOut'
-      })
+      gsap.to(domCache.cursor, .5, { css: { left: itemPosX, top: itemPosY }, ease: 'Power3.easeInOut' })
    })
 
    item.addEventListener('mouseleave', (e) => {
@@ -71,71 +69,45 @@ domCache.hoveredItems.forEach(item => {
    })
 })
 
+// Menu hovered
 domCache.menuBurger.addEventListener('mouseenter', () => {
    if (!state.isMenuOpen) {
-      gsap.to(domCache.menuBurgerLines, .1, {
-         stagger: { each: .05, y: 50},
-         ease: 'Expo3.easeOut'
-      })
+      gsap.to(domCache.menuBurgerLines, .1, { stagger: { each: .05, y: 50}, ease: 'Expo3.easeOut' })
    }
 })
-
 domCache.menuBurger.addEventListener('mouseleave', () => {
    if (!state.isMenuOpen) {
-      gsap.to(domCache.menuBurgerLines, .1, {
-         stagger: { each: .05, y: 0},
-         ease: 'Expo3.easeOut'
-      })
+      gsap.to(domCache.menuBurgerLines, .1, { stagger: { each: .05, y: 0}, ease: 'Expo3.easeOut' })
    }
 })
 
+// Menu opened
 domCache.menuBurger.addEventListener('click', () => {
    if (!state.isMenuOpen) {
       state.isMenuOpen = true
       domCache.menuBackground.classList.add('menuActive')
 
-      gsap.to(domCache.cursor, .25, {
-         backgroundColor: '#fff',
-         ease: 'Power3.easeOut',
-      })
+      gsap.to(domCache.cursor, .25, { backgroundColor: '#fff', ease: 'Power3.easeOut' })
 
-      gsap.to(domCache.menuBurgerLines, .75, {
-         backgroundColor: '#fff',
-         ease: 'Power3.easeOut',
-      })
+      gsap.to(domCache.menuBurgerLines, .75, { backgroundColor: '#fff', ease: 'Power3.easeOut' })
+      gsap.to(domCache.menuBurgerCrossLine1, .15, { rotate: 45, x: 3.5, ease: 'Power3.easeOut' })
+      gsap.to(domCache.menuBurgerCrossLine2, .15, { rotate: -45, x: -3.5, ease: 'Power3.easeOut' })
 
-      gsap.to(domCache.menuBurgerCrossLine1, .15, {
-         rotate: 45,
-         x: 3.5,
-         ease: 'Power3.easeOut',
-      })
-      
-      gsap.to(domCache.menuBurgerCrossLine2, .15, {
-         rotate: -45,
-         x: -3.5,
-         ease: 'Power3.easeOut',
-      })
+      domCache.menuContentContainer.style.display = 'flex'
+      gsap.to(domCache.menuContentContainer, .5, { opacity: 1, ease:'Power3.easeOut', delay: .75 })
    } else {
       state.isMenuOpen = false
       domCache.menuBackground.classList.remove('menuActive')
 
-      gsap.to(domCache.cursor, .25, {
-         backgroundColor: '#494949',
-         ease: 'Power3.easeOut',
-         delay: .7
-      })
+      gsap.to(domCache.cursor, .25, { backgroundColor: '#494949', ease: 'Power3.easeOut', delay: .7 })
 
-      gsap.to(domCache.menuBurgerLines, .75, {
-         backgroundColor: '#000',
-         ease: 'Power3.easeOut',
-         delay: .5
-      })
+      gsap.to(domCache.menuBurgerLines, .75, { backgroundColor: '#000', ease: 'Power3.easeOut', delay: .5 })
+      gsap.to(domCache.menuBurgerLines, .15, { x: 0, rotate: 0, ease: 'Power3.easeOut' })
 
-      gsap.to(domCache.menuBurgerLines, .15, {
-         x: 0,
-         rotate: 0,
-         ease: 'Power3.easeOut',
-      })
+      gsap.to(domCache.menuContentContainer, .5, { opacity: 0, ease:'Power3.easeOut' })
+      setTimeout(() => {
+         domCache.menuContentContainer.style.display = 'none'
+      }, 500);
    }
 })
 
@@ -146,7 +118,7 @@ window.addEventListener('keypress', (e) => {
 function raf() {
    lowestElapsedTime += 0.0006
 
-
+   // cursor follow
    if (!state.isMouseHovering) {
       gsap.to(domCache.cursor, .09, {
          css: {

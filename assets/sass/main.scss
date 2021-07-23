@@ -9,6 +9,7 @@ body {
    margin: 0;
    padding: 0;
    background-color: #fff;
+   overflow-x: hidden;
 }
 
 a {
@@ -110,7 +111,7 @@ a {
 // Menu Content
 .menuContent--container {
    position: absolute;
-   // display: flex;
+   display: flex;
    flex-direction: column;
    justify-content: space-between;
    align-items: center;
@@ -122,6 +123,11 @@ a {
    display: none;
    opacity: 0;
    user-select: none;
+
+   a {
+      color: #fff;
+      font-weight: 100;
+   }
 }
 
 .bottom--container, .middle--container {
@@ -134,8 +140,22 @@ a {
 
 .bottom--container {
    margin-bottom: 38px;
+   height: auto;
 }
 
 .middle--container {
    margin-top: 38px;
+   height: 90%;
+}
+
+.labels {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: baseline;
+   width: 250px;
+
+   img {
+      width: 100px;
+   }
 }

@@ -4,7 +4,27 @@
 
 {% block body %}
     {{ form_start(form, {"attr": {"id": "session_form"}}) }}
-        {{ form_row(form) }}
+        {{ form_row(form.title, {
+            "label": "Titre"
+        }) }}
+        {{ form_row(form.description, {
+            "label": "Détails"
+        }) }}
+        {{ form_row(form.faceToFace, {
+            "label": "Présentiel ou distanciel ?"
+        }) }}
+        {{ form_row(form.link, {
+            "label": "Lien de la visio"
+        }) }}
+        {{ form_row(form.classroom, {
+            "label": "Salle de cours"
+        }) }}
+        {{ form_row(form.subject, {
+            "label": "Matière"
+        }) }}
+        {{ form_row(form.dateTime, {
+            "label": "Date et heure"
+        }) }}
         <button type="submit">Proposer</button>
     {{ form_end(form) }}
 

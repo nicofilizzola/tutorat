@@ -1,4 +1,8 @@
-const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput, classroomInput) => {
+const toggleLinkAndClassroom = (
+  faceToFaceInputValue,
+  linkInput,
+  classroomInput
+) => {
   if (faceToFaceInputValue == 1) {
     // faceToFace
     linkInput.disabled = true;
@@ -11,13 +15,24 @@ const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput, classroomInput)
 };
 
 const manageFaceToFace = () => {
-  const faceToFaceInput = document.querySelector("#session_faceToFace");
+  const getFTFAndToggle = (faceToFaceInputs, link, classroom) => {
+    const faceToFaceValue = faceToFaceInputs[0].checked ? 1 : 2;
+    toggleLinkAndClassroom(faceToFaceValue, link, classroom);
+  };
+
   const link = document.querySelector("#session_link");
   const classroom = document.querySelector("#session_classroom");
-  toggleLinkAndClassroom(faceToFaceInput.value, link, classroom); // onload
+  faceToFaceInputs = [
+    document.querySelector("#session_faceToFace_0"),
+    document.querySelector("#session_faceToFace_1"),
+  ];
 
-  faceToFaceInput.addEventListener("change", function (event) {
-    toggleLinkAndClassroom(faceToFaceInput.value, link, classroom);
+  getFTFAndToggle(faceToFaceInputs, link, classroom);
+
+  faceToFaceInputs.forEach((element) => {
+    element.addEventListener("change", function () {
+      getFTFAndToggle(faceToFaceInputs, link, classroom);
+    });
   });
 };
 

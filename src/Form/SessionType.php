@@ -10,11 +10,15 @@ use App\Repository\ClassroomRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class SessionType extends AbstractType
 {
@@ -29,17 +33,40 @@ class SessionType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Ce champs ne peut pas être vide."
+                    ])
+                ]
             ])
             ->add('description',  TextareaType::class, [
-
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Ce champs ne peut pas être vide."
+                    ])
+                ]
             ])
             ->add('faceToFace', ChoiceType::class, [
                 'choices' => [
                     'Présentiel' => 1,
                     'Distanciel' => 2
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Ce champs ne peut pas être vide."
+                    ])
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'data' => true
+            ])
+            ->add('link', TextType::class, [
+                'constraints' => [
+                    new Url([
+                        "message" => "Ce lien est invalide"
+                    ])
                 ]
             ])
-            ->add('link')
             ->add('classroom', EntityType::class, [
                 'class' => Classroom::class,
                 'choice_label' => "name",
@@ -53,7 +80,24 @@ class SessionType extends AbstractType
                 'query_builder' => function (SubjectRepository $subjectRepository) {
                     return $subjectRepository->createQueryBuilder('s')
                         ->where('s.faculty = ' . $this->security->getUser()->getFaculty()->getId());
-                }
+                },
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Ce champs ne peut pas être vide."
+                    ])
+                ]
+            ])
+            ->add('dateTime', DateTimeType::class, [
+                'date_widget' => "single_text",
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Ce champs ne peut pas être vide."
+                    ]),
+                    new GreaterThan([
+                        'value' => 'today',
+                        'message' => "Le cours doit être proposé au moins un jour avant"
+                    ])
+                ]
             ])
         ;
     }

@@ -57,6 +57,15 @@ class SessionController extends AbstractController
         $formView = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()){
+            if ($session->getFaceToFace() == 1 && is_null($session->getClassroom())){
+                $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
+                return $this->redirectToRoute("app_session_create");
+            }
+            if ($session->getFaceToFace() == 2 && is_null($session->getLink())){
+                $this->addFlash("danger", "Pas de lien de visio.");
+                return $this->redirectToRoute("app_session_create");
+            }
+
             $session->setTutor($this->getUser());
             $session->updateTimestamp();
             $em->persist($session);

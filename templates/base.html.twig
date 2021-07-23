@@ -61,4 +61,6 @@
         {% include "components/_flashMessages.html.twig" %} 
         {% block body %}{% endblock %}
     </body>
+
+    {{ encore_entry_script_tags(app.request.attributes.get('_route')) }}
 </html>

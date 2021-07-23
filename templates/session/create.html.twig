@@ -3,8 +3,9 @@
 {% block title %}Hello SessionController!{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form, {"attr": {"id": "session_form"}}) }}
         {{ form_row(form) }}
         <button type="submit">Proposer</button>
     {{ form_end(form) }}
+
 {% endblock %}

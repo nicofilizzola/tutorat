@@ -28,6 +28,8 @@
    
    a {
       width: 50%;
+      cursor: default;
+      pointer-events: none;
    }
 
    div {
@@ -45,6 +47,7 @@
       color: rgba(#000, .3);
       transition: color .25s ease-out;
       cursor: pointer;
+      pointer-events: auto;
 
       &:hover {
          color: rgba(#000, .7);

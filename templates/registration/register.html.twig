@@ -12,7 +12,7 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <div class="container">
+    <div class="container" data-lg-smooth>
         <div class="form--container">
             <div class="form--role">
                 <a href="{{ path('app_login') }}">
@@ -32,23 +32,23 @@
                     "id": "registration_form"
                 }}) }}
                     <div class="collapse">
-                        {{ form_row(registrationForm.firstName) }}
-                        {{ form_row(registrationForm.lastName) }}
+                        {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
+                        {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
                     </div>
 
-                    {{ form_row(registrationForm.role) }}
+                    {{ form_row(registrationForm.role, {'attr': {'class':'hoveredItems'}}) }}
 
                     <div class="collapse">
                         <div id="adminOrYear--container">
-                            {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true'}}) }}
-                            {{ form_row(registrationForm.year) }}
+                            {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true', 'class':'hoveredItems'}}) }}
+                            {{ form_row(registrationForm.year, {'attr': {'class':'hoveredItems'}}) }}
                         </div>
-                        {{ form_row(registrationForm.faculty) }}
+                        {{ form_row(registrationForm.faculty, {'attr': {'class':'hoveredItems'}}) }}
                     </div>
 
 
                     <div class="mail--container">
-                        {{ form_row(registrationForm.email) }}
+                        {{ form_row(registrationForm.email, {'attr': {'class':'hoveredItems'}}) }}
                         <div>
                             <span>@iut-tarbes.fr</span>
                         </div>
@@ -58,10 +58,10 @@
                     
                     <div class="agreeTerms--container">
                         {{ form_widget(registrationForm.agreeTerms) }}
-                        {{ form_label(registrationForm.agreeTerms) }}
+                        {{ form_label(registrationForm.agreeTerms, registrationForm.agreeTerms, {'label_attr': {'class':'hoveredItems'}}) }}
                     </div>
 
-                    <button type="submit" class="form--btn form--btn__register">S'inscrire</button>
+                    <button type="submit" class="form--btn form--btn__register hoveredItems">S'inscrire</button>
                 {{ form_end(registrationForm) }}
             </div>
         </div>

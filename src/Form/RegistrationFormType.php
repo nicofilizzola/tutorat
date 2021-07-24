@@ -104,6 +104,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'first_options' => ['label' => 'Mot de passe', 'attr' => ['class' => 'hoveredItems']],
+                'second_options' => ['label' => 'Vérifier le mot de passe', 'attr' => ['class' => 'hoveredItems']]
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => "Accepter les conditions d'utilisation",

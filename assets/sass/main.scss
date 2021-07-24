@@ -35,7 +35,7 @@ a {
          height: 1px;
          bottom: 0;
          left: 0;
-         background: #fff;
+         background: $primaryRed;
          transform: scaleX(0);
          transform-origin: bottom right;
          transition: transform 0.75s ease;
@@ -190,5 +190,57 @@ a {
 
    img {
       width: 100px;
+   }
+}
+
+// Nav
+.nav--container {
+   position: fixed;
+   width: auto;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   top: 38px;
+   left: 38px;
+   z-index: 5;
+}
+
+.nav--arrow {
+   margin-right: 10px;
+
+   svg {
+      cursor: pointer;
+      // transform: translateX(0px);
+      // transition: transform .5s ease-in-out;
+
+      &:hover {
+
+         g {
+            transform: translate(0.5px, .7px);
+            transition: transform .5s ease-in-out;
+         }
+      }
+      
+      
+      g {
+         transform: translate(10px, .7px);
+         transition: transform .5s ease-in-out;
+
+         line {
+            stroke: $grey;
+   
+            // &:nth-child(1) {
+            //    transform: translate(0px, 5px);
+            // }
+            // &:nth-child(2) {
+            //    transform: translate(1px, -1px);
+            // }
+            // &:nth-child(3) {
+            //    transform: translate(1px, 6px);
+            // }
+         }  
+      }
+      
    }
 }

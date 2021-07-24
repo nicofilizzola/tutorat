@@ -14,7 +14,7 @@
             {% if users is empty == false %}
                 {% for user in users %}
                     <div class="card--container">
-                        <div class="card">
+                        <div class="card" data-id={{user.id}}>
                             <div class="card--content">
                                 <div class="name">
                                     <span>{{ user.firstName | upper }}</span>
@@ -24,8 +24,8 @@
                                 <span>{{ user.roles[user.roles | length - 2] }}</span>
                             </div>
                             <div class="card--buttons">
-                                <button class="hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit();"><span>✔️</span></button>
-                                <button class="hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit();"><span>❌</span></button>
+                                <button class="hoveredItems validate"><span>✔️</span></button>
+                                <button class="hoveredItems refuse"><span>❌</span></button>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,6 @@
                 <h2>Pas d'utilisateurs à valider</h2>
             {% endif %}
         </div>
-        <h1 class="title" data-lg-sticky="top">UTILISATEURS</h1>
     </div>
 
 {% endblock %}

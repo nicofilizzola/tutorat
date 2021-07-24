@@ -68,9 +68,11 @@
          font-size: 14px;
          font-weight: 100;
 
-         &::after {
-            content: ' *';
-            color: $primaryRed;
+         &:not(.rememberMe) {
+            &::after {
+               content: ' *';
+               color: $primaryRed;
+            }
          }
       }
 

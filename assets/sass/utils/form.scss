@@ -1,4 +1,3 @@
-
 @import 'var';
 
 .container {
@@ -68,7 +67,7 @@
          font-size: 14px;
          font-weight: 100;
 
-         &:not(.rememberMe) {
+         &:not(.notRequired) {
             &::after {
                content: ' *';
                color: $primaryRed;
@@ -112,12 +111,21 @@
       justify-content: space-between;
       margin-bottom: 0;
 
-      div {
-         width: 48%;
+      &_2 {
+         div {
+            width: 48%;
+         }
       }
-   }
 
-   #adminOrYear--container {
+      &_3 {
+         div {
+            width: 30%;
+         }
+      }
+      
+   }
+   
+   #switchOption--container {
       div {
          margin-bottom: 0;
          width: 100%;
@@ -153,10 +161,6 @@
          }
       }
    }
-
-   // #passwords--container {
-   //    margin-bottom: 0;
-   // }
 
    .agreeTerms--container {
       display: flex;

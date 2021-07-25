@@ -31,15 +31,15 @@
                 {{ form_start(registrationForm, {"attr": {
                     "id": "registration_form"
                 }}) }}
-                    <div class="collapse">
+                    <div class="collapse collapse_2">
                         {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
                         {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
                     </div>
 
                     {{ form_row(registrationForm.role, {'attr': {'class':'hoveredItems'}}) }}
 
-                    <div class="collapse">
-                        <div id="adminOrYear--container">
+                    <div class="collapse collapse_2">
+                        <div id="switchOption--container">
                             {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true', 'class':'hoveredItems'}}) }}
                             {{ form_row(registrationForm.year, {'attr': {'class':'hoveredItems'}}) }}
                         </div>

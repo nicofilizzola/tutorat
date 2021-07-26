@@ -239,3 +239,11 @@ a {
    display: flex;
    flex-direction: row;
 }
+
+// Footer
+.footer {
+   // width: 100vw;
+   height: 100px;
+   user-select: none;
+   pointer-events: none;
+}

@@ -24,8 +24,8 @@
                                 <span>{{ user.roles[user.roles | length - 2] }}</span>
                             </div>
                             <div class="card--buttons">
-                                <button class="hoveredItems validate"><span>✔️</span></button>
-                                <button class="hoveredItems refuse"><span>❌</span></button>
+                                <button onClick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit();" class="hoveredItems validate"><span>✔️</span></button>
+                                <button onClick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit();" class="hoveredItems refuse"><span>❌</span></button>
                             </div>
                         </div>
                     </div>
@@ -55,6 +55,8 @@
                 <h2>Pas d'utilisateurs à valider</h2>
             {% endif %}
         </div>
+
+        {% include "components/_footer.html.twig" %}
     </div>
 
 {% endblock %}

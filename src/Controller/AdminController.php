@@ -28,21 +28,12 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $verifiedUsers = $userRepository->findBy([
-            'isValid' => 1,
-            'isVerified' => 1    
-        ],
-        ['id' => 'ASC']);
-
-        $users = [];
-        foreach ($verifiedUsers as $user){
-            if (in_array("ROLE_TUTOR", $user->getRoles())){
-                array_push($users, $user);
-            }
-        }
-
         return $this->render('admin/users.html.twig', [
-            'users' => $users
+            'users' => $userRepository->findBy([
+                'isValid' => 1,
+                'isVerified' => 1    
+            ],
+            ['id' => 'ASC'])
         ]);
     }
 

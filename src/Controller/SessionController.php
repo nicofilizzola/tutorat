@@ -57,7 +57,7 @@ class SessionController extends AbstractController
         $formView = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()){
-            if (!isset($_POST['session[faceToFace]'])){
+            if (!isset($_POST['session']['faceToFace'])){
                 $this->addFlash("danger", "Votre requête n'a pas pu être traitée.");
                 return $this->redirectToRoute("app_session_create"); 
             }

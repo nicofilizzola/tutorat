@@ -1,6 +1,19 @@
 import "../sass/utils/session_create.scss";
+import { fieldsError } from "../functions/checkFieldsErrors.js";
 
 const switchOptionContainer = document.getElementById("switchOption--container");
+const formContainer = document.querySelector(".form--container .form--content form");
+const fields = [];
+
+fieldsError(formContainer, fields);
+const errorMessages = document.querySelectorAll(".form--content ul");
+
+errorMessages.forEach(error => {
+  error.addEventListener('click', () => {
+    error.remove()
+  })
+});
+
 
 const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput, classroomInput) => {
   if (faceToFaceInputValue == 1) {

@@ -18,37 +18,7 @@
 
         {% include "components/_menu.html.twig" %} 
         {% include "components/_flashMessages.html.twig" %}
-
-        <div class="nav--container">
-            <div class="nav--arrow">
-                {# <svg xmlns="http://www.w3.org/2000/svg" width="23.871" height="11.875" viewbox="0 0 23.871 11.875">
-                    <g id="back_arrow" data-name="back arrow" transform="translate(0.707 0.707)">
-                        <line id="trait" data-name="Ligne 6" x2="22.664" transform="translate(0 5.23)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1"/>
-                    </g>
-                </svg> #}
-                {# <svg xmlns="http://www.w3.org/2000/svg" width="31.871" height="11.875" viewBox="0 0 31.871 11.875">
-                    <g id="back_arrow" data-name="back arrow">
-                        <line id="trait" data-name="Ligne 6" x2="30.664" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                    </g>
-                </svg> #}
-                <svg xmlns="http://www.w3.org/2000/svg" width="31.871" height="11.875" viewBox="0 0 31.871 11.875">
-                    <g id="back_arrow" data-name="back arrow">
-                        <line id="trait" data-name="Ligne 6" x2="30.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                    </g>
-                </svg>
-            </div>
-            <div class="nav--content">
-                <a href="{{ path('app_home') }}" class="hoveredItems lineHoverEffect"><span>home</span></a>
-                <span> < </span>
-                <a href="{{ path('app_users') }}" class="hoveredItems lineHoverEffect"><span>utilisateurs</span></a>
-            </div>
-        </div>
+        {% include "components/_nav.html.twig" %}
 
         {% block body %}{% endblock %}
     </body>

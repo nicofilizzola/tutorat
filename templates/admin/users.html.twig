@@ -34,6 +34,7 @@
                     <form 
                         id="js-user-validate-form-{{ user.id }}"
                         display="none" 
+                        hidden
                         action="{{ path('app_user_validate', {"id": user.id}) }}" 
                         method="POST">
                         <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
@@ -42,6 +43,7 @@
                     <form 
                         id="js-user-cancel-form-{{ user.id }}"
                         display="none" 
+                        hidden
                         action="{{ path('app_user_cancel', {"id": user.id}) }}" 
                         method="POST">
                         <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>

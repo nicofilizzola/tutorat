@@ -16,15 +16,19 @@ import { gsap } from 'gsap'
 import luge from '@waaark/luge'
 
 const domCache = {
+   // Cursor
+   cursor: document.querySelector('.cursor'),
+
+   // Menu
    menuBackground: document.querySelector('.menu--background'),
    menuBurger: document.querySelector('.menuBurger'),
    menuBurgerLines: document.querySelectorAll('.menuBurger span'),
    menuBurgerCrossLine1: document.querySelector('.cross__1'),
    menuBurgerCrossLine2: document.querySelector('.cross__2'),
-   hoveredItems: document.querySelectorAll('.hoveredItems'),
-   cursor: document.querySelector('.cursor'),
+   menuContentContainer: document.querySelector('.menuContent--container'),
    
-   menuContentContainer: document.querySelector('.menuContent--container')
+   customNavPathContainer: document.querySelector('.customNavPath--container'),
+   navPath: document.querySelector('.navPath'),
 }
 
 let state = {
@@ -36,16 +40,38 @@ let posX = 0
 let posY = 0
 let lowestElapsedTime = 0
 
-// menuBurger.addEventListener('mouseover', (mouse) => {
-//    menuBackground.style.left = `${mouse.x}px`
-//    menuBackground.style.top = `${mouse.y}px`
-// })
-// menuBurger.addEventListener('mouseleave', () => {
-//    menuBurgerLines.forEach(line => {
-//       line.classList.toggle('menuHovered')
-//       line.classList.toggle('menuNotHovered')
-//    })
-// })
+// Stylize nav path
+const cutPath = domCache.navPath.innerHTML.split('/')
+
+const customPathFragment = document.createDocumentFragment()
+const paths = []
+
+cutPath.forEach(path => {
+   if (path != '') {
+      const gap = document.createElement('span')
+      gap.innerHTML = '<'
+      gap.classList.add('gap')
+
+      const linkPath = document.createElement('a')
+      paths.push(path)
+      paths.forEach(path => {
+         linkPath.href += `/${path}`
+      })
+      linkPath.classList.add('hoveredItems')
+      linkPath.classList.add('lineHoverEffect')
+      
+      const textPath = document.createElement('span')
+      textPath.innerHTML = path
+
+      linkPath.appendChild(textPath)
+
+      customPathFragment.appendChild(gap)
+      customPathFragment.appendChild(linkPath)
+   }
+});
+
+domCache.customNavPathContainer.appendChild(customPathFragment)
+domCache.navPath.remove()
 
 // Get mouse postition
 document.addEventListener('mousemove', (mouse) => {
@@ -54,8 +80,10 @@ document.addEventListener('mousemove', (mouse) => {
 })
 
 // Interactive cursor custom position
+domCache.hoveredItems = document.querySelectorAll('.hoveredItems')
+
 domCache.hoveredItems.forEach(item => {
-   item.addEventListener('mouseenter', (e) => {
+   item.addEventListener('mouseenter', () => {
       state.isMouseHovering = true
       const rect = item.getBoundingClientRect()
       const itemPosX = rect.x + rect.width - 20
@@ -64,7 +92,7 @@ domCache.hoveredItems.forEach(item => {
       gsap.to(domCache.cursor, .5, { css: { left: itemPosX, top: itemPosY }, ease: 'Power3.easeInOut' })
    })
 
-   item.addEventListener('mouseleave', (e) => {
+   item.addEventListener('mouseleave', () => {
       state.isMouseHovering = false
    })
 })
@@ -85,7 +113,8 @@ domCache.menuBurger.addEventListener('mouseleave', () => {
 domCache.menuBurger.addEventListener('click', () => {
    if (!state.isMenuOpen) {
       state.isMenuOpen = true
-      domCache.menuBackground.classList.add('menuActive')
+      gsap.to(domCache.menuBackground, 1, { scale: 2, ease: 'Power3.easeInOut' })
+      // domCache.menuBackground.classList.add('menuActive')
 
       gsap.to(domCache.cursor, .25, { backgroundColor: '#fff', ease: 'Power3.easeOut' })
 
@@ -97,7 +126,9 @@ domCache.menuBurger.addEventListener('click', () => {
       gsap.to(domCache.menuContentContainer, .5, { opacity: 1, ease:'Power3.easeOut', delay: .75 })
    } else {
       state.isMenuOpen = false
-      domCache.menuBackground.classList.remove('menuActive')
+      gsap.to(domCache.menuBackground, .75, { scale: 0, ease: 'Power3.easeInOut' })
+      // gsap.to(domCache.menuBackground, 1.75, { scale: 0, ease: CustomEase.create("custom", "M0,0 C0.14,0 0.27,0.428 0.306,0.55 0.356,0.723 0.42,0.963 0.428,1 0.436,0.985 0.47,0.886 0.578,0.886 0.69,0.886 0.719,0.981 0.726,0.998 0.788,0.914 0.84,0.936 0.859,0.95 0.878,0.964 0.897,0.985 0.911,0.998 0.922,0.994 0.942,0.983 0.954,0.984 0.966,0.984 1,1 1,1 ") })
+      // domCache.menuBackground.classList.remove('menuActive')
 
       gsap.to(domCache.cursor, .25, { backgroundColor: '#494949', ease: 'Power3.easeOut', delay: .7 })
 
@@ -136,6 +167,5 @@ function raf() {
 }
 
 raf()
-
 
 luge.settings({smooth: {inertia: 0.1}})

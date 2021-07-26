@@ -12,6 +12,11 @@
     <div class="container" data-lg-smooth>
         <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
             {% if users is empty == false %}
+            {% set roleViewLabels = {
+                "ROLE_STUDENT": "Étudiant",
+                "ROLE_TUTOR": "Étudiant tuteur",
+                "ROLE_ADMIN": "Administrateur",
+            } %}
                 {% for user in users %}
                     <div class="card--container">
                         <div class="card" data-id={{user.id}}>
@@ -21,7 +26,7 @@
                                     <span>{{ user.lastName | capitalize }}</span>
                                 </div>
                                 <span id="mail">{{ user.email | lower }}</span>
-                                <span>{{ user.roles[user.roles | length - 2] }}</span>
+                                <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span>
                             </div>
                             <div class="card--buttons">
                                 <button 

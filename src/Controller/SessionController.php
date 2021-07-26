@@ -32,7 +32,7 @@ class SessionController extends AbstractController
         $allSessions = $sessionRepository->findBy([], ['id' => 'DESC']);
         $facultySessions = [];
         foreach ($allSessions as $session) {
-            if ($session->getSubject()->getFaculty() == $this->getUser->getFaculty()){
+            if ($session->getSubject()->getFaculty() == $this->getUser()->getFaculty()){
                 array_push($facultySessions, $session);
             }
         }
@@ -52,11 +52,12 @@ class SessionController extends AbstractController
         }
 
         $session = new Session;
-        $form = $this->createForm(SessionType::class, $session);
+        $form = $this->createForm(SessionType::class, $session, ['allow_extra_fields' => true]);
         $form->handleRequest($request);
         $formView = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()){
+            $session->setFaceToFace(isset($_POST['session_faceToFace_0']) ? 1 : 2);
             if ($session->getFaceToFace() == 1 && is_null($session->getClassroom())){
                 $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
                 return $this->redirectToRoute("app_session_create");
@@ -65,7 +66,6 @@ class SessionController extends AbstractController
                 $this->addFlash("danger", "Pas de lien de visio.");
                 return $this->redirectToRoute("app_session_create");
             }
-            $form->get('distancieloupresentiel')->getData();
 
             $session->setTutor($this->getUser());
             $session->updateTimestamp();

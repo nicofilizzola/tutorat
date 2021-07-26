@@ -50,7 +50,7 @@ a {
 
 // Cursor
 .cursor {
-   background-color: #494949;
+   background-color: $grey;
    z-index: 12;
 }
 
@@ -130,7 +130,7 @@ a {
    flex-direction: column;
    justify-content: center;
    align-items: center;
-   background-color: #494949;
+   background-color: $grey;
    z-index: 9;
 }
 

@@ -4,4 +4,16 @@
 
 {% block body %}
 
+    {% for session in sessions %}
+        <div>
+            <h3>{{ session.title }}</h3>
+            <p>{{ session.description }}</p>
+            <p>{{ session.subject }}</p>
+            <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
+            <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
+            <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
+            <button>S'inscrire</button>
+        </div>
+    {% endfor %}
+
 {% endblock %}

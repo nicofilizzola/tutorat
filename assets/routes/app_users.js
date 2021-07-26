@@ -8,11 +8,6 @@ const getCard = (button) => {
 }
 
 validateFormButtons.forEach(button => {
-   button.addEventListener('submit', (event) => {
-      event.preventDefault();
-      document.querySelector(`#js-user-validate-form-${getCard(button).dataset.id}`).submit();
-   })
-
    button.addEventListener('mouseenter', () => {
       getCard(button).style.borderColor = 'green'
    })
@@ -23,12 +18,6 @@ validateFormButtons.forEach(button => {
 })
 
 refuseFormButtons.forEach(button => {
-   button.addEventListener('submit', (event) => {
-      event.preventDefault();
-      document.querySelector(`#js-user-cancel-form-${getCard(button).dataset.id}`).submit();
-   })
-
-   
    button.addEventListener('mouseenter', () => {
       getCard(button).style.borderColor = 'red'
    })

@@ -9,6 +9,15 @@ const adminCodeInput = document.getElementById("registration_form_adminCode");
 const roleInput = document.getElementById("registration_form_role");
 const fields = [];
 
+fieldsError(formContainer, fields);
+const errorMessages = document.querySelectorAll(".form--content ul");
+
+errorMessages.forEach(error => {
+  error.addEventListener('click', () => {
+    error.remove()
+  })
+});
+
 const manageAdminYearRole = () => {
   const manageDisabledInputs = (roleInputValue) => {
     if (roleInputValue == 3) {
@@ -34,7 +43,9 @@ const manageAdminYearRole = () => {
   });
 };
 
-fieldsError(formContainer, fields);
+
+
+
 manageAdminYearRole();
 manageEmailInputOnSubmit("#registration_form", "#registration_form_email");
 manageEmailInputBeforeSubmit("#registration_form", "#registration_form_email");

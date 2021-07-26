@@ -83,27 +83,11 @@
    }
 
    div {
+      position: relative;
       display: flex;
       flex-direction: column;
       width: 100%;
       margin-bottom: 25px;
-
-      ul {
-         list-style: none;
-         width: max-content;
-         background-color: $darkerRed;
-         border-radius: 2px;
-         padding: 10px;
-      }
-      
-      li {
-         font-size: 14px;
-         color: #fff;
-
-         &::before {
-            content: ' ⚠️ ';
-         }
-      }
    }
 
    .collapse {
@@ -111,7 +95,7 @@
       flex-direction: row;
       justify-content: space-between;
       margin-bottom: 0;
-
+      
       &_2 {
          div {
             width: 48%;
@@ -215,5 +199,37 @@
 
    &:hover:before {
       transform: scale(30);
+   }
+}
+
+
+ul {
+   display: flex;
+   flex-direction: row;
+   position: relative;
+   list-style: none;
+   width: fit-content;
+   background-color: $darkerRed;
+   border-radius: 2px;
+   padding: 10px;
+   padding-right: 25px;
+
+   &:after {
+      content: 'x';
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0 5px;
+      color: #fff;
+      cursor: pointer;
+   }
+
+   li {
+      font-size: 14px;
+      color: #fff;
+   
+      &::before {
+         content: ' ⚠️ ';
+      }
    }
 }

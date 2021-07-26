@@ -57,11 +57,12 @@ class SessionController extends AbstractController
         $formView = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()){
-            if (isset($_POST['session[faceToFace]'])){
-                $ftf = $_POST['session[faceToFace]'];
-                $session->setFaceToFace($ftf == 1 ? 1 : 2);
+            if (!isset($_POST['session[faceToFace]'])){
+                $this->addFlash("danger", "Votre requête n'a pas pu être traitée.");
+                return $this->redirectToRoute("app_session_create"); 
             }
-        
+            $ftf = $_POST['session[faceToFace]'];
+            $session->setFaceToFace($ftf == 1 ? 1 : 2);
             if ($session->getFaceToFace() == 1 && is_null($session->getClassroom())){
                 $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
                 return $this->redirectToRoute("app_session_create");

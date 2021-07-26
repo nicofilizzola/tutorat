@@ -6,5 +6,13 @@ const formContainer = document.querySelector(".form--container .form--content fo
 const fields = [];
 
 fieldsError(formContainer, fields);
+const errorMessages = document.querySelectorAll(".form--content ul");
+
+errorMessages.forEach(error => {
+   error.addEventListener('click', () => {
+      error.remove()
+   })
+})
+
 manageEmailInputOnSubmit("#login_form", "#inputEmail");
 manageEmailInputBeforeSubmit("#login_form", "#inputEmail");

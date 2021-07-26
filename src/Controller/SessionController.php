@@ -65,6 +65,7 @@ class SessionController extends AbstractController
                 $this->addFlash("danger", "Pas de lien de visio.");
                 return $this->redirectToRoute("app_session_create");
             }
+            $form->get('distancieloupresentiel')->getData();
 
             $session->setTutor($this->getUser());
             $session->updateTimestamp();

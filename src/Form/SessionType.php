@@ -46,20 +46,20 @@ class SessionType extends AbstractType
                     ])
                 ]
             ])
-            ->add('faceToFace', ChoiceType::class, [
-                'choices' => [
-                    'Présentiel' => 1,
-                    'Distanciel' => 2
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "Ce champs ne peut pas être vide."
-                    ])
-                ],
-                'expanded' => true,
-                'multiple' => false,
-                'data' => true
-            ])
+            // ->add('faceToFace', ChoiceType::class, [
+            //     'choices' => [
+            //         'Présentiel' => 1,
+            //         'Distanciel' => 2
+            //     ],
+            //     'constraints' => [
+            //         new NotBlank([
+            //             'message' => "Ce champs ne peut pas être vide."
+            //         ])
+            //     ],
+            //     'expanded' => true,
+            //     'multiple' => false,
+            //     'data' => true
+            // ])
             ->add('link', TextType::class, [
                 'constraints' => [
                     new Url([

@@ -12,57 +12,59 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <div class="container" data-lg-smooth>
-        <div class="form--container">
-            <div class="form--role">
-                <a href="{{ path('app_login') }}">
-                    <div class="form--login notActive">
-                        <span>Se connecter</span>
-                    </div>
-                </a>
-                <a href="{{ path('app_register') }}">
-                    <div class="form--register">
-                        <span>S'inscricre</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="form--content">
-                {{ form_start(registrationForm, {"attr": {
-                    "id": "registration_form"
-                }}) }}
-                    <div class="collapse">
-                        {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
-                        {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
-                    </div>
-
-                    {{ form_row(registrationForm.role, {'attr': {'class':'hoveredItems'}}) }}
-
-                    <div class="collapse">
-                        <div id="adminOrYear--container">
-                            {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true', 'class':'hoveredItems'}}) }}
-                            {{ form_row(registrationForm.year, {'attr': {'class':'hoveredItems'}}) }}
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--container">
+                <div class="form--role">
+                    <a href="{{ path('app_login') }}">
+                        <div class="form--login notActive">
+                            <span>Se connecter</span>
                         </div>
-                        {{ form_row(registrationForm.faculty, {'attr': {'class':'hoveredItems'}}) }}
-                    </div>
-
-
-                    <div class="mail--container">
-                        {{ form_row(registrationForm.email, {'attr': {'class':'hoveredItems'}}) }}
-                        <div>
-                            <span>@iut-tarbes.fr</span>
+                    </a>
+                    <a href="{{ path('app_register') }}">
+                        <div class="form--register">
+                            <span>S'inscricre</span>
                         </div>
-                    </div>
+                    </a>
+                </div>
 
-                    {{ form_row(registrationForm.plainPassword) }}
-                    
-                    <div class="agreeTerms--container">
-                        {{ form_widget(registrationForm.agreeTerms) }}
-                        {{ form_label(registrationForm.agreeTerms, registrationForm.agreeTerms, {'label_attr': {'class':'hoveredItems'}}) }}
-                    </div>
+                <div class="form--content">
+                    {{ form_start(registrationForm, {"attr": {
+                        "id": "registration_form"
+                    }}) }}
+                        <div class="collapse collapse_2">
+                            {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
+                        </div>
 
-                    <button type="submit" class="form--btn form--btn__register hoveredItems">S'inscrire</button>
-                {{ form_end(registrationForm) }}
+                        {{ form_row(registrationForm.role, {'attr': {'class':'hoveredItems'}}) }}
+
+                        <div class="collapse collapse_2">
+                            <div id="switchOption--container">
+                                {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true', 'class':'hoveredItems'}}) }}
+                                {{ form_row(registrationForm.year, {'attr': {'class':'hoveredItems'}}) }}
+                            </div>
+                            {{ form_row(registrationForm.faculty, {'attr': {'class':'hoveredItems'}}) }}
+                        </div>
+
+
+                        <div class="mail--container">
+                            {{ form_row(registrationForm.email, {'attr': {'class':'hoveredItems'}}) }}
+                            <div>
+                                <span>@iut-tarbes.fr</span>
+                            </div>
+                        </div>
+
+                        {{ form_row(registrationForm.plainPassword) }}
+                        
+                        <div class="agreeTerms--container">
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            {{ form_label(registrationForm.agreeTerms, registrationForm.agreeTerms, {'label_attr': {'class':'hoveredItems'}}) }}
+                        </div>
+
+                        <button type="submit" class="form--btn form--btn__register hoveredItems">S'inscrire</button>
+                    {{ form_end(registrationForm) }}
+                </div>
             </div>
         </div>
     </div>

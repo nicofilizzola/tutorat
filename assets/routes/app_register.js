@@ -3,7 +3,7 @@ import { manageEmailInputOnSubmit, manageEmailInputBeforeSubmit } from "../funct
 import { fieldsError } from "../functions/checkFieldsErrors.js";
 
 const formContainer = document.querySelector(".form--container .form--content form");
-const adminOrYearContainer = document.getElementById("adminOrYear--container");
+const switchOptionContainer = document.getElementById("switchOption--container");
 const yearInput = document.getElementById("registration_form_year");
 const adminCodeInput = document.getElementById("registration_form_adminCode");
 const roleInput = document.getElementById("registration_form_role");
@@ -12,17 +12,17 @@ const fields = [];
 const manageAdminYearRole = () => {
   const manageDisabledInputs = (roleInputValue) => {
     if (roleInputValue == 3) {
-      adminOrYearContainer.children[0].style.display = "flex";
-      adminOrYearContainer.children[0].hidden = false;
-      adminOrYearContainer.children[1].style.display = "none";
-      adminOrYearContainer.children[1].hidden = true;
+      switchOptionContainer.children[0].style.display = "flex";
+      switchOptionContainer.children[0].hidden = false;
+      switchOptionContainer.children[1].style.display = "none";
+      switchOptionContainer.children[1].hidden = true;
       yearInput.disabled = true;
       adminCodeInput.disabled = false;
     } else {
-      adminOrYearContainer.children[0].style.display = "none";
-      adminOrYearContainer.children[0].hidden = true;
-      adminOrYearContainer.children[1].style.display = "flex";
-      adminOrYearContainer.children[1].hidden = false;
+      switchOptionContainer.children[0].style.display = "none";
+      switchOptionContainer.children[0].hidden = true;
+      switchOptionContainer.children[1].style.display = "flex";
+      switchOptionContainer.children[1].hidden = false;
       yearInput.disabled = false;
       adminCodeInput.disabled = true;
     }

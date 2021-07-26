@@ -1,4 +1,3 @@
-
 @import 'var';
 
 .container {
@@ -6,6 +5,7 @@
    flex-direction: column;
    align-items: center;
    justify-content: center;
+   margin: 6% auto;
 }
 
 // Formulaire
@@ -16,7 +16,7 @@
    align-items: center;
    align-self: center;
    width: 35vw;
-   margin: 40px auto;
+   // margin: 40px auto;
 }
 
 .form--role {
@@ -68,9 +68,11 @@
          font-size: 14px;
          font-weight: 100;
 
-         &::after {
-            content: ' *';
-            color: $primaryRed;
+         &:not(.notRequired) {
+            &::after {
+               content: ' *';
+               color: $primaryRed;
+            }
          }
       }
 
@@ -110,12 +112,21 @@
       justify-content: space-between;
       margin-bottom: 0;
 
-      div {
-         width: 48%;
+      &_2 {
+         div {
+            width: 48%;
+         }
       }
-   }
 
-   #adminOrYear--container {
+      &_3 {
+         div {
+            width: 30%;
+         }
+      }
+      
+   }
+   
+   #switchOption--container {
       div {
          margin-bottom: 0;
          width: 100%;
@@ -151,10 +162,6 @@
          }
       }
    }
-
-   // #passwords--container {
-   //    margin-bottom: 0;
-   // }
 
    .agreeTerms--container {
       display: flex;

@@ -30,44 +30,7 @@
                     <span>Proposer un cours</span>
                 </div>
 
-                <div
-                    class="form--content">
-                    {# {{ form_start(registrationForm, {"attr": {
-                                        "id": "registration_form"
-                                    }}) }}
-                                        <div class="collapse">
-                                            {{ form_row(registrationForm.firstName, {'attr': {'class':'hoveredItems'}}) }}
-                                            {{ form_row(registrationForm.lastName, {'attr': {'class':'hoveredItems'}}) }}
-                                        </div>
-                    
-                                        {{ form_row(registrationForm.role, {'attr': {'class':'hoveredItems'}}) }}
-                    
-                                        <div class="collapse">
-                                            <div id="adminOrYear--container">
-                                                {{ form_row(registrationForm.adminCode, {'attr': {'disabled': 'true', 'class':'hoveredItems'}}) }}
-                                                {{ form_row(registrationForm.year, {'attr': {'class':'hoveredItems'}}) }}
-                                            </div>
-                                            {{ form_row(registrationForm.faculty, {'attr': {'class':'hoveredItems'}}) }}
-                                        </div>
-                    
-                    
-                                        <div class="mail--container">
-                                            {{ form_row(registrationForm.email, {'attr': {'class':'hoveredItems'}}) }}
-                                            <div>
-                                                <span>@iut-tarbes.fr</span>
-                                            </div>
-                                        </div>
-                    
-                                        {{ form_row(registrationForm.plainPassword) }}
-                                        
-                                        <div class="agreeTerms--container">
-                                            {{ form_widget(registrationForm.agreeTerms) }}
-                                            {{ form_label(registrationForm.agreeTerms, registrationForm.agreeTerms, {'label_attr': {'class':'hoveredItems'}}) }}
-                                        </div>
-                    
-                                        <button type="submit" class="form--btn form--btn__register hoveredItems">S'inscrire</button>
-                                    {{ form_end(registrationForm) }} #}
-
+                <div class="form--content">
                     {{ form_start(form, {"attr": {"id": "session_form"}}) }}
 
                     {{ form_row(form.title, {
@@ -81,10 +44,6 @@
                         }) }}
 
                     <div class="collapse collapse_3">
-                        {# {{ form_label(form.faceToFace, {
-                            "label": "Présentiel ou distanciel ?",
-                            'attr': {'class':'hoveredItems'}
-                        }) }} #}
                         <div class="faceToFace--container">
                             <label class="required">Environnement</label>
                             <div id="session_faceToFace" class="hoveredItems">

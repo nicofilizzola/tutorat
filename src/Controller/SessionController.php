@@ -30,7 +30,7 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         
-        $allSessions = $sessionRepository->findBy([], ['id' => 'DESC']);
+        $allSessions = $sessionRepository->findBy([], ['id' => 'ASC']);
         $facultySessions = [];
         foreach ($allSessions as $session) {
             if ($session->getSubject()->getFaculty() == $this->getUser()->getFaculty()){
@@ -55,10 +55,16 @@ class SessionController extends AbstractController
     public function join(EntityManagerInterface $em, Session $session): Response
     {
         $oldParticipants = $session->getParticipants();
-        $session->setParticipants([$this->getUser()->getId(), ...$oldParticipants]);
+        if (!in_array($this->getUser()->getId(), $oldParticipants) && $this->getUser()->getFaculty() == $session->getSubject()->getFaculty()){
+            $session->setParticipants([$this->getUser()->getId(), ...$oldParticipants]);
+            $em->persist($session);
+            $em->flush();
 
-        $em->persist($session);
-        $em->flush();
+            $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
+            return $this->redirectToRoute('app_session');
+        }
+
+        $this->addFlash('danger', 'Une erreur est survenue.');
         return $this->redirectToRoute('app_session');
     }
 

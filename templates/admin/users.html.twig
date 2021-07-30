@@ -12,11 +12,11 @@
     <div class="container" data-lg-smooth>
         <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
             {% if users is empty == false %}
-            {% set roleViewLabels = {
-                "ROLE_STUDENT": "Étudiant",
-                "ROLE_TUTOR": "Étudiant tuteur",
-                "ROLE_ADMIN": "Administrateur",
-            } %}
+                {% set roleViewLabels = {
+                    "ROLE_STUDENT": "Étudiant",
+                    "ROLE_TUTOR": "Étudiant tuteur",
+                    "ROLE_ADMIN": "Administrateur",
+                } %}
                 {% for user in users %}
                     <div class="card--container">
                         <div class="card" data-id={{user.id}}>
@@ -28,18 +28,26 @@
                                 <span id="mail">{{ user.email | lower }}</span>
                                 <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
                             </div>
-                            <div class="card--buttons">
-                                <button 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems validate">
-                                    <span>✔️</span>
-                                </button>
-                                <button 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems refuse">
-                                    <span>❌</span>
-                                </button>
-                            </div>
+                            {% if user.isValid == 1 %}
+                                <p>En attente</p>
+                                <div class="card--buttons">
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems validate">
+                                        <span>✔️</span>
+                                    </button>
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems refuse">
+                                        <span>❌</span>
+                                    </button>
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems refuse">
+                                        <span>Suppr</span>
+                                    </button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -59,6 +67,15 @@
                         action="{{ path('app_user_cancel', {"id": user.id}) }}" 
                         method="POST">
                         <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
+                        {# <input type="hidden" name="_method" value="PUT"/> #}
+                    </form>
+                    <form 
+                        id="js-user-delete-form-{{ user.id }}"
+                        display="none" 
+                        hidden
+                        action="{{ path('app_user_delete', {"id": user.id}) }}" 
+                        method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
                         {# <input type="hidden" name="_method" value="PUT"/> #}
                     </form>
                 {% endfor %}

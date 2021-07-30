@@ -30,10 +30,9 @@ class AdminController extends AbstractController
 
         return $this->render('admin/users.html.twig', [
             'users' => $userRepository->findBy([
-                'isValid' => 1,
                 'isVerified' => 1    
             ],
-            ['id' => 'ASC'])
+            ['isValid' => 'ASC'])
         ]);
     }
 
@@ -77,6 +76,28 @@ class AdminController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
+            return $this->redirectToRoute('app_users');
+        }
+
+        return $this->redirectToRoute('app_users');
+    }
+
+    /**
+     * @Route("/user/{id<\d+>}/delete", name="app_user_delete", methods="POST")
+     */
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->isAdmin()){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $submittedToken = $request->request->get('token');
+        if ($this->isCsrfTokenValid('delete-user' . $user->getId(), $submittedToken)) {
+            $entityManager->remove($user);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
             return $this->redirectToRoute('app_users');
         }
 

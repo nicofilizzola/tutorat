@@ -29,7 +29,12 @@
                     <p>{{ participantsMessage }}</p>
                     <form method="POST" action="{{ path("app_session_join", {"id": session.id}) }}">
                         <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
-                        <button>S'inscrire</button>
+                        {% if app.user.id in session.participants %}
+                            <button>S'inscrire</button>
+                        {% else %}
+                            <button disabled="disabled">S'inscrire</button>
+                            {# Hover tooltip #}
+                        {% endif %}
                     </form>
                 </div>
             {% endfor %}

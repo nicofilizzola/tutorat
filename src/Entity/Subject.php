@@ -135,6 +135,6 @@ class Subject
 
     public function __toString()
     {
-        return $this->getShort() . '_S' . $this->getSemester();
+        return $this->getTitle() . ' (S' . $this->getSemester() . ")";
     }
 }

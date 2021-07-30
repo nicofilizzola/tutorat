@@ -26,7 +26,7 @@
                                     <span>{{ user.lastName | capitalize }}</span>
                                 </div>
                                 <span id="mail">{{ user.email | lower }}</span>
-                                <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span>
+                                <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
                             </div>
                             <div class="card--buttons">
                                 <button 
@@ -42,7 +42,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <form 
                         id="js-user-validate-form-{{ user.id }}"

@@ -49,7 +49,10 @@
 
 
                         <div class="mail--container">
-                            {{ form_row(registrationForm.email, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(registrationForm.email, {'attr': {
+                                'class':'hoveredItems',
+                                'autocomplete': 'off'
+                            }}) }}
                             <div>
                                 <span>@iut-tarbes.fr</span>
                             </div>

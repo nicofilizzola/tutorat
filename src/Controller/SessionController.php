@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SessionController extends AbstractController
 {
@@ -44,8 +45,21 @@ class SessionController extends AbstractController
         }
 
         return $this->render('session/index.html.twig', [
-           'sessions' => $sessionsAfterToday
+           'sessions' => $sessionsAfterToday,
         ]);
+    }
+
+    /**
+     * @Route("/session/{id<\d+>}/join", name="app_session_join", methods={"POST"})
+     */
+    public function join(EntityManagerInterface $em, Session $session): Response
+    {
+        $oldParticipants = $session->getParticipants();
+        $session->setParticipants([$this->getUser()->getId(), ...$oldParticipants]);
+
+        $em->persist($session);
+        $em->flush();
+        return $this->redirectToRoute('app_session');
     }
 
     /**
@@ -91,4 +105,6 @@ class SessionController extends AbstractController
             'form' => $formView
         ]);
     }
+
+
 }

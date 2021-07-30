@@ -36,9 +36,15 @@ class SessionController extends AbstractController
                 array_push($facultySessions, $session);
             }
         }
+        $sessionsAfterToday = [];
+        foreach ($facultySessions as $session) {
+            if (date('Y-m-d h:i:s', strtotime('+1 day')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
+                array_push($sessionsAfterToday, $session);
+            }
+        }
 
         return $this->render('session/index.html.twig', [
-           'sessions' => $facultySessions
+           'sessions' => $sessionsAfterToday
         ]);
     }
 

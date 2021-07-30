@@ -2,18 +2,28 @@
 
 {% block title %}Hello SessionController!{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_session') }}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
-    {% for session in sessions %}
-        <div>
-            <h3>{{ session.title }}</h3>
-            <p>{{ session.description }}</p>
-            <p>{{ session.subject }}</p>
-            <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
-            <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
-            <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
-            <button>S'inscrire</button>
+{% block body %}
+	<div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            {% for session in sessions %}
+                <div>
+                    <h3>{{ session.title }}</h3>
+                    <p>{{ session.description }}</p>
+                    <p>{{ session.subject }}</p>
+                    <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
+                    <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
+                    <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
+                    <button>S'inscrire</button>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+
+        {% include "components/_footer.html.twig" %}
+	</div>
 
 {% endblock %}

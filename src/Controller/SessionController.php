@@ -38,7 +38,7 @@ class SessionController extends AbstractController
         }
         $sessionsAfterToday = [];
         foreach ($facultySessions as $session) {
-            if (date('Y-m-d h:i:s', strtotime('+1 day')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
+            if (date('Y-m-d h:i:s', strtotime('+1 hour')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
                 array_push($sessionsAfterToday, $session);
             }
         }

@@ -135,3 +135,36 @@
       width: 48%;
    }
 }
+
+.success--container {
+   position: fixed;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width: 100vw;
+   height: 100vh;
+   top: 0;
+   left: 0;
+   z-index: 5;
+
+   .text--container {
+      width: 90vw;
+      max-width: 400px;
+      padding: 10px 15px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background-color: #fff;
+      text-align: center;
+   }
+
+   .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: $lessOpacityGrey;
+      z-index: -1;
+   }
+}

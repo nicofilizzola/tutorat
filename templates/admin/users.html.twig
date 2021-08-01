@@ -10,6 +10,16 @@
 {% block body %}
 
     <div class="container" data-lg-smooth>
+        <div class="search--container">
+            <input type="text">
+            <select name="filtre">
+                <option>Nom</option>
+                <option>Prénom</option>
+                <option>Rôle</option>
+                <option>Statut</option>
+            </select>
+        </div>
+
         <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
             {% if users is empty == false %}
                 {% set roleViewLabels = {
@@ -18,7 +28,52 @@
                     "ROLE_ADMIN": "Administrateur",
                 } %}
                 {% for user in users %}
-                    <div class="card--container">
+                    <div class="userContent--container">
+                        <div class="content name">
+                            <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
+                        </div>
+                        
+                        <div class="content mail">
+                            <span>{{ user.email | lower }}</span>
+                        </div>
+                        
+                        <div class="content role">
+                            <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
+                        </div>
+                        
+                        <div class="content statut">
+                            {% if user.isValid == 1 %}
+                                <span>En attente</span>
+                            {% elseif user.isValid == 2 %}
+                                <span>Validé.e</span>
+                            {% else %}
+                                <span>Refusé.e</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="content manage">
+                            {% if user.isValid == 1 %}
+                                <button onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" class="hoveredItems validate">
+                                    <span>✔️</span>
+                                </button>
+                                <button onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                    <span>❌</span>
+                                </button>
+                            {% else %}
+                                <button disabled class="hoveredItems lineHoverEffectvalidate disabled">
+                                    <span>✔️</span>
+                                </button>
+                                <button disabled class="hoveredItems lineHoverEffectrefuse disabled">
+                                    <span>❌</span>
+                                </button>
+                            {% endif %}
+                            <button onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                <span>🗑️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="card--container">
                         <div class="card" data-id={{user.id}}>
                             <div class="card--content">
                                 <div class="name">
@@ -28,6 +83,10 @@
                                 <span id="mail">{{ user.email | lower }}</span>
                                 <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
                             </div>
+                            <p>{{ user.isValid }}</p>
+                            {# 1 == en attente #}
+                            {# 2 == validé.e #}
+                            {# 3 == refusé.e #}
                             {% if user.isValid == 1 %}
                                 <p>En attente</p>
                                 <div class="card--buttons">
@@ -44,12 +103,12 @@
                                     <button 
                                         onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" 
                                         class="hoveredItems refuse">
-                                        <span>Suppr</span>
+                                        <span>🗑️</span>
                                     </button>
                                 </div>
                             {% endif %}
                         </div>
-                    </div>
+                    </div> -->
 
                     <form 
                         id="js-user-validate-form-{{ user.id }}"

@@ -1,6 +1,5 @@
 @import 'var';
 
-// Cartes
 .container {
    display: flex;
    flex-direction: column;
@@ -10,129 +9,186 @@
 }
 
 .content--container {
-   display: grid;
-   grid-template-columns: repeat(3, 1fr);
-   grid-template-rows: repeat(4, auto);
-   column-gap: 15px;
-   row-gap: 4%;
-
-   width: 90%;
-   margin: 10vh 0 15vh 0;
-}
-
-.card--container {
-   justify-self: center;
-}
-
-.card {
-   position: relative;
-   display: flex;
-   height: 170px;
-   width: 400px;
-   background-color: rgb(245, 245, 245);
-   padding: 20px;
-   border-width: 1px;
-   border-style: solid;
-   border-radius: 2px;
-   
-   border-color: #000;
-   transition: border-color .5s ease-in-out;
-}
-
-.card--content {
    display: flex;
    flex-direction: column;
-   justify-content: space-between;
+   justify-content: center;
    align-items: flex-start;
-   height: 100%;
-   color: #000;
-   
-   .name {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+   width: 90vw;
+   max-width: 1300px;
+   margin-top: 50px;
+}
 
-      span {
+.userContent--container {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: flex-end;
+   width: 100%;
+   height: 50px;
+   margin-bottom: 30px;
+   // background-color: rgba(#000, .05);
 
-         &:nth-child(1) {
-            font-weight: bold;
-            font-size: 60px;
-            color: $primaryRed;
-         }
-         
-         &:nth-child(2) {
-            margin-top: -15px;
-            font-size: 20px;
-         }
-      }
+   .mail {
+      width: 30%;
    }
 
-   #mail {
-      font-weight: 300;
+   .name {
+      width: 25%;
+      border-left: none;
+   }
+
+   .role, .statut, .manage {
+      width: 15%;
+   }
+
+   .manage {
+      // border-right: 1px solid #000;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+         background-color: transparent;
+         font-size: 20px;
+         border: none;
+         cursor: pointer;
+      }
+
+      .disabled {
+         cursor: not-allowed;
+      }
    }
 }
 
-.card--buttons {
+.content {
    display: flex;
    flex-direction: column;
-   justify-content: space-between;
-   position: absolute;
-   height: 50%;
-   right: -20px;
-   top: 40%;
-   overflow: hidden;
-
-   button {
-      cursor: pointer;
-      outline: none;
-      height: 45px;
-      width: 70px;
-      background-color: #000;
-      border: 1px solid #000;
-      border-radius: 2px;
-      color: #fff;
-
-      &::before {
-         content: '';
-         position: absolute;
-         width: 70px;
-         height: 45px;
-         border-radius: 2px;
-         left: 0;
-         transition: top .3s ease-in-out;
-      }
-      
-      &:nth-child(1) {
-         &::before {
-            background-color: green;
-            top: -45px;
-         }
-         
-         &:hover {
-            &::before {
-               top: 0;
-               transition: top .25s ease-out;
-            }
-         }
-      }
-      
-      &:nth-child(2) {
-         &::before {
-            background-color: red;
-            top: 105px;
-         }
-
-         &:hover {
-            &::before {
-               top: 60px;
-               transition: top .25s ease-out;
-            }
-         }
-      }
-   }
+   justify-content: center;
+   align-items: flex-start;
+   border-left: 1px solid #000;
+   border-bottom: 1px solid #000;
+   padding: 0 10px;
+   height: 100%;
 
    span {
-      position: relative;
-      filter: grayscale(100%) brightness(3);
+      font-weight: bold;
    }
 }
+
+// .card--container {
+//    justify-self: center;
+// }
+
+// .card {
+//    position: relative;
+//    display: flex;
+//    height: 170px;
+//    width: 400px;
+//    background-color: rgb(245, 245, 245);
+//    padding: 20px;
+//    border-width: 1px;
+//    border-style: solid;
+//    border-radius: 2px;
+   
+//    border-color: #000;
+//    transition: border-color .5s ease-in-out;
+// }
+
+// .card--content {
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: space-between;
+//    align-items: flex-start;
+//    height: 100%;
+//    color: #000;
+   
+//    .name {
+//       display: flex;
+//       flex-direction: column;
+//       justify-content: flex-start;
+
+//       span {
+
+//          &:nth-child(1) {
+//             font-weight: bold;
+//             font-size: 60px;
+//             color: $primaryRed;
+//          }
+         
+//          &:nth-child(2) {
+//             margin-top: -15px;
+//             font-size: 20px;
+//          }
+//       }
+//    }
+
+//    #mail {
+//       font-weight: 300;
+//    }
+// }
+
+// .card--buttons {
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: space-between;
+//    position: absolute;
+//    height: 50%;
+//    right: -20px;
+//    top: 40%;
+//    overflow: hidden;
+
+//    button {
+//       cursor: pointer;
+//       outline: none;
+//       height: 45px;
+//       width: 70px;
+//       background-color: #000;
+//       border: 1px solid #000;
+//       border-radius: 2px;
+//       color: #fff;
+
+//       &::before {
+//          content: '';
+//          position: absolute;
+//          width: 70px;
+//          height: 45px;
+//          border-radius: 2px;
+//          left: 0;
+//          transition: top .3s ease-in-out;
+//       }
+      
+//       &:nth-child(1) {
+//          &::before {
+//             background-color: green;
+//             top: -45px;
+//          }
+         
+//          &:hover {
+//             &::before {
+//                top: 0;
+//                transition: top .25s ease-out;
+//             }
+//          }
+//       }
+      
+//       &:nth-child(2) {
+//          &::before {
+//             background-color: red;
+//             top: 105px;
+//          }
+
+//          &:hover {
+//             &::before {
+//                top: 60px;
+//                transition: top .25s ease-out;
+//             }
+//          }
+//       }
+//    }
+
+//    span {
+//       position: relative;
+//       filter: grayscale(100%) brightness(3);
+//    }
+// }

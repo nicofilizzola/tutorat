@@ -8,22 +8,183 @@
 {% endblock %}
 
 {% block body %}
-	<div class="smooth--container" data-lg-smooth>
-        <div class="container">
-            {% for session in sessions %}
-                <div>
-                    <h3>{{ session.title }}</h3>
-                    <p>{{ session.description }}</p>
-                    <p>{{ session.subject }}</p>
-                    <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
-                    <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
-                    <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
-                    <button>S'inscrire</button>
+    <div class="smooth--container" data-lg-smooth>
+        <div class="global--container">
+            <div class="search--container" data-lg-sticky="top">
+                <div class="search--content">
+                    <input type="text" class="hoveredItems">
+                    <div class="gap__search"></div>
+                    <div class="buttons--container">
+                        <label for="lorem1" class="hoveredItems">
+                            <input name="lorem1" id="lorem1" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem2" class="hoveredItems">
+                            <input name="lorem2" id="lorem2" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem3" class="hoveredItems">
+                            <input name="lorem3" id="lorem3" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem4" class="hoveredItems">
+                            <input name="lorem4" id="lorem4" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem5" class="hoveredItems">
+                            <input name="lorem5" id="lorem5" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem6" class="hoveredItems">
+                            <input name="lorem6" id="lorem6" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="gap__search"></div>
+                    <div class="buttons--container">
+                        <label for="lorem7" class="hoveredItems">
+                            <input name="lorem7" id="lorem7" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem8" class="hoveredItems">
+                            <input name="lorem8" id="lorem8" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem9" class="hoveredItems">
+                            <input name="lorem9" id="lorem9" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem10" class="hoveredItems">
+                            <input name="lorem10" id="lorem10" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem11" class="hoveredItems">
+                            <input name="lorem11" id="lorem11" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem12" class="hoveredItems">
+                            <input name="lorem12" id="lorem12" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="gap__search"></div>
+                    <div class="buttons--container">
+                        <label for="lorem13" class="hoveredItems">
+                            <input name="lorem13" id="lorem13" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem14" class="hoveredItems">
+                            <input name="lorem14" id="lorem14" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem15" class="hoveredItems">
+                            <input name="lorem15" id="lorem15" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem16" class="hoveredItems">
+                            <input name="lorem16" id="lorem16" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem17" class="hoveredItems">
+                            <input name="lorem17" id="lorem17" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                        <label for="lorem18" class="hoveredItems">
+                            <input name="lorem18" id="lorem18" type="checkbox" hidden>
+                            <div>
+                                <span>Lorem</span>
+                            </div>
+                        </label>
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
 
-        {% include "components/_footer.html.twig" %}
-	</div>
+            <div class="session--container">
+                {% for session in sessions %}
+                    <div class="card--container">
+                        <button class="inscription hoveredItems">
+                            <div class="card--hovered">
+                                <div class="text">
+                                    <span>S</span>
+                                    <span>'</span>
+                                    <span>I</span>
+                                    <span>N</span>
+                                    <span>S</span>
+                                    <span>C</span>
+                                    <span>R</span>
+                                    <span>I</span>
+                                    <span>R</span>
+                                    <span>E</span>
+                                </div>
+                                <div class="background">
+                                </div>
+                            </div>
+                            <div class="card">
+                                    <div class="card--content">
+                                        <div class="titre">
+                                            <span>{{ session.title }}</span>
+                                        </div>
+                                        <div class="description">
+                                            <span>{{ session.description }}</span>
+                                        </div>
+                                        <div class="name">
+                                            <span>{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
+                                        </div>
+                                        <div class="date">
+                                            <span>{{ session.datetime | date('d/m/Y') }}</span>
+                                            <br>
+                                            <span>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</span>
+                                        </div>
+                                        <div class="environnement">
+                                            <span>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="card--subject">
+                                        <span>{{ session.subject }}</span>
+                                    </div>
+                            </div>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% include "components/_footer.html.twig" %}
+        </div>
+    </div>
+
 
 {% endblock %}

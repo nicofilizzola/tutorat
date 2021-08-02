@@ -64,6 +64,7 @@ class RegistrationController extends AbstractController
             managePassword($user, $form, $passwordEncoder);
             manageAdminYear($user, $form);
             manageRoles($user, $form);
+            manageIsValid($user, $form);
             $user->updateTimestamp();
         }
 

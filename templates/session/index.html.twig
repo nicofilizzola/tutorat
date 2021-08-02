@@ -164,8 +164,14 @@
 
             <div class="session--container">
                 {% for session in sessions %}
+                    {% if app.user in session.students %}
+                        {% set isDisabled = true %}
+                        {# join session disabled #}
+                    {% else %}
+                        {# join session enabled #}
+                    {% endif %}
                     <div class="card--container">
-                        <button class="inscription hoveredItems">
+                        <button class="inscription hoveredItems" onclick="document.querySelector('#js-join-session-{{ session.id }}').submit();">
                             <div class="card--hovered">
                                 <div class="text">
                                     <span>S</span>
@@ -183,30 +189,37 @@
                                 </div>
                             </div>
                             <div class="card">
-                                    <div class="card--content">
-                                        <div class="titre">
-                                            <span>{{ session.title }}</span>
-                                        </div>
-                                        <div class="description">
-                                            <span>{{ session.description }}</span>
-                                        </div>
-                                        <div class="name">
-                                            <span>{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
-                                        </div>
-                                        <div class="date">
-                                            <span>{{ session.datetime | date('d/m/Y') }}</span>
-                                            <br>
-                                            <span>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</span>
-                                        </div>
-                                        <div class="environnement">
-                                            <span>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
-                                        </div>
+                                <div class="card--content">
+                                    <div class="titre">
+                                        <span>{{ session.title }}</span>
                                     </div>
-                                    <div class="card--subject">
-                                        <span>{{ session.subject }}</span>
+                                    <div class="description">
+                                        <span>{{ session.description }}</span>
                                     </div>
+                                    <div class="name">
+                                        <span>{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
+                                    </div>
+                                    <div class="date">
+                                        <span>{{ session.datetime | date('d/m/Y') }}</span>
+                                        <br>
+                                        <span>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</span>
+                                    </div>
+                                    <div class="environnement">
+                                        <span>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                    </div>
+                                </div>
+                                <div class="card--subject">
+                                    <span>{{ session.subject }}</span>
+                                </div>
                             </div>
                         </button>
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_session_join", {"id": session.id}) }}"
+                            id="js-join-session-{{ session.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
+                        </form>
                     </div>
                 {% endfor %}
             </div>

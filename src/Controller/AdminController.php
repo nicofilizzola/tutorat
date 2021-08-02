@@ -94,7 +94,6 @@ class AdminController extends AbstractController
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('delete-user' . $user->getId(), $submittedToken)) {
             $entityManager->remove($user);
-            $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");

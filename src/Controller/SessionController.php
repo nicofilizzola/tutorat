@@ -56,7 +56,13 @@ class SessionController extends AbstractController
     {
         $oldParticipants = $session->getParticipants();
         if (!in_array($this->getUser()->getId(), $oldParticipants) && $this->getUser()->getFaculty() == $session->getSubject()->getFaculty()){
-            $session->setParticipants([$this->getUser()->getId(), ...$oldParticipants]);
+            $session->addStudent($this->getUser());
+            // $session->setParticipants([[
+            //         'student' => $this->getUser()->getId(),
+            //         'present' => false,
+            //     ],
+            //     ...$oldParticipants
+            // ]);
             $em->persist($session);
             $em->flush();
 

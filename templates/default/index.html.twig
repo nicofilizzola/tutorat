@@ -6,11 +6,19 @@
 
     {% if app.user %}
         <p>Vous êtes connecté !</p>
-        <a href="{{ path('app_logout') }}">Se déco</a>
-        <a href="{{ path('app_users') }}">Users [admin only]</a>
+        <br><br><br>
+        <a href="{{ path('app_logout') }}">Se déco</a><br>
+        <a href="{{ path('app_session') }}">Tableau de bord</a><br>
+
+        {% if "ROLE_TUTOR" in app.user.roles %}
+            <a href="{{ path('app_session_create') }}">Proposer un cours</a><br>
+        {% endif %}
+        {% if "ROLE_ADMIN" in app.user.roles %}
+            <a href="{{ path('app_users') }}">Gérer utilisateurs</a><br>
+        {% endif %}
     {% else %}
-        <a href="{{ path('app_register') }}">Inscription</a>
-        <a href="{{ path('app_login') }}">Se co</a>
+        <a href="{{ path('app_register') }}">Inscription</a><br>
+        <a href="{{ path('app_login') }}">Se co</a><br>
     {% endif %}
     <h1>Hi</h1>
 

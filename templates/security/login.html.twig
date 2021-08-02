@@ -29,7 +29,8 @@
                     <div class="form--content">
                         <form method="post" id="login_form">
                             {% if error %}
-                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% set errorMessage = error.messageKey|trans(error.messageData, 'security') == "Invalid credentials." ? "Identifiants invalides." : error.messageKey|trans(error.messageData, 'security') %}
+                                <div class="alert alert-danger">{{ errorMessage }}</div>
                             {% endif %}
 
                             {% if app.user %}

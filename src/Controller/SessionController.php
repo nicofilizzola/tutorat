@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SessionController extends AbstractController
 {
@@ -29,17 +30,42 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         
-        $allSessions = $sessionRepository->findBy([], ['id' => 'DESC']);
+        $allSessions = $sessionRepository->findBy([], ['id' => 'ASC']);
         $facultySessions = [];
         foreach ($allSessions as $session) {
             if ($session->getSubject()->getFaculty() == $this->getUser()->getFaculty()){
                 array_push($facultySessions, $session);
             }
         }
+        $sessionsAfterToday = [];
+        foreach ($facultySessions as $session) {
+            if (date('Y-m-d h:i:s', strtotime('+1 hour')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
+                array_push($sessionsAfterToday, $session);
+            }
+        }
 
         return $this->render('session/index.html.twig', [
-           'sessions' => $facultySessions
+           'sessions' => $sessionsAfterToday,
         ]);
+    }
+
+    /**
+     * @Route("/session/{id<\d+>}/join", name="app_session_join", methods={"POST"})
+     */
+    public function join(EntityManagerInterface $em, Session $session): Response
+    {
+        $oldParticipants = $session->getParticipants();
+        if (!in_array($this->getUser()->getId(), $oldParticipants) && $this->getUser()->getFaculty() == $session->getSubject()->getFaculty()){
+            $session->setParticipants([$this->getUser()->getId(), ...$oldParticipants]);
+            $em->persist($session);
+            $em->flush();
+
+            $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
+            return $this->redirectToRoute('app_session');
+        }
+
+        $this->addFlash('danger', 'Une erreur est survenue.');
+        return $this->redirectToRoute('app_session');
     }
 
     /**
@@ -85,4 +111,6 @@ class SessionController extends AbstractController
             'form' => $formView
         ]);
     }
+
+
 }

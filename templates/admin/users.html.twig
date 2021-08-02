@@ -10,10 +10,155 @@
 {% block body %}
 
     <div class="container" data-lg-smooth>
-        <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
+        <div class="search--container">
+            <input type="text" class="hoveredItems">
+        </div>
+
+        <div class="content--container">
             {% if users is empty == false %}
+                {% set roleViewLabels = {
+                    "ROLE_STUDENT": "Étudiant",
+                    "ROLE_TUTOR": "Étudiant tuteur",
+                    "ROLE_ADMIN": "Administrateur",
+                } %}
+
+                <div class="filterUser--container">
+                    <div class="filter filter__firstname">
+                        <button class="hoveredItems filter__active" data-id="firstname" data-active="down">
+                            <span>Prénom</span>
+                            <svg id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg hidden display="none" id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__lastname">
+                        <button class="hoveredItems" data-id="lastname" data-active="line">
+                            <span>Nom</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__mail">
+                        <button class="hoveredItems" data-id="mail" data-active="line">
+                            <span>Mail</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__role">
+                        <button class="hoveredItems" data-id="role" data-active="line">
+                            <span>Rôle</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__statut">
+                        <button class="hoveredItems" data-id="statut" data-active="line">
+                            <span>Statut</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__hidden">
+                    </div>
+                </div>
+
                 {% for user in users %}
-                    <div class="card--container">
+                    <div class="userContent--container">
+                        <div class="content name">
+                            <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
+                        </div>
+                        
+                        <div class="content mail">
+                            <span>{{ user.email | lower }}</span>
+                        </div>
+                        
+                        <div class="content role">
+                            <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
+                        </div>
+                        
+                        <div class="content statut">
+                            {% if user.isValid == 1 %}
+                                <span>En attente</span>
+                            {% elseif user.isValid == 2 %}
+                                <span>Validé.e</span>
+                            {% else %}
+                                <span>Refusé.e</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="content manage">
+                            {% if user.isValid == 1 %}
+                                <button onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" class="hoveredItems validate">
+                                    <span>✔️</span>
+                                </button>
+                                <button onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                    <span>❌</span>
+                                </button>
+                            {% else %}
+                                <button disabled class="hoveredItems lineHoverEffectvalidate disabled">
+                                    <span>✔️</span>
+                                </button>
+                                <button disabled class="hoveredItems lineHoverEffectrefuse disabled">
+                                    <span>❌</span>
+                                </button>
+                            {% endif %}
+                            <button onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                <span>🗑️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="card--container">
                         <div class="card" data-id={{user.id}}>
                             <div class="card--content">
                                 <div class="name">
@@ -21,23 +166,34 @@
                                     <span>{{ user.lastName | capitalize }}</span>
                                 </div>
                                 <span id="mail">{{ user.email | lower }}</span>
-                                <span>{{ user.roles[user.roles | length - 2] }}</span>
+                                <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
                             </div>
-                            <div class="card--buttons">
-                                <button 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems validate">
-                                    <span>✔️</span>
-                                </button>
-                                <button 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems refuse">
-                                    <span>❌</span>
-                                </button>
-                            </div>
+                            <p>{{ user.isValid }}</p>
+                            {# 1 == en attente #}
+                            {# 2 == validé.e #}
+                            {# 3 == refusé.e #}
+                            {% if user.isValid == 1 %}
+                                <p>En attente</p>
+                                <div class="card--buttons">
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems validate">
+                                        <span>✔️</span>
+                                    </button>
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems refuse">
+                                        <span>❌</span>
+                                    </button>
+                                    <button 
+                                        onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems refuse">
+                                        <span>🗑️</span>
+                                    </button>
+                                </div>
+                            {% endif %}
                         </div>
-                    </div>
-
+                    </div> -->
 
                     <form 
                         id="js-user-validate-form-{{ user.id }}"
@@ -55,6 +211,15 @@
                         action="{{ path('app_user_cancel', {"id": user.id}) }}" 
                         method="POST">
                         <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
+                        {# <input type="hidden" name="_method" value="PUT"/> #}
+                    </form>
+                    <form 
+                        id="js-user-delete-form-{{ user.id }}"
+                        display="none" 
+                        hidden
+                        action="{{ path('app_user_delete', {"id": user.id}) }}" 
+                        method="POST">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
                         {# <input type="hidden" name="_method" value="PUT"/> #}
                     </form>
                 {% endfor %}

@@ -150,9 +150,9 @@ window.addEventListener('resize', () => {
    luge.lifecycle.refresh()
 })
 
-window.addEventListener('click', () => {
-   luge.lifecycle.refresh()
-})
+// window.addEventListener('click', () => {
+//    luge.lifecycle.refresh()
+// })
 
 function raf() {
    lowestElapsedTime += 0.0006

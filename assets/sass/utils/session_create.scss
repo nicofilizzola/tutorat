@@ -12,26 +12,26 @@
    justify-content: space-between;
    margin: 0;
 
-   input[type="radio"] {
-   display: none;
+   input[type=radio] {
+      display: none;
 
-   &:checked {
-      + .choice {
+      &:checked {
+         + .choice {
 
-         span {
-            color: white;
-            transition: color .2s ease-in-out;
+            span {
+               color: #fff;
+               transition: color .2s ease-in-out;
 
-            &:before {
-               bottom: 35px;
-               transform: scaleY(2.2);
-               transition: transform .25s ease-in-out;
-               transform-origin: top;
+               &:before {
+                  bottom: 35px;
+                  transform: scaleY(2.2);
+                  transition: transform .25s ease-in-out;
+                  transform-origin: top;
+               }
             }
          }
       }
    }
-}
 
    .choice--container {
       width: 48%;

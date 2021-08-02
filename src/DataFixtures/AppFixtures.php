@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Classroom;
 use App\Entity\Faculty;
 use App\Entity\Session;
 use App\Entity\Subject;
@@ -15,26 +16,32 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         for ($i = 0; $i < 5; $i++) {
-            $subject = new Subject();
-            $subject->setTitle('Example subject ' . $i);
-            $subject->setSemester(1);
             $faculty = new Faculty();
-            $subject->setFaculty($faculty);
+            $faculty->setName('Département ' . $i);
+            $faculty->setShort('D' . $i);
 
-            $manager->persist($subject);
+            $manager->persist($faculty);
+
+            for ($j = 0; $j < 3; $j++) {
+                for ($h = 0; $h < 3; $h++) {
+                    $subject = new Subject();
+                    $subject->setTitle('Module ' . $i);
+                    $subject->setShort('MO' . $i);
+                    $subject->setSemester($h + 1);
+                    $subject->setFaculty($faculty);
+        
+                    $manager->persist($subject);
+                }
+            }
+
+            for ($j = 0; $j < 3; $j++) {
+                $classroom = new Classroom();
+                $classroom->setName($i . "0" . $j);
+                $classroom->setFaculty($faculty);
+
+                $manager->persist($classroom);
+            }
         }
-
-        // for ($i = 0; $i < 10; $i++) {
-        //     $session = new Session();
-        //     $session->setTitle('Example session ' . $i);
-        //     $session->setDescription("Lorem");
-        //     $session->setFaceToFace(1);
-        //     $session->setLink('some/link.com');
-        //     $session->setTutor($UR->findOneBy(['id'=>20]));
-        //     $session->setSubject($subject);
-
-        //     $manager->persist($session);
-        // }
 
         $manager->flush();
     }

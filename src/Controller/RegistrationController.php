@@ -53,11 +53,17 @@ class RegistrationController extends AbstractController
                 }
                 $user->setRoles($userRoles);
             }
+            function manageIsValid($user, $form){
+                if ($form->get('role')->getData() > 1){
+                    $user->setIsValid(1); // 1 == pending    
+                } else {
+                    $user->setIsValid(2); // 2 == valid   
+                }
+            }
 
             managePassword($user, $form, $passwordEncoder);
             manageAdminYear($user, $form);
             manageRoles($user, $form);
-            $user->setIsValid(1); // 1 == invalid
             $user->updateTimestamp();
         }
 

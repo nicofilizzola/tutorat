@@ -3,6 +3,14 @@
 html {
    font-family: "Helvetica Neue", Helvetica, "Bitstream Vera Sans", sans-serif;
    font-size: 16px;
+   
+   @media only screen and (max-width: 1024px) {
+      font-size: 20px;
+   }
+
+   // @media only screen and (max-width: 600px) {
+   //    font-size: 24px;
+   // }
 }
 
 ::-webkit-scrollbar {
@@ -51,7 +59,15 @@ a {
 // Cursor
 .cursor {
    background-color: $grey;
+   width: 6px;
+   height: 6px;
+   border-radius: 12px;
+   transform: translate(35px, -25px);
    z-index: 12;
+
+   @media (orientation: portrait) {
+      display: none;
+   }
 }
 
 // Menu
@@ -119,10 +135,12 @@ a {
    position: fixed;
    top: 0;
    left: 0;
-   width: 150vw;
-   height: 150vw;
-   border-radius: 100vw;
-   transform: translate(-49%, -50.5%) scale(.002);
+   
+   @media (orientation: portrait) {
+      width: 200vh;
+      height: 200vh;
+      border-radius: 100vh;
+   }
 }
 
 .menu--background {
@@ -131,6 +149,10 @@ a {
    justify-content: center;
    align-items: center;
    background-color: $grey;
+   width: 200vw;
+   height: 200vw;
+   border-radius: 100vw;
+   transform: translate(-49%, -50.5%) scale(0);
    z-index: 9;
 }
 
@@ -168,6 +190,22 @@ a {
 .bottom--container {
    margin-bottom: 38px;
    height: auto;
+
+   @media only screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: center;
+
+      div {
+         margin-bottom: 10px;
+         width: 50% !important;
+      }
+   }
+
+   div {
+      width: 33%;
+      max-width: 200px;
+      text-align: center;
+   }
 }
 
 .middle--container {
@@ -179,12 +217,22 @@ a {
    display: flex;
    flex-direction: row;
    justify-content: space-between;
-   align-items: baseline;
-   width: 250px;
-
+   align-items: center;
+   // width: 25vw;
+   // max-width: 250px;
+   
    img {
-      width: 100px;
+      max-width: 80px;
+      width: 75%;
    }
+   
+   // @media only screen and (max-width: 1024px) {
+   //    width: 250px;
+
+   //    div {
+   //       width: 100%;
+   //    }
+   // }
 }
 
 // Nav
@@ -246,7 +294,7 @@ a {
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   margin: 6% auto;
+   margin: 100px auto;
 }
 
 // Footer

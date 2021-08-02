@@ -211,6 +211,17 @@
                                 <div class="card--subject">
                                     <span>{{ session.subject }}</span>
                                 </div>
+
+                                {% set participantsLength = session.participants | length %}
+                                {% if participantsLength == 0 %}
+                                    {% set participantsMessage = "NOUVEAU" %}
+                                {% elseif participantsLength == 1 %}
+                                    {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %}
+                                {% else %}
+                                    {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %}
+                                {% endif %}
+                                <p>{{ participantsMessage }}</p>
+
                             </div>
                         </button>
                         <form 

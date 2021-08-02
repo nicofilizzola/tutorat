@@ -74,6 +74,11 @@ class Session
      */
     private $dateTime;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $studentLimit;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -212,6 +217,18 @@ class Session
     public function setDateTime(\DateTimeInterface $dateTime): self
     {
         $this->dateTime = $dateTime;
+
+        return $this;
+    }
+
+    public function getStudentLimit(): ?int
+    {
+        return $this->studentLimit;
+    }
+
+    public function setStudentLimit(int $studentLimit): self
+    {
+        $this->studentLimit = $studentLimit;
 
         return $this;
     }

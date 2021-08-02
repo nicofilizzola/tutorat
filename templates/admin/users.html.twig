@@ -11,22 +11,107 @@
 
     <div class="container" data-lg-smooth>
         <div class="search--container">
-            <input type="text">
-            <select name="filtre">
-                <option>Nom</option>
-                <option>Prénom</option>
-                <option>Rôle</option>
-                <option>Statut</option>
-            </select>
+            <input type="text" class="hoveredItems">
         </div>
 
-        <div class="content--container" data-lg-reveal="fade" data-lg-reveal-stagger="0.1">
+        <div class="content--container">
             {% if users is empty == false %}
                 {% set roleViewLabels = {
                     "ROLE_STUDENT": "Étudiant",
                     "ROLE_TUTOR": "Étudiant tuteur",
                     "ROLE_ADMIN": "Administrateur",
                 } %}
+
+                <div class="filterUser--container">
+                    <div class="filter filter__firstname">
+                        <button class="hoveredItems filter__active" data-id="firstname" data-active="down">
+                            <span>Prénom</span>
+                            <svg id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg hidden display="none" id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__lastname">
+                        <button class="hoveredItems" data-id="lastname" data-active="line">
+                            <span>Nom</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__mail">
+                        <button class="hoveredItems" data-id="mail" data-active="line">
+                            <span>Mail</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__role">
+                        <button class="hoveredItems" data-id="role" data-active="line">
+                            <span>Rôle</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__statut">
+                        <button class="hoveredItems" data-id="statut" data-active="line">
+                            <span>Statut</span>
+                            <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_1" data-name="Polygone 1" d="M6.5,0,13,11H0Z" transform="translate(13 11) rotate(180)"/>
+                            </svg>
+                            <svg hidden display="none" id="arrow__up" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
+                                <path id="Polygone_2" data-name="Polygone 2" d="M6.5,0,13,11H0Z"/>
+                            </svg>
+                            <svg id="line" xmlns="http://www.w3.org/2000/svg" width="16.5" height="2" viewBox="0 0 16.5 2">
+                                <g id="Groupe_48" data-name="Groupe 48" transform="translate(-529 -601.5)">
+                                    <line id="Ligne_32" data-name="Ligne 32" x2="5.5" transform="translate(530 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                    <line id="Ligne_33" data-name="Ligne 33" x2="5.5" transform="translate(539 602.5)" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter filter__hidden">
+                    </div>
+                </div>
+
                 {% for user in users %}
                     <div class="userContent--container">
                         <div class="content name">

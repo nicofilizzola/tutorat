@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class SessionType extends AbstractType
 {
@@ -91,6 +92,9 @@ class SessionType extends AbstractType
                     new LessThanOrEqual([
                         'value' => 10,
                         'message' => "Les cours de tutorat ne peuvent compter plus de {{ compared_value }} personnes en plus du tuteur."
+                    ]),
+                    new Positive([
+                        'message' => "Valeur invalide."
                     ]),
                     new NotBlank([
                         'message' => "Ce champs ne peut pas être vide."

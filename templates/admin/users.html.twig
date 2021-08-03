@@ -144,6 +144,25 @@
                                 <button onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" class="hoveredItems refuse">
                                     <span>❌</span>
                                 </button>
+                                <form 
+                                    id="js-user-validate-form-{{ user.id }}"
+                                    display="none" 
+                                    hidden
+                                    action="{{ path('app_user_validate', {"id": user.id}) }}" 
+                                    method="POST">
+                                    <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
+                                    {# <input type="hidden" name="_method" value="PUT"/> #}
+                                </form>
+                                <form 
+                                    id="js-user-cancel-form-{{ user.id }}"
+                                    display="none" 
+                                    hidden
+                                    action="{{ path('app_user_cancel', {"id": user.id}) }}" 
+                                    method="POST">
+                                    <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
+                                    {# <input type="hidden" name="_method" value="PUT"/> #}
+                                </form>
+
                             {% else %}
                                 <button disabled class="hoveredItems lineHoverEffectvalidate disabled">
                                     <span>✔️</span>
@@ -155,73 +174,17 @@
                             <button onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="hoveredItems refuse">
                                 <span>🗑️</span>
                             </button>
+                            <form 
+                                id="js-user-delete-form-{{ user.id }}"
+                                display="none" 
+                                hidden
+                                action="{{ path('app_user_delete', {"id": user.id}) }}" 
+                                method="POST">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
+                                {# <input type="hidden" name="_method" value="PUT"/> #}
+                            </form>
                         </div>
                     </div>
-
-                    <!-- <div class="card--container">
-                        <div class="card" data-id={{user.id}}>
-                            <div class="card--content">
-                                <div class="name">
-                                    <span>{{ user.firstName | upper }}</span>
-                                    <span>{{ user.lastName | capitalize }}</span>
-                                </div>
-                                <span id="mail">{{ user.email | lower }}</span>
-                                <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
-                            </div>
-                            <p>{{ user.isValid }}</p>
-                            {# 1 == en attente #}
-                            {# 2 == validé.e #}
-                            {# 3 == refusé.e #}
-                            {% if user.isValid == 1 %}
-                                <p>En attente</p>
-                                <div class="card--buttons">
-                                    <button 
-                                        onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
-                                        class="hoveredItems validate">
-                                        <span>✔️</span>
-                                    </button>
-                                    <button 
-                                        onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
-                                        class="hoveredItems refuse">
-                                        <span>❌</span>
-                                    </button>
-                                    <button 
-                                        onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" 
-                                        class="hoveredItems refuse">
-                                        <span>🗑️</span>
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div> -->
-
-                    <form 
-                        id="js-user-validate-form-{{ user.id }}"
-                        display="none" 
-                        hidden
-                        action="{{ path('app_user_validate', {"id": user.id}) }}" 
-                        method="POST">
-                        <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
-                        {# <input type="hidden" name="_method" value="PUT"/> #}
-                    </form>
-                    <form 
-                        id="js-user-cancel-form-{{ user.id }}"
-                        display="none" 
-                        hidden
-                        action="{{ path('app_user_cancel', {"id": user.id}) }}" 
-                        method="POST">
-                        <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
-                        {# <input type="hidden" name="_method" value="PUT"/> #}
-                    </form>
-                    <form 
-                        id="js-user-delete-form-{{ user.id }}"
-                        display="none" 
-                        hidden
-                        action="{{ path('app_user_delete', {"id": user.id}) }}" 
-                        method="POST">
-                        <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
-                        {# <input type="hidden" name="_method" value="PUT"/> #}
-                    </form>
                 {% endfor %}
 
             {% else %}

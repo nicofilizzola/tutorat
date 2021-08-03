@@ -12,153 +12,137 @@
         <div class="global--container">
             <div class="search--container" data-lg-sticky="top">
                 <div class="search--content">
-                    <input type="text" class="hoveredItems">
-                    <div class="gap__search"></div>
-                    <div class="buttons--container">
-                        <label for="lorem1" class="hoveredItems">
-                            <input name="lorem1" id="lorem1" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem2" class="hoveredItems">
-                            <input name="lorem2" id="lorem2" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem3" class="hoveredItems">
-                            <input name="lorem3" id="lorem3" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem4" class="hoveredItems">
-                            <input name="lorem4" id="lorem4" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem5" class="hoveredItems">
-                            <input name="lorem5" id="lorem5" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem6" class="hoveredItems">
-                            <input name="lorem6" id="lorem6" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="gap__search"></div>
-                    <div class="buttons--container">
-                        <label for="lorem7" class="hoveredItems">
-                            <input name="lorem7" id="lorem7" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem8" class="hoveredItems">
-                            <input name="lorem8" id="lorem8" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem9" class="hoveredItems">
-                            <input name="lorem9" id="lorem9" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem10" class="hoveredItems">
-                            <input name="lorem10" id="lorem10" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem11" class="hoveredItems">
-                            <input name="lorem11" id="lorem11" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem12" class="hoveredItems">
-                            <input name="lorem12" id="lorem12" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="gap__search"></div>
-                    <div class="buttons--container">
-                        <label for="lorem13" class="hoveredItems">
-                            <input name="lorem13" id="lorem13" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem14" class="hoveredItems">
-                            <input name="lorem14" id="lorem14" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem15" class="hoveredItems">
-                            <input name="lorem15" id="lorem15" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem16" class="hoveredItems">
-                            <input name="lorem16" id="lorem16" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem17" class="hoveredItems">
-                            <input name="lorem17" id="lorem17" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                        <label for="lorem18" class="hoveredItems">
-                            <input name="lorem18" id="lorem18" type="checkbox" hidden>
-                            <div>
-                                <span>Lorem</span>
-                            </div>
-                        </label>
-                    </div>
+                    {# <div class="gap__search"></div> #}
                     
-	{#<div class="smooth--container" data-lg-smooth>
-        <div class="container">
-            {% for session in sessions %}  
-                {% set participantsLength = session.participants | length %}
-                {% if participantsLength == 0 %}
-                    {% set participantsMessage = "NOUVEAU" %}
-                {% elseif participantsLength == 1 %}
-                    {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %}
-                {% else %}
-                    {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %}
-                {% endif %}
-                <div>
-                    <h3>{{ session.title }}</h3>
-                    <p>{{ session.description }}</p>
-                    <p>{{ session.subject }}</p>
-                    <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
-                    <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
-                    <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
-                    <p>{{ participantsMessage }}</p>
-                    <form method="POST" action="{{ path("app_session_join", {"id": session.id}) }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
-                        {% if app.user.id in session.participants %}
-                            <button>S'inscrire</button>
-                        {% else %}
-                            <button disabled="disabled">S'inscrire</button>
-                            {# Hover tooltip #}
-                        {#{% endif %}
-                    </form>#}
+                    <div class="categorie--container">
+                        <div class="categorie">
+                            <span>Matière</span>
+                        </div>
+                        <div class="buttons--container">
+                            <label for="lorem1" class="hoveredItems">
+                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem2" class="hoveredItems">
+                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem3" class="hoveredItems">
+                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem4" class="hoveredItems">
+                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem5" class="hoveredItems">
+                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem6" class="hoveredItems">
+                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="categorie--container">
+                        <div class="categorie">
+                            <span>Lorem</span>
+                        </div>
+                        <div class="buttons--container">
+                            <label for="lorem1" class="hoveredItems">
+                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem2" class="hoveredItems">
+                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem3" class="hoveredItems">
+                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem4" class="hoveredItems">
+                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem5" class="hoveredItems">
+                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem6" class="hoveredItems">
+                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="categorie--container">
+                        <div class="categorie">
+                            <span>Lorem</span>
+                        </div>
+                        <div class="buttons--container">
+                            <label for="lorem1" class="hoveredItems">
+                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem2" class="hoveredItems">
+                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem3" class="hoveredItems">
+                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem4" class="hoveredItems">
+                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem5" class="hoveredItems">
+                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                            <label for="lorem6" class="hoveredItems">
+                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
+                                <div>
+                                    <span>Lorem</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 

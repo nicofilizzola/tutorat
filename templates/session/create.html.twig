@@ -32,7 +32,7 @@
                             'attr': {'class':'hoveredItems description', 'rows':'8'}
                         }) }}
 
-                    <div class="collapse collapse_3">
+                    <div class="collapse collapse_2">
                         <div class="faceToFace--container">
                             <label class="required">Environnement</label>
                             <div id="session_faceToFace" class="hoveredItems">
@@ -57,26 +57,32 @@
 
                         <div id="switchOption--container">
                             {{ form_row(form.link, {
-                                    "label": "Lien de la visio",
-                                    'attr': {'class':'hoveredItems'}
-                                }) }}
-
-                            {{ form_row(form.classroom, {
-                                    "label": "Salle de cours",
-                                    'attr': {'class':'hoveredItems'}
-                                }) }}
-                        </div>
-
-                        {{ form_row(form.subject, {
-                                "label": "Matière",
+                                "label": "Lien de la visio",
                                 'attr': {'class':'hoveredItems'}
                             }) }}
+
+                            {{ form_row(form.classroom, {
+                                "label": "Salle de cours",
+                                'attr': {'class':'hoveredItems'}
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="collapse collapse_2">
+                        {{ form_row(form.studentLimit, {
+                            "label": "Limite d'étudiants",
+                            'attr': {'class':'hoveredItems', 'max':'10', 'min':'1', 'value':'1'}
+                        }) }}
+
+                        {{ form_row(form.subject, {
+                            "label": "Matière",
+                            'attr': {'class':'hoveredItems'}
+                        }) }}
                     </div>
 
                     {{ form_row(form.dateTime, {
-                            "label": "Date et heure",
-                            'attr': {'class':'hoveredItems'},
-                        }) }}
+                        "label": "Date et heure",
+                        'attr': {'class':'hoveredItems'},
+                    }) }}
 
                     <button type="submit" class="form--btn form--btn__propose hoveredItems">Proposer</button>
                     {{ form_end(form) }}

@@ -4,13 +4,13 @@ html {
    font-family: "Helvetica Neue", Helvetica, "Bitstream Vera Sans", sans-serif;
    font-size: 16px;
    
-   @media only screen and (max-width: 1024px) {
-      font-size: 20px;
+   @include desktop-sm() {
+      font-size: 18px;
    }
 
-   // @media only screen and (max-width: 600px) {
-   //    font-size: 24px;
-   // }
+   @include tablet() {
+      font-size: 19px;
+   }
 }
 
 ::-webkit-scrollbar {
@@ -135,12 +135,6 @@ a {
    position: fixed;
    top: 0;
    left: 0;
-   
-   @media (orientation: portrait) {
-      width: 200vh;
-      height: 200vh;
-      border-radius: 100vh;
-   }
 }
 
 .menu--background {
@@ -154,6 +148,12 @@ a {
    border-radius: 100vw;
    transform: translate(-49%, -50.5%) scale(0);
    z-index: 9;
+
+   @media (orientation: portrait) {
+      width: 200vh;
+      height: 200vh;
+      border-radius: 100vh;
+   }
 }
 
 // Menu Content

@@ -2,10 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Classroom;
+use App\Entity\User;
 use App\Entity\Faculty;
 use App\Entity\Session;
 use App\Entity\Subject;
+use App\Entity\Classroom;
 use App\Repository\UserRepository;
 use App\Repository\FacultyRepository;
 use Doctrine\Persistence\ObjectManager;
@@ -41,6 +42,20 @@ class AppFixtures extends Fixture
 
                 $manager->persist($classroom);
             }
+
+            $user = new User();
+            $user->setFirstName('Admin');
+            $user->setLastName('Admin');
+            $user->setEmail('admin'. $i .'@iut-tarbes.fr');
+            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_ADMIN"]);
+            $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
+            $user->setYear(4);
+            $user->setIsValid(2);
+            $user->setIsVerified(1);
+            $user->updateTimestamp();
+            $user->setFaculty($faculty);
+            
+            $manager->persist($user);
         }
 
         $manager->flush();

@@ -13,7 +13,15 @@
             <div class="search--container" data-lg-sticky="top">
                 <div class="search--content">
                     {# <div class="gap__search"></div> #}
-                    
+                    {% for subject in subjects %}
+                        <span>{{ subject }}</span>
+                    {% endfor %}
+                    {% for tutor in tutors %}
+                        <span>{{ tutor }}</span>
+                    {% endfor %}
+                    {# {% for session in sessions %}
+                        <span>{{ session }}</span>
+                    {% endfor %} #}
                     <div class="categorie--container">
                         <div class="categorie">
                             <span>Matière</span>

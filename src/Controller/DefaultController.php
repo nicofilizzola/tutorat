@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class DefaultController extends AbstractController
 {
@@ -51,6 +53,11 @@ class DefaultController extends AbstractController
 
             $em->persist($this->getUser());
             $em->flush();
+
+            // reauth user
+            $token = new UsernamePasswordToken($this->getUser(), null, 'main', $this->getUser()->getRoles());
+            $this->get('security.token_storage')->setToken($token);
+            $this->get('session')->set('_security_main', serialize($token));
 
             $toAddresses = getAdminMails($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
             $email = (new TemplatedEmail())

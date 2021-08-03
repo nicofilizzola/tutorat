@@ -79,7 +79,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             manageFormData($user, $form, $passwordEncoder);
-            if ($form->get('role')->getData() == 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
+            if ($form->get('role')->getData() >= 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
                 $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
                 $this->redirectToRoute('app_register');
             }

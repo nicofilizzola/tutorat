@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\AdminCode;
 use App\Entity\User;
 use App\Entity\Faculty;
 use App\Entity\Session;
@@ -57,6 +58,10 @@ class AppFixtures extends Fixture
             
             $manager->persist($user);
         }
+
+        $adminCode = new AdminCode();
+        $adminCode->setCode('1234');
+        $manager->persist($adminCode);
 
         $manager->flush();
     }

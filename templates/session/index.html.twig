@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="smooth--container" data-lg-smooth>
         <div class="global--container">
             <div class="search--container" data-lg-sticky="top">
@@ -130,35 +131,6 @@
                             </div>
                         </label>
                     </div>
-                    
-	{#<div class="smooth--container" data-lg-smooth>
-        <div class="container">
-            {% for session in sessions %}  
-                {% set participantsLength = session.participants | length %}
-                {% if participantsLength == 0 %}
-                    {% set participantsMessage = "NOUVEAU" %}
-                {% elseif participantsLength == 1 %}
-                    {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %}
-                {% else %}
-                    {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %}
-                {% endif %}
-                <div>
-                    <h3>{{ session.title }}</h3>
-                    <p>{{ session.description }}</p>
-                    <p>{{ session.subject }}</p>
-                    <p>Tuteur : {{ session.tutor.firstName ~ " " ~ session.tutor.lastName | upper }}</p>
-                    <p>{{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</p>
-                    <p>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</p>
-                    <p>{{ participantsMessage }}</p>
-                    <form method="POST" action="{{ path("app_session_join", {"id": session.id}) }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
-                        {% if app.user.id in session.participants %}
-                            <button>S'inscrire</button>
-                        {% else %}
-                            <button disabled="disabled">S'inscrire</button>
-                            {# Hover tooltip #}
-                        {#{% endif %}
-                    </form>#}
                 </div>
             </div>
 

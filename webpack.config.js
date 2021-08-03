@@ -29,6 +29,7 @@ Encore
     .addEntry('app_session_create', './assets/routes/app_session_create.js')
     .addEntry('app_users', './assets/routes/app_users.js')
     .addEntry('app_become-tutor', './assets/routes/app_become-tutor.js')
+    .addEntry('app_add-subject', './assets/routes/app_add-subject.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

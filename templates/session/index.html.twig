@@ -7,146 +7,63 @@
 	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 
+{# {% for tutor in tutors %}
+    <span>{{ tutor.firstName }}</span>
+{% endfor %}
+{% for session in sessions %}
+    <span>{{ session.title }}</span>
+{% endfor %} #}
+
 {% block body %}
     <div class="smooth--container" data-lg-smooth>
         <div class="global--container">
-            <div class="search--container" data-lg-sticky="top">
-                <div class="search--content">
-                    {# <div class="gap__search"></div> #}
-                    {% for subject in subjects %}
-                        <span>{{ subject }}</span>
-                    {% endfor %}
-                    {% for tutor in tutors %}
-                        <span>{{ tutor }}</span>
-                    {% endfor %}
-                    {# {% for session in sessions %}
-                        <span>{{ session }}</span>
-                    {% endfor %} #}
-                    <div class="categorie--container">
-                        <div class="categorie">
-                            <span>Matière</span>
-                        </div>
-                        <div class="buttons--container">
-                            <label for="lorem1" class="hoveredItems">
-                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem2" class="hoveredItems">
-                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem3" class="hoveredItems">
-                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem4" class="hoveredItems">
-                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem5" class="hoveredItems">
-                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem6" class="hoveredItems">
-                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
+            <div class="filter--container">
+                <button class="filterButton hoveredItems">
+                    Filtres 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12.708" height="6.707" viewBox="0 0 12.708 6.707">
+                        <path id="Union_7" data-name="Union 7" d="M14,0,8,6ZM2,0,8,6Z" transform="translate(-1.646 0.354)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+                    </svg>
+                </button>
+                <div class="filter--content">
+                    <div class="tutors--container">
+                        <span>Tuteurs<span>
+                        <div class="list">
+                            {% for tutor in tutors %}
+                                <label for="{{ tutor.id }}" class="hoveredItems">
+                                    <input name="{{ tutor.id }}" id="{{ tutor.id }}" type="checkbox" hidden>
+                                    <div>
+                                        <span>{{ tutor.firstname }} {{ tutor.lastname }}</span>
+                                    </div>
+                                </label>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="categorie--container">
-                        <div class="categorie">
-                            <span>Lorem</span>
-                        </div>
-                        <div class="buttons--container">
-                            <label for="lorem1" class="hoveredItems">
-                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem2" class="hoveredItems">
-                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem3" class="hoveredItems">
-                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem4" class="hoveredItems">
-                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem5" class="hoveredItems">
-                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem6" class="hoveredItems">
-                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
+                    <div class="subject--container">
+                        <span>Matières<span>
+                        <div class="list">
+                            {% for subject in subjects %}
+                                <label for="{{ subject.id }}_{{subject.semester }}" class="hoveredItems">
+                                    <input name="{{ subject.id }}_{{subject.semester }}" id="{{ subject.id }}_{{subject.semester }}" type="checkbox" hidden>
+                                    <div>
+                                        <span>{{ subject }}</span>
+                                    </div>
+                                </label>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="categorie--container">
-                        <div class="categorie">
-                            <span>Lorem</span>
-                        </div>
-                        <div class="buttons--container">
-                            <label for="lorem1" class="hoveredItems">
-                                <input name="lorem1" id="lorem1" type="checkbox" hidden>
+                    <div class="environnement--container">
+                        <span>Environnement<span>
+                        <div class="list">
+                            <label for="presentiel" class="hoveredItems">
+                                <input name="presentiel" id="presentiel" type="checkbox" hidden>
                                 <div>
-                                    <span>Lorem</span>
+                                    <span>Présentiel</span>
                                 </div>
                             </label>
-                            <label for="lorem2" class="hoveredItems">
-                                <input name="lorem2" id="lorem2" type="checkbox" hidden>
+                            <label for="distanciel" class="hoveredItems">
+                                <input name="distanciel" id="distanciel" type="checkbox" hidden>
                                 <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem3" class="hoveredItems">
-                                <input name="lorem3" id="lorem3" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem4" class="hoveredItems">
-                                <input name="lorem4" id="lorem4" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem5" class="hoveredItems">
-                                <input name="lorem5" id="lorem5" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
-                                </div>
-                            </label>
-                            <label for="lorem6" class="hoveredItems">
-                                <input name="lorem6" id="lorem6" type="checkbox" hidden>
-                                <div>
-                                    <span>Lorem</span>
+                                    <span>Distanciel</span>
                                 </div>
                             </label>
                         </div>
@@ -182,37 +99,33 @@
                             </div>
                             <div class="card">
                                 <div class="card--content">
-                                    <div class="titre">
-                                        <span>{{ session.title }}</span>
+                                    <div class="text">
+                                        <span class="title">{{ session.title }}</span>
+                                        <br>
+                                        <span class="subject">{{ session.subject }}</span>
                                     </div>
                                     <div class="description">
                                         <span>{{ session.description }}</span>
                                     </div>
-                                    <div class="name">
-                                        <span>{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
-                                    </div>
-                                    <div class="date">
-                                        <span>{{ session.datetime | date('d/m/Y') }}</span>
+                                    <div class="text">
+                                        <span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
                                         <br>
-                                        <span>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</span>
-                                    </div>
-                                    <div class="environnement">
-                                        <span>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</b></span>
                                     </div>
                                 </div>
-                                <div class="card--subject">
-                                    <span>{{ session.subject }}</span>
+                                <div class="card--participants">
+                                    {% set participantsLength = session.participants | length %}
+                                    {% if participantsLength == 0 %}
+                                        {% set participantsMessage = "NOUVEAU" %}
+                                    {# {% elseif participantsLength == 1 %}
+                                        {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %} #}
+                                    {% else %}
+                                        {# {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %} #}
+                                        {% set participantsMessage = participantsLength ~ "/" ~ participantsLength %}
+                                    {% endif %}
+                                    <span>{{ participantsMessage }}</span>
                                 </div>
 
-                                {% set participantsLength = session.participants | length %}
-                                {% if participantsLength == 0 %}
-                                    {% set participantsMessage = "NOUVEAU" %}
-                                {% elseif participantsLength == 1 %}
-                                    {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %}
-                                {% else %}
-                                    {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %}
-                                {% endif %}
-                                <p>{{ participantsMessage }}</p>
                             </div>
                         </button>
                         <form 

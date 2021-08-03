@@ -22,4 +22,4 @@ function manageSuccesMessages(message) {
    }, 3000);
 }
 
-export default manageSuccesMessages
+export { manageSuccesMessages }

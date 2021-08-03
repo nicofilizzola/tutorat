@@ -1,6 +1,5 @@
 import "../sass/utils/session_create.scss";
 import { fieldsError } from "../functions/checkFieldsErrors.js";
-import gsap from "gsap/gsap-core";
 
 const switchOptionContainer = document.getElementById("switchOption--container");
 const formContainer = document.querySelector(".form--container .form--content form");
@@ -14,29 +13,6 @@ errorMessages.forEach(error => {
     error.remove()
   })
 });
-
-if (document.querySelector("p.success")) {
-  const successContainer = document.createElement('div')
-  successContainer.classList.add('success--container')
-
-  const successContainerBackground = document.createElement('div')
-  successContainerBackground.classList.add('background')
-
-  const textContainer = document.createElement('div')
-  textContainer.classList.add('text--container')
-
-  textContainer.appendChild(document.querySelector("p.success"))
-  successContainer.appendChild(textContainer)
-  successContainer.appendChild(successContainerBackground)
-
-  document.body.appendChild(successContainer)
-
-
-  gsap.to(successContainer, .75, { opacity: 0, ease: 'Power3.easeInOut', delay: 2 })
-  setTimeout(() => {
-    successContainer.remove()
-  }, 3000);
-}
 
 const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput, classroomInput) => {
   if (faceToFaceInputValue == 1) {

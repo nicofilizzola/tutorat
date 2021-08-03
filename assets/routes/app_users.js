@@ -3,6 +3,7 @@ import manageSuccesMessages from "../functions/manageSuccesMessages.js";
 
 const validateFormButtons = document.querySelectorAll('.validate')
 const refuseFormButtons = document.querySelectorAll('.refuse')
+const deleteFormButtons = document.querySelectorAll('.delete')
 const filterButtons = document.querySelectorAll('.filter button')
 
 const getCard = (button) => {
@@ -11,21 +12,31 @@ const getCard = (button) => {
 
 validateFormButtons.forEach(button => {
    button.addEventListener('mouseenter', () => {
-      getCard(button).style.borderColor = 'green'
+      getCard(button).style.backgroundColor = 'rgba(22, 198, 12, .5)'
    })
 
    button.addEventListener('mouseleave', () => {
-      getCard(button).style.borderColor = '#000'
+      getCard(button).style.backgroundColor = ''
    })
 })
 
 refuseFormButtons.forEach(button => {
    button.addEventListener('mouseenter', () => {
-      getCard(button).style.borderColor = 'red'
+      getCard(button).style.backgroundColor = 'rgba(255, 58, 57, .5)'
    })
 
    button.addEventListener('mouseleave', () => {
-      getCard(button).style.borderColor = '#000'
+      getCard(button).style.backgroundColor = ''
+   })
+})
+
+deleteFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button).style.backgroundColor = 'rgba(226, 226, 226, .5)'
+   })
+   
+   button.addEventListener('mouseleave', () => {
+      getCard(button).style.backgroundColor = ''
    })
 })
 

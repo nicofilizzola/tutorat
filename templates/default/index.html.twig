@@ -10,10 +10,13 @@
         <a href="{{ path('app_logout') }}">Se déco</a><br>
         <a href="{{ path('app_session') }}">Tableau de bord</a><br>
 
-        {% if "ROLE_TUTOR" in app.user.roles %}
+        {% if "ROLE_TUTOR" not in app.user.roles %}
+            <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
+        {% endif %}
+        {% if ("ROLE_TUTOR" in app.user.roles) and (app.user.isValid == 2) %}
             <a href="{{ path('app_session_create') }}">Proposer un cours</a><br>
         {% endif %}
-        {% if "ROLE_ADMIN" in app.user.roles %}
+        {% if ("ROLE_ADMIN" in app.user.roles) and (app.user.isValid == 2) %}
             <a href="{{ path('app_users') }}">Gérer utilisateurs</a><br>
         {% endif %}
     {% else %}

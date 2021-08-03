@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-
+{{ adminCount }}
     <div class="container" data-lg-smooth>
         <div class="search--container">
             <input type="text" class="hoveredItems">
@@ -123,7 +123,8 @@
                         </div>
                         
                         <div class="content role">
-                            <span>{{ roleViewLabels[user.roles[user.roles | length - 2]] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
+                            {% set userRole = user.roles[user.roles | length - 2] %}
+                            <span>{{ roleViewLabels[userRole] }}</span> {# -1 for length index and -1 for ROLE_USER which always goes last #}
                         </div>
                         
                         <div class="content statut">
@@ -171,18 +172,25 @@
                                     <span>❌</span>
                                 </button>
                             {% endif %}
-                            <button onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="hoveredItems refuse">
-                                <span>🗑️</span>
-                            </button>
-                            <form 
-                                id="js-user-delete-form-{{ user.id }}"
-                                display="none" 
-                                hidden
-                                action="{{ path('app_user_delete', {"id": user.id}) }}" 
-                                method="POST">
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
-                                {# <input type="hidden" name="_method" value="PUT"/> #}
-                            </form>
+                            
+                            {% if (userRole == "ROLE_ADMIN") and (adminCount == 1) %}
+                                <button disabled class="hoveredItems refuse disabled">
+                                    <span>🗑️</span>
+                                </button>
+                            {% else %}
+                                <button onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                    <span>🗑️</span>
+                                </button>
+                                <form 
+                                    id="js-user-delete-form-{{ user.id }}"
+                                    display="none" 
+                                    hidden
+                                    action="{{ path('app_user_delete', {"id": user.id}) }}" 
+                                    method="POST">
+                                    <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
+                                    {# <input type="hidden" name="_method" value="PUT"/> #}
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

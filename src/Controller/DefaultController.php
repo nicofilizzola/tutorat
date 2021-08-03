@@ -36,6 +36,8 @@ class DefaultController extends AbstractController
             $em->persist($this->getUser());
             $em->flush();
 
+            // send mail to admin
+
             $this->addFlash('Success', 'Votre demande a bien été envoyée ! Vous aurez une réponse dans environ une semaine.');
             return $this->redirectToRoute('app_home');
         }

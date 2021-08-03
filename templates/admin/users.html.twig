@@ -22,8 +22,8 @@
                     "ROLE_ADMIN": "Administrateur",
                 } %}
 
-                <div class="filterUser--container">
-                    <div class="filter filter__firstname">
+                <div class="userContent--container userContent--container__filter">
+                    <div class="filter content firstname">
                         <button class="hoveredItems filter__active" data-id="firstname" data-active="down">
                             <span>Prénom</span>
                             <svg id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
@@ -40,7 +40,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="filter filter__lastname">
+                    <div class="filter content lastname">
                         <button class="hoveredItems" data-id="lastname" data-active="line">
                             <span>Nom</span>
                             <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
@@ -57,7 +57,8 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="filter filter__mail">
+                    
+                    <div class="filter content mail">
                         <button class="hoveredItems" data-id="mail" data-active="line">
                             <span>Mail</span>
                             <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
@@ -74,7 +75,8 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="filter filter__role">
+                    
+                    <div class="filter content role">
                         <button class="hoveredItems" data-id="role" data-active="line">
                             <span>Rôle</span>
                             <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
@@ -91,7 +93,8 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="filter filter__statut">
+                    
+                    <div class="filter content statut">
                         <button class="hoveredItems" data-id="statut" data-active="line">
                             <span>Statut</span>
                             <svg hidden display="none" id="arrow__down" xmlns="http://www.w3.org/2000/svg" width="13" height="11" viewBox="0 0 13 11">
@@ -108,14 +111,18 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="filter filter__hidden">
+                    
+                    <div class="content manage hidden">
                     </div>
                 </div>
 
                 {% for user in users %}
                     <div class="userContent--container">
-                        <div class="content name">
-                            <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
+                        <div class="content firstname">
+                            <span>{{ user.firstName | upper }}</span>
+                        </div>
+                        <div class="content lastname">
+                            <span>{{ user.lastName | capitalize }}</span>
                         </div>
                         
                         <div class="content mail">

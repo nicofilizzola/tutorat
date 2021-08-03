@@ -6,6 +6,7 @@ use App\Entity\Session;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class SessionController extends AbstractController
     /**
      * @Route("/session", name="app_session", methods="GET")
      */
-    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository): Response
+    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
@@ -45,9 +46,18 @@ class SessionController extends AbstractController
             }
         }
 
+        $facultyUsers = $userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]);
+        $tutors = [];
+        foreach ($facultyUsers as $user){
+            if (in_array("ROLE_TUTOR", $user->getRoles())/*/ && !in_array("ROLE_ADMIN", $user->getRoles())*/){
+                array_push($tutors, $user);
+            }
+        }
+
         return $this->render('session/index.html.twig', [
            'sessions' => $sessionsAfterToday,
-           'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
+           'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
+           'tutors' => $tutors
         ]);
     }
 

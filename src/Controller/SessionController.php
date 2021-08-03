@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Session;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class SessionController extends AbstractController
     /**
      * @Route("/session", name="app_session", methods="GET")
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository): Response
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
@@ -46,6 +47,7 @@ class SessionController extends AbstractController
 
         return $this->render('session/index.html.twig', [
            'sessions' => $sessionsAfterToday,
+           'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);
     }
 

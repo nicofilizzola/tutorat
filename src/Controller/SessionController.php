@@ -75,9 +75,9 @@ class SessionController extends AbstractController
     /**
      * @Route("/session/{id<\d+>}/join", name="app_session_join", methods={"POST"})
      */
-    public function join(EntityManagerInterface $em, Session $session): Response
+    public function join(EntityManagerInterface $em, Session $session, Request $request): Response
     {
-        if (!$this->sessionIsJoinable($session)){
+        if (!$this->sessionIsJoinable($session) || !$this->isCsrfTokenValid('join-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_session');
         }
@@ -145,6 +145,7 @@ class SessionController extends AbstractController
      */
     public function delete(Request $request, EntityManagerInterface $em, Session $session): Response
     {
+
         return $this->redirectToRoute('app_session');
     }
 }

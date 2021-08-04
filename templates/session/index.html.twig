@@ -140,6 +140,15 @@
                             id="js-join-session-{{ session.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
                         </form>
+
+                        <button onclick="">Suprimmer cours</button>
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_session_delete", {"id": session.id}) }}"
+                            id="js-session-delete-{{ session.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ session.id) }}"/>
+                        </form>
                     </div>
                 {% endfor %}
             </div>

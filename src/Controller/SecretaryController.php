@@ -14,12 +14,13 @@ class SecretaryController extends AbstractController
     /**
      * @Route("/sessions/pending", name="app_sessions_pending", methods="GET")
      */
-    public function sessionsPending(SessionRepository $sessionRepository): Response
+    public function sessionsPending(SessionRepository $sessionRepository, ClassroomRepository $classroomRepository): Response
     {
         require_once("Requires/getSessions.php");
 
         return $this->render('secretary/sessions-pending.html.twig', [
            'sessions' => getSessions($sessionRepository, $this->getUser(), null), // null -> same as false
+           'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);
     }
 

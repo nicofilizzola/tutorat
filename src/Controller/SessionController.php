@@ -79,7 +79,7 @@ class SessionController extends AbstractController
     {
         if (!$this->sessionIsJoinable($session) || !$this->isCsrfTokenValid('join-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_session');
+            return $this->redirectToRoute('app_session_view', ['session' => $session]);
         }
 
         $session->addStudent($this->getUser());
@@ -87,7 +87,7 @@ class SessionController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
-        return $this->redirectToRoute('app_session');
+        return $this->redirectToRoute('app_session_view', ['session' => $session]);
     }
 
     /**
@@ -162,11 +162,10 @@ class SessionController extends AbstractController
      */
     public function view(Session $session): Response
     {
-        // if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
-        //     $this->addFlash('danger', 'Une erreur est survenue.');
-        //     return $this->redirectToRoute('app_session');
-        // }
-
+        if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_session');
+        }
 
         return $this->render('session/view.html.twig', [
             'session' => $session

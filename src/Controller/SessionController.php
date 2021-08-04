@@ -46,7 +46,7 @@ class SessionController extends AbstractController
         }
 
         return $this->render('session/index.html.twig', [
-           'sessions' => getSessions($sessionRepository, $this->getUser()),
+           'sessions' => getSessions($sessionRepository, $this->getUser(), true),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
            'tutors' => getTutors($userRepository, $this->getUser()),
         ]);
@@ -99,10 +99,13 @@ class SessionController extends AbstractController
                 }
                 $session->setIsValid(false); // needs further secretary validation
             } 
-            if ($session->getFaceToFace() == 2 && is_null($session->getLink())){
-                $this->addFlash("danger", "Pas de lien de visio.");
-                return $this->redirectToRoute("app_session_create");
-            }
+            if ($session->getFaceToFace() == 2){
+                if (is_null($session->getLink())){
+                    $this->addFlash("danger", "Pas de lien de visio.");
+                    return $this->redirectToRoute("app_session_create");
+                }
+                $session->setIsValid(true);
+            } 
 
             $session->setTutor($this->getUser());
             $session->updateTimestamp();

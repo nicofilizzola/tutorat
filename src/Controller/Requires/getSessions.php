@@ -3,8 +3,8 @@
 use App\Entity\User;
 use App\Repository\SessionRepository;
 
-function getSessions(SessionRepository $sessionRepository, User $user){
-    $allSessions = $sessionRepository->findBy(['isValid' => true], ['id' => 'ASC']);
+function getSessions(SessionRepository $sessionRepository, User $user, $isValid){
+    $allSessions = $sessionRepository->findBy(['isValid' => $isValid], ['id' => 'ASC']);
     $facultySessions = [];
     foreach ($allSessions as $session) {
         if ($session->getSubject()->getFaculty() == $user->getFaculty()){

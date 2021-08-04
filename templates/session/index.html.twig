@@ -74,11 +74,15 @@
 
             <div class="session--container">
                 {% for session in sessions %}
-                    {% if app.user in session.students %}
-                        {% set isDisabled = true %}
-                        {# join session disabled #}
+                    {% if (app.user in session.students) %}
+                        {% set sessionViewMode = 1 %}
+                        {# already joined #}
+                    {% else if (app.user == session.tutor) and ("ROLE_ADMIN" in app.user.roles) %}
+                        {% set sessionViewMode = 2 %}
+                        {# tutor author #}
                     {% else %}
-                        {# join session enabled #}
+                        {% set SessionViewMode = 3 %}
+                        {# student joinable #}
                     {% endif %}
                     <div class="card--container">
                         <button class="inscription hoveredItems" onclick="document.querySelector('#js-join-session-{{ session.id }}').submit();">
@@ -115,14 +119,14 @@
                                     </div>
                                 </div>
                                 <div class="card--participants">
-                                    {% set participantsLength = session.participants | length %}
+                                    {% set participantsLength = session.students | length %}
                                     {% if participantsLength == 0 %}
                                         {% set participantsMessage = "NOUVEAU" %}
                                     {# {% elseif participantsLength == 1 %}
                                         {% set participantsMessage = "1 étudiant(e) déjà inscrit(e)" %} #}
                                     {% else %}
                                         {# {% set participantsMessage = participantsLength ~ " étudiants déjà inscrits" %} #}
-                                        {% set participantsMessage = participantsLength ~ "/" ~ participantsLength %}
+                                        {% set participantsMessage = participantsLength ~ "/" ~ session.studentLimit %}
                                     {% endif %}
                                     <span>{{ participantsMessage }}</span>
                                 </div>

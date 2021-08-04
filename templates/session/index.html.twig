@@ -85,20 +85,38 @@
                         {# student joinable #}
                     {% endif %}
                     <div class="card--container">
-                        <button class="inscription hoveredItems" onclick="document.querySelector('#js-join-session-{{ session.id }}').submit();">
-                            <div class="card--hovered">
-                                <div class="text">
-                                    <span>S</span>
-                                    <span>'</span>
-                                    <span>I</span>
-                                    <span>N</span>
-                                    <span>S</span>
-                                    <span>C</span>
-                                    <span>R</span>
-                                    <span>I</span>
-                                    <span>R</span>
-                                    <span>E</span>
-                                </div>
+                        {% if (sessionViewMode == 1) or (sessionViewMode == 2) %}
+                            <button class="inscription hoveredItems" onclick="document.querySelector('#js-join-session-{{ session.id }}').submit();">
+                        {% else %}
+                            <button class="inscription hoveredItems" disabled>
+                        {% endif %}
+                            <div class="card--hovered {{ sessionViewMode == 1 or sessionViewMode == 2 ? "joined" : "" }}">
+                                {% if sessionViewMode == 3 %}
+                                    <div class="text">
+                                        <span>S</span>
+                                        <span>'</span>
+                                        <span>I</span>
+                                        <span>N</span>
+                                        <span>S</span>
+                                        <span>C</span>
+                                        <span>R</span>
+                                        <span>I</span>
+                                        <span>R</span>
+                                        <span>E</span>
+                                    </div>
+                                {% elseif (sessionViewMode == 1) or (sessionViewMode == 2) %}
+                                    <div class="text">
+                                        <span>I</span>
+                                        <span>N</span>
+                                        <span>S</span>
+                                        <span>C</span>
+                                        <span>R</span>
+                                        <span>I</span>
+                                        <span>T</span>
+                                        <span>.</span>
+                                        <span>E</span>
+                                    </div>
+                                {% endif %}
                                 <div class="background">
                                 </div>
                             </div>
@@ -130,7 +148,9 @@
                                     {% endif %}
                                     <span>{{ participantsMessage }}</span>
                                 </div>
-
+                                {% for sheesh in session.participants %}
+                                    <span>{{ sheesh }}</span>
+                                {% endfor %}
                             </div>
                         </button>
                         <form 

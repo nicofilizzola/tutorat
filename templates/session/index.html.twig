@@ -68,7 +68,7 @@
             <div class="session--container">
                 {% for session in sessions %}
                     <div class="card--container">
-                        <button class="inscription hoveredItems">
+                        <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
                             <div class="card--hovered">
                                 <div class="text">
                                     <div>

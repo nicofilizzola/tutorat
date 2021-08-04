@@ -17,6 +17,18 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SessionController extends AbstractController
 {
+    private function sessionIsJoinable(Session $session){
+        if (in_array($this->getUser()->getId(), $session->getStudents()->getValues())){
+            $isJoinable = false;
+        } else if ($this->getUser() === $session->getTutor()){
+            $isJoinable = false;
+        } else if ($this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
+            $isJoinable = false;
+        }
+
+        return !$isJoinable ? false : true;
+    }
+
     private function isTutor(){
         if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
             return false;
@@ -65,17 +77,16 @@ class SessionController extends AbstractController
      */
     public function join(EntityManagerInterface $em, Session $session): Response
     {
-        $oldParticipants = $session->getParticipants();
-        if (!in_array($this->getUser()->getId(), $oldParticipants) && $this->getUser()->getFaculty() == $session->getSubject()->getFaculty()){
-            $session->addStudent($this->getUser());
-            $em->persist($session);
-            $em->flush();
-
-            $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
+        if (!$this->sessionIsJoinable($session)){
+            $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_session');
         }
 
-        $this->addFlash('danger', 'Une erreur est survenue.');
+        $session->addStudent($this->getUser());
+        $em->persist($session);
+        $em->flush();
+
+        $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
         return $this->redirectToRoute('app_session');
     }
 

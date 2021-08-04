@@ -77,7 +77,7 @@
                     {% if (app.user in session.students) %}
                         {% set sessionViewMode = 1 %}
                         {# already joined #}
-                    {% else if (app.user == session.tutor) and ("ROLE_ADMIN" in app.user.roles) %}
+                    {% elseif (app.user == session.tutor) or (("ROLE_ADMIN" in app.user.roles) and (app.user.faculty == session.subject.faculty)) %}
                         {% set sessionViewMode = 2 %}
                         {# tutor author #}
                     {% else %}

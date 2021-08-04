@@ -86,7 +86,7 @@
                     {% endif %}
                     <div class="card--container">
                         {% if (sessionViewMode == 1) or (sessionViewMode == 2) %}
-                            <button class="inscription hoveredItems" onclick="document.querySelector('#js-join-session-{{ session.id }}').submit();">
+                            <button class="inscription hoveredItems" onclick="document.querySelector('#js-session-view-{{ session.id }}').submit();">
                         {% else %}
                             <button class="inscription hoveredItems" disabled>
                         {% endif %}
@@ -154,6 +154,12 @@
                             </div>
                         </button>
                         <form 
+                            id="js-session-view-{{ session.id }}"
+                            action="{{ path('app_session_view', {"id": session.id}) }}" 
+                            method="GET"
+                            display="none">
+                        </form>
+                        {# <form 
                             method="POST" 
                             hidden="hidden" 
                             action="{{ path("app_session_join", {"id": session.id}) }}"
@@ -168,7 +174,7 @@
                             action="{{ path("app_session_delete", {"id": session.id}) }}"
                             id="js-session-delete-{{ session.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ session.id) }}"/>
-                        </form>
+                        </form> #}
                     </div>
                 {% endfor %}
             </div>

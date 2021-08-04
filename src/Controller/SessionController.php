@@ -156,4 +156,20 @@ class SessionController extends AbstractController
         $this->addFlash('success', 'Le cours a bien été suprimmé !');
         return $this->redirectToRoute('app_session');
     }
+
+    /**
+     * @Route("/session/{id<\d+>}", name="app_session_view", methods={"POST"})
+     */
+    public function view(Session $session): Response
+    {
+        // if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
+        //     $this->addFlash('danger', 'Une erreur est survenue.');
+        //     return $this->redirectToRoute('app_session');
+        // }
+
+
+        return $this->render('session/view.html.twig', [
+            'session' => $session
+        ]);
+    }
 }

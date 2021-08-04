@@ -45,6 +45,14 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $facultyUsers = $userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]);
+        $tutors = [];
+        foreach ($facultyUsers as $user){
+            if (in_array("ROLE_TUTOR", $user->getRoles())/*/ && !in_array("ROLE_ADMIN", $user->getRoles())*/){
+                array_push($tutors, $user);
+            }
+        }
+
         return $this->render('session/index.html.twig', [
            'sessions' => getSessions($sessionRepository, $this->getUser(), true),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),

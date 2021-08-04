@@ -1,5 +1,4 @@
 import "../sass/utils/users.scss";
-import manageSuccesMessages from "../functions/manageSuccesMessages.js";
 
 const validateFormButtons = document.querySelectorAll('.validate')
 const refuseFormButtons = document.querySelectorAll('.refuse')
@@ -79,5 +78,3 @@ filterButtons.forEach(button => {
       })
    })
 })
-
-document.querySelector('p.success')?manageSuccesMessages(document.querySelector("p.success")):null

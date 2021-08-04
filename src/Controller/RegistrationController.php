@@ -79,7 +79,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             manageFormData($user, $form, $passwordEncoder);
-            if ($form->get('role')->getData() == 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
+            if ($form->get('role')->getData() >= 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
                 $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
                 $this->redirectToRoute('app_register');
             }
@@ -93,8 +93,8 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->subject('Vérifiez votre adresse email')
+                    ->htmlTemplate('email/verify_email.html.twig')
             );
             // do anything else you need here, like send an email
 

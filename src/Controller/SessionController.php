@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Form\DateFilterType;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
@@ -28,22 +29,20 @@ class SessionController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
+        require_once('Requires/getSessions.php');
+        function getTutors($userRepository, $user){
+            $facultyUsers = $userRepository->findBy(['faculty' => $user->getFaculty()]);
+            $tutors = [];
+            foreach ($facultyUsers as $user){
+                if (in_array("ROLE_TUTOR", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
+                    array_push($tutors, $user);
+                }
+            }
+            return $tutors;
+        }
+
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
-        }
-        
-        $allSessions = $sessionRepository->findBy([], ['id' => 'ASC']);
-        $facultySessions = [];
-        foreach ($allSessions as $session) {
-            if ($session->getSubject()->getFaculty() == $this->getUser()->getFaculty()){
-                array_push($facultySessions, $session);
-            }
-        }
-        $sessionsAfterToday = [];
-        foreach ($facultySessions as $session) {
-            if (date('Y-m-d h:i:s', strtotime('+1 hour')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
-                array_push($sessionsAfterToday, $session);
-            }
         }
 
         $facultyUsers = $userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]);
@@ -55,9 +54,9 @@ class SessionController extends AbstractController
         }
 
         return $this->render('session/index.html.twig', [
-           'sessions' => $sessionsAfterToday,
+           'sessions' => getSessions($sessionRepository, $this->getUser()),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
-           'tutors' => $tutors
+           'tutors' => getTutors($userRepository, $this->getUser()),
         ]);
     }
 
@@ -69,12 +68,6 @@ class SessionController extends AbstractController
         $oldParticipants = $session->getParticipants();
         if (!in_array($this->getUser()->getId(), $oldParticipants) && $this->getUser()->getFaculty() == $session->getSubject()->getFaculty()){
             $session->addStudent($this->getUser());
-            // $session->setParticipants([[
-            //         'student' => $this->getUser()->getId(),
-            //         'present' => false,
-            //     ],
-            //     ...$oldParticipants
-            // ]);
             $em->persist($session);
             $em->flush();
 
@@ -107,10 +100,13 @@ class SessionController extends AbstractController
             }
             $ftf = $_POST['session']['faceToFace'];
             $session->setFaceToFace($ftf == 1 ? 1 : 2);
-            if ($session->getFaceToFace() == 1 && is_null($session->getClassroom())){
-                $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
-                return $this->redirectToRoute("app_session_create");
-            }
+            if ($session->getFaceToFace() == 1){
+                if (is_null($session->getClassroom())){
+                    $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
+                    return $this->redirectToRoute("app_session_create");
+                }
+                $session->setIsValid(false); // needs further secretary validation
+            } 
             if ($session->getFaceToFace() == 2 && is_null($session->getLink())){
                 $this->addFlash("danger", "Pas de lien de visio.");
                 return $this->redirectToRoute("app_session_create");

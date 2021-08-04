@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form) }}
+        <button type="submit">Ajouter</button>
+    {{ form_end(form) }}
+
+    {% for subject in subjects %}
+        {{ subject }}
+    {% endfor %}
+{% endblock %}

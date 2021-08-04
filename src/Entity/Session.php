@@ -79,6 +79,11 @@ class Session
      */
     private $studentLimit;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isValid;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -229,6 +234,18 @@ class Session
     public function setStudentLimit(int $studentLimit): self
     {
         $this->studentLimit = $studentLimit;
+
+        return $this;
+    }
+
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    public function setIsValid(?bool $isValid): self
+    {
+        $this->isValid = $isValid;
 
         return $this;
     }

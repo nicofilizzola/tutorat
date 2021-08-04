@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Subject;
 use App\Entity\User;
+use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\SubjectType;
+use Doctrine\ORM\Mapping\Entity;
 
 class AdminController extends AbstractController
 {
@@ -112,5 +116,31 @@ class AdminController extends AbstractController
         }
 
         return $this->redirectToRoute('app_users');
+    }
+
+    /**
+     * @Route("/add-subject", name="app_add-subject", methods={"GET", "POST"})
+     */
+    public function addSubject(SubjectRepository $subjectRepository, Request $request, EntityManagerInterface $em): Response
+    {  
+        $subject = new Subject;
+        $form = $this->createForm(SubjectType::class, $subject);
+        $form->handleRequest($request);
+        $formView = $form->createView();
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $subject->setFaculty($this->getUser()->getFaculty());
+
+            $em->persist($subject);
+            $em->flush();
+
+            $this->addFlash("success", "La matière " . $subject->getTitle() . " a bien été ajoutée !");
+            return $this->redirectToRoute('app_add-subject');
+        }
+
+        return $this->render('admin/subjects.html.twig', [
+            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
+            'form' => $formView
+        ]);
     }
 }

@@ -64,7 +64,8 @@ class RegistrationFormType extends AbstractType
                 'choices' => [
                         'Étudiant' => 1,
                         'Étudiant tuteur' => 2,
-                        'Administrateur' => 3
+                        'Secrétaire' => 3,
+                        'Administrateur' => 4
                 ],
                 'mapped' => false,
 

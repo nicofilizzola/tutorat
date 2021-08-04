@@ -1,0 +1,5 @@
+<h1>La demande de salle pour ton cours de tutorat a été validée !</h1>
+<p>Le secretariat de ton département a validé la demande de salle pour ton cours de tutorat.</p>
+<p>Salle : {{ session.classroom.name }}</p>
+<p>Date : {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
+<p>Maintenant il faut que tu cherches le badge de la salle en question au secrétariat pendant les horaires d'ouverture.</p>

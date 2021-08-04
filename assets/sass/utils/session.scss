@@ -340,7 +340,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 85%;
+      width: 65%;
       height: 100%;
 
       div {
@@ -354,7 +354,7 @@
       span {
          position: relative;
          color: #fff;
-         font-size: 40px;
+         font-size: 30px;
          font-weight: bold;
          transform: translateY(50px) rotateZ(15deg);
          transition: transform .75s ease-in-out, opacity .75s ease-in-out;

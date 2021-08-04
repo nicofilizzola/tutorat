@@ -121,5 +121,11 @@ class SessionController extends AbstractController
         ]);
     }
 
-
+    /**
+     * @Route("/session/{id<\d+>}/delete", name="app_session_delete", methods={"POST"})
+     */
+    public function delete(Request $request, EntityManagerInterface $em, Session $session): Response
+    {
+        return $this->redirectToRoute('app_session');
+    }
 }

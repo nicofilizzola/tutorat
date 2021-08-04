@@ -141,7 +141,7 @@
                             <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
                         </form>
 
-                        <button onclick="">Suprimmer cours</button>
+                        <button onclick="document.querySelector('#js-session-delete-{{ session.id }}').submit();">Suprimmer cours</button>
                         <form 
                             method="POST" 
                             hidden="hidden" 

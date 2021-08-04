@@ -145,7 +145,15 @@ class SessionController extends AbstractController
      */
     public function delete(Request $request, EntityManagerInterface $em, Session $session): Response
     {
+        if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_session');
+        }
 
+        $em->remove($session);
+        $em->flush();
+
+        $this->addFlash('success', 'Le cours a bien été suprimmé !');
         return $this->redirectToRoute('app_session');
     }
 }

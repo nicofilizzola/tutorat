@@ -106,8 +106,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $submittedToken = $request->request->get('token');
-        if ($this->isCsrfTokenValid('delete-user' . $user->getId(), $submittedToken)) {
+        if ($this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
 

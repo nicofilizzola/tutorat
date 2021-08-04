@@ -158,7 +158,7 @@ class SessionController extends AbstractController
     }
 
     /**
-     * @Route("/session/{id<\d+>}", name="app_session_view", methods={"POST"})
+     * @Route("/session/{id<\d+>}", name="app_session_view", methods={"GET"})
      */
     public function view(Session $session): Response
     {

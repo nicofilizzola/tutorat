@@ -4,6 +4,22 @@
 
 {% block body %}
 
+    <div>
+        <h2>{{ session.title }}</h2>
+        <h3>{{ session.subject }}</h3>
+        <h3>{{ session.subject.faculty.name }}</h3>
+        <p>{{ session.description }}</p>
+        <p>{{ session.tutor }}</p>
+        <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
+        <p>{{ session.faceToFace }}</p>
+        <p>{{ session.students | length ~ " / " ~ session.studentLimit}}</p>
 
+        {# HIDDEN IF NOT JOINED #}
+        {% if session.faceToFace == 1 %}
+            <p>{{ session.classroom.name }}</p>
+        {% else %}
+            <p>{{ session.link }}</p>
+        {% endif %}
+    </div>
 
 {% endblock %}

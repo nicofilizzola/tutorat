@@ -15,6 +15,8 @@ import './bootstrap';
 import { gsap } from 'gsap'
 import luge from '@waaark/luge'
 
+import { manageSuccesMessages } from "./functions/manageSuccesMessages.js";
+
 const domCache = {
    // Cursor
    cursor: document.querySelector('.cursor'),
@@ -72,6 +74,9 @@ cutPath.forEach(path => {
 
 domCache.customNavPathContainer.appendChild(customPathFragment)
 domCache.navPath.remove()
+
+// Success messages
+document.querySelector('p.success')?manageSuccesMessages(document.querySelector("p.success")):null
 
 // Get mouse postition
 document.addEventListener('mousemove', (mouse) => {

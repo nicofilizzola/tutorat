@@ -1,16 +1,25 @@
 import "../sass/utils/session.scss";
 
 import { gsap } from 'gsap'
-import { _forEachName } from "gsap/gsap-core";
 
-const domeCache = {
+const domCache = {
+   // Filtres
+   filterButton: document.querySelector('.filterButton'),
+   filterButtonArrow: document.querySelector('.filterButton svg'),
+   filterContent: document.querySelector('.filter--content'),
+
+   // Cartes de cours
    cards: document.querySelectorAll('.card--container .inscription'),
    hoveredCards: document.querySelectorAll('.card--hovered'),
    hoveredCardsBackground: document.querySelectorAll('.card--hovered .background'),
    hoveredCardsText: document.querySelectorAll('.card--hovered .texte span'),
 }
 
-domeCache.cards.forEach(card => {
+let state = {
+   isFilterPanelOpen: false
+}
+
+domCache.cards.forEach(card => {
    card.addEventListener('mouseenter', () => {
       // console.log(card.children[0].children[0].children)
       // gsap.to(card.children[0].children[1], .75, { xPercent: 100, ease: 'Expo3.easeOut' })
@@ -23,4 +32,21 @@ domeCache.cards.forEach(card => {
       // gsap.to(card.children[0].children[0].children, .3, { opacity: 0,  y: -50, rotationZ: -15, stagger: { each: .05, from: 'end'}, ease: 'Expo3.easeOut' })
       // gsap.to(card.children[0].children[0].children, 0, { opacity: 0, y: 50, rotationZ: 15, stagger: { each: .05, from: 'end' }, delay: .5 })
    })
+})
+
+domCache.filterButton.addEventListener('click', () => {
+   if (!state.isFilterPanelOpen) {
+      state.isFilterPanelOpen = true
+      domCache.filterButtonArrow.style.transform = "rotate(180deg)"
+      domCache.filterContent.style.opacity = 1
+      domCache.filterContent.style.top = "75px"
+      domCache.filterContent.style.pointerEvents = "all"
+   } else {
+      state.isFilterPanelOpen = false
+      domCache.filterButtonArrow.style.transform = "rotate(0deg)"
+      domCache.filterContent.style.opacity = 0
+      domCache.filterContent.style.top = "65px"
+      domCache.filterContent.style.pointerEvents = "none"
+   }
+
 })

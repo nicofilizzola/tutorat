@@ -19,7 +19,7 @@ function manageSuccesMessages(message) {
    gsap.to(successContainer, .75, { opacity: 0, ease: 'Power3.easeInOut', delay: 2 })
    setTimeout(() => {
       successContainer.remove()
-   }, 3000);
+   }, 2750);
 }
 
-export default manageSuccesMessages
+export { manageSuccesMessages }

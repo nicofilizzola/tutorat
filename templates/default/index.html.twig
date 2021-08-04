@@ -8,7 +8,7 @@
         <p>Vous êtes connecté !</p>
         <br><br><br>
         <a href="{{ path('app_logout') }}">Se déco</a><br>
-        <a href="{{ path('app_session') }}">Tableau de bord</a><br>
+        <a href="{{ path('app_sessions') }}">Tableau de bord</a><br>
 
         {% if "ROLE_TUTOR" not in app.user.roles %}
             <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>

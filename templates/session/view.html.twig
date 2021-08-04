@@ -1,4 +1,4 @@
-% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Hello DefaultController!{% endblock %}
 
@@ -23,7 +23,7 @@
         <p>{{ session.tutor }}</p>
         <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
         <p>{{ session.faceToFace }}</p>
-        <p>{{ session.students | length ~ " / " ~ session.studentLimit}}</p>
+        <p>{{ session.students | length ~ "/" ~ session.studentLimit}}</p>
 
         {# HIDDEN IF NOT JOINED #}
         {% if session.faceToFace == 1 %}

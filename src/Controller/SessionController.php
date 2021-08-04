@@ -3,17 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\Session;
-use App\Form\DateFilterType;
+use App\Entity\User;
 use App\Form\SessionType;
+use App\Form\DateFilterType;
+use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
 {
@@ -37,7 +42,7 @@ class SessionController extends AbstractController
     }
 
     /**
-     * @Route("/session", name="app_session", methods="GET")
+     * @Route("/sessions", name="app_sessions", methods="GET")
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
@@ -93,8 +98,16 @@ class SessionController extends AbstractController
     /**
      * @Route("/session/create", name="app_session_create", methods={"GET", "POST"})
      */
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
+        function getSecretaryMail($users){
+            foreach ($users as $user){
+                if (in_array("ROLE_SECRETARY", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
+                    return $user->getEmail();
+                }
+            }
+        }  
+
         if (!$this->isTutor()){
             return $this->redirectToRoute('app_login');
         }
@@ -115,9 +128,19 @@ class SessionController extends AbstractController
                 if (is_null($session->getClassroom())){
                     $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
                     return $this->redirectToRoute("app_session_create");
-                }
+                } 
+
                 $session->setIsValid(false); // needs further secretary validation
+                $secretaryMail = getSecretaryMail($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
+                $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+                    ->to($secretaryMail)
+                    ->subject('Demande de salle de cours')
+                    ->htmlTemplate('email/new-pending-session.html.twig')
+                    ->context(['link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
+                $mailer->send($email);
             } 
+
             if ($session->getFaceToFace() == 2){
                 if (is_null($session->getLink())){
                     $this->addFlash("danger", "Pas de lien de visio.");

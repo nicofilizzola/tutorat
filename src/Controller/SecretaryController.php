@@ -11,11 +11,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SecretaryController extends AbstractController
 {
+    private function isSecretary(){
+        if (!in_array("ROLE_SECRETARY", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() !== 2 || !$this->getUser()->isVerified()){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @Route("/sessions/pending", name="app_sessions_pending", methods="GET")
      */
     public function sessionsPending(SessionRepository $sessionRepository, ClassroomRepository $classroomRepository): Response
     {
+        if (!$this->getUser() || !$this->isSecretary()){
+            return $this->redirectToRoute('app_login');
+        }
+
         require_once("Requires/getSessions.php");
 
         return $this->render('secretary/sessions-pending.html.twig', [

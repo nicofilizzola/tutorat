@@ -205,7 +205,7 @@ class SessionController extends AbstractController
              $this->getUser(), 
              $session
         );
-        if (count($allSessions) >= 3){
+        if (!is_null($allSessions) && count($allSessions) >= 3){
             $sessions = [];
             for ($i = 0; $i < 2; $i++){
                 array_push($sessions, $allSessions[$i]);

@@ -24,7 +24,7 @@ function getSessions(SessionRepository $sessionRepository, array $criteria, User
     }
 
     for ($i = 0; $i < count($sessionsAfterToday); $i++) {
-        if ($session == $except){
+        if ($sessionsAfterToday[$i] == $except){
             unset($sessionsAfterToday[$i]);
             return array_values($sessionsAfterToday);
         }

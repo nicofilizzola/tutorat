@@ -183,15 +183,18 @@ class SessionController extends AbstractController
     /**
      * @Route("/session/{id<\d+>}", name="app_session_view", methods={"GET"})
      */
-    public function view(Session $session): Response
+    public function view(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository, Session $session): Response
     {
+        require_once('Requires/getSessions.php');
+
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_session');
         }
 
         return $this->render('session/view.html.twig', [
-            'session' => $session
+           'sessions' => getSessions($sessionRepository, $this->getUser(), true),
+           'currentSession' => $session
         ]);
     }
 }

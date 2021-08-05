@@ -27,7 +27,7 @@
                 <form action="{{ path('app_session_counter', {'id': session.id}) }}">
                     {% for classroom in classrooms %}
                         <label for="classroom-{{ classroom.name }}">{{ classroom.name }}</label>
-                        <input id="classroom-{{ classroom.name }}" name="classroom-{{ classroom.name }}" type="checkbox">
+                        <input id="classroom-{{ classroom.name }}" name="classroom" type="radio">
                     {% endfor %}
                     <input type="hidden" name="token" value="{{ csrf_token('session-counter' ~ session.id) }}"/>
                     <button>Valider</button>

@@ -37,7 +37,7 @@ class SecretaryController extends AbstractController
         require_once("Requires/getSessions.php");
 
         return $this->render('secretary/sessions-pending.html.twig', [
-           'sessions' => getSessions($sessionRepository, $this->getUser(), null), // null -> same as false
+           'sessions' => getSessions($sessionRepository, $this->getUser(), 0), // 0 -> same as false
            'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);
     }
@@ -75,8 +75,10 @@ class SecretaryController extends AbstractController
     /**
      * @Route("/session/{id<\d+>}/counter", name="app_session_counter")
      */
-    public function counterSession(Session $session, ClassroomRepository $classroomRepository): Response
+    public function counterSession(Session $session, ClassroomRepository $classroomRepository, Request $request): Response
     {
+        dd($request->request);
+
         return $this->render('secretary/manage.html.twig', [
             'session' => $session,
             'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])

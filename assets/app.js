@@ -77,6 +77,7 @@ domCache.navPath.remove()
 
 // Success messages
 document.querySelector('p.success')?manageSuccesMessages(document.querySelector("p.success")):null
+document.querySelector('p.danger')?manageSuccesMessages(document.querySelector("p.danger")):null
 
 // Get mouse postition
 document.addEventListener('mousemove', (mouse) => {

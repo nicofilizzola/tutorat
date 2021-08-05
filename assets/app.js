@@ -91,7 +91,7 @@ if (flashMessageCross) {
       gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
       setTimeout(() => {
          flashContainer.remove()
-      }, 2750);
+      }, 750);
    })
 }
 

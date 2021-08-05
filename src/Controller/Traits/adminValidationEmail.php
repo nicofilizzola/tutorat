@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controller\Traits;
+
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
@@ -27,7 +29,6 @@ trait adminValidationEmail{
             ->htmlTemplate('email/new-pending-user.html.twig')
             ->context([
                 'link' => $this->generateUrl('app_users', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'user' => $user
             ]);
         $mailer->send($email);
     }

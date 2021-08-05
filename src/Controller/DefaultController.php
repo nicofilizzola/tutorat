@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use adminValidationEmail;
+use App\Controller\Traits\adminValidationEmail;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use adminValidationEmail;
+use App\Controller\Traits\adminValidationEmail;
 use App\Entity\User;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;

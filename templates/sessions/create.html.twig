@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!
+{% endblock %}
+
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_sessions_create') }}
+	{{ encore_entry_link_tags('app_register') }}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+
+{% block body %}
+	<div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--container">
+                <div class="form--role">
+                    <span>Proposer un cours</span>
+                </div>
+
+                <div class="form--content">
+                    {{ form_start(form, {"attr": {"id": "session_form"}}) }}
+
+                    {{ form_row(form.title, {
+                            "label": "Titre",
+                            'attr': {'class':'hoveredItems'}
+                        }) }}
+
+                    {{ form_row(form.description, {
+                            "label": "Détails",
+                            'attr': {'class':'hoveredItems description', 'rows':'8'}
+                        }) }}
+
+                    <div class="collapse collapse_2">
+                        <div class="faceToFace--container">
+                            <label class="required">Environnement</label>
+                            <div id="session_faceToFace" class="hoveredItems">
+                                <div class="choice--container presentiel">
+                                    <label for="session_faceToFace_0" class="required notRequired">
+                                        <input type="radio" id="session_faceToFace_0" name="session[faceToFace]" required="required" value="1" checked="checked" />
+                                        <div class="choice">
+                                            <span>Présentiel</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="choice--container distanciel">
+                                    <label for="session_faceToFace_1" class="required notRequired">
+                                        <input type="radio" id="session_faceToFace_1" name="session[faceToFace]" required="required" value="2" />
+                                        <div class="choice">
+                                            <span>Distanciel</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="switchOption--container">
+                            {{ form_row(form.link, {
+                                "label": "Lien de la visio",
+                                'attr': {'class':'hoveredItems'}
+                            }) }}
+
+                            {{ form_row(form.classroom, {
+                                "label": "Salle de cours",
+                                'attr': {'class':'hoveredItems'}
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="collapse collapse_2">
+                        {{ form_row(form.studentLimit, {
+                            "label": "Limite d'étudiants",
+                            'attr': {'class':'hoveredItems', 'max':'10', 'min':'1', 'value':'1'}
+                        }) }}
+
+                        {{ form_row(form.subject, {
+                            "label": "Matière",
+                            'attr': {'class':'hoveredItems'}
+                        }) }}
+                    </div>
+
+                    {{ form_row(form.dateTime, {
+                        "label": "Date et heure",
+                        'attr': {'class':'hoveredItems'},
+                    }) }}
+
+                    <button type="submit" class="form--btn form--btn__propose hoveredItems">Proposer</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        {% include "components/_footer.html.twig" %}
+	</div>
+
+
+{% endblock %}

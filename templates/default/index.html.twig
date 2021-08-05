@@ -2,6 +2,10 @@
 
 {% block title %}Hello DefaultController!{% endblock %}
 
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
 
     {% if app.user %}
@@ -14,7 +18,7 @@
             <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
         {% endif %}
         {% if ("ROLE_TUTOR" in app.user.roles) and (app.user.isValid == 2) %}
-            <a href="{{ path('app_session_create') }}">Proposer un cours</a><br>
+            <a href="{{ path('app_sessions_create') }}">Proposer un cours</a><br>
         {% endif %}
         {% if ("ROLE_SECRETARY" in app.user.roles) and (app.user.isValid == 2) %}
             <a href="{{ path('app_sessions_pending') }}">Gérer les salles de cours</a><br>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use adminValidationEmail;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
@@ -18,6 +19,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class DefaultController extends AbstractController
 {
+    use adminValidationEmail;
+
     /**
      * @Route("/", name="app_home")
      */
@@ -32,15 +35,7 @@ class DefaultController extends AbstractController
      */
     public function becomeTutor(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
-        function getAdminMails($users){
-            $adminEmails = [];
-            foreach ($users as $user){
-                if (in_array("ROLE_ADMIN", $user->getRoles())){
-                    array_push($adminEmails, $user->getEmail());
-                }
-            }
-            return $adminEmails;   
-        }
+        require_once("Requires/getAdminsMails.php");
 
         if (!$this->getUser() || in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
             return $this->redirectToRoute('app_home');
@@ -59,14 +54,7 @@ class DefaultController extends AbstractController
             $this->get('security.token_storage')->setToken($token);
             $this->get('session')->set('_security_main', serialize($token));
 
-            $toAddresses = getAdminMails($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
-            $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-                ->to(...$toAddresses)
-                ->subject('Nouvelle demande de tuteur')
-                ->htmlTemplate('email/become-tutor.html.twig')
-                ->context(['link' => $this->generateUrl('app_users', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
-            $mailer->send($email);
+            $this->sendAdminsEmailForPendingUser($mailer, $userRepository);
 
             $this->addFlash('Success', 'Votre demande a bien été envoyée ! Vous aurez une réponse dans environ une semaine.');
             return $this->redirectToRoute('app_home');

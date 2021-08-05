@@ -10,53 +10,6 @@
 
 {% block body %}
 
-<<<<<<< HEAD
-    {% if (app.user in session.students) %}
-        {% set sessionViewMode = 1 %}
-        {# already joined #}
-    {% elseif (app.user == session.tutor) or (("ROLE_ADMIN" in app.user.roles) and (app.user.faculty == session.subject.faculty)) %}
-        {% set sessionViewMode = 2 %}
-        {# tutor author #}
-    {% else %}
-        {% set sessionViewMode = 3 %}
-        {# student joinable #}
-    {% endif %}
-
-    <div>
-        <h2>{{ session.title }}</h2>
-        <h3>{{ session.subject }}</h3>
-        <h3>{{ session.subject.faculty.name }}</h3>
-        <p>{{ session.description }}</p>
-        <p>{{ session.tutor }}</p>
-        <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
-        <p>{{ session.faceToFace }}</p>
-        <p>{{ session.students | length ~ "/" ~ session.studentLimit}}</p>
-
-        {# HIDDEN IF NOT JOINED #}
-        {% if session.faceToFace == 1 %}
-            <p>{{ session.classroom.name }}</p>
-        {% else %}
-            <p>{{ session.link }}</p>
-        {% endif %}
-
-        <button onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ session.id }}')">S'inscrire</button>
-        <button onclick="document.querySelector('#js-session-delete-{{ session.id }}').submit();">Suprimmer cours</button>
-
-        <form 
-            method="POST" 
-            hidden="hidden" 
-            action="{{ path("app_session_join", {"id": session.id}) }}"
-            id="js-join-session-{{ session.id }}">
-            <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ session.id) }}"/>
-        </form>
-        <form 
-            method="POST" 
-            hidden="hidden" 
-            action="{{ path("app_session_delete", {"id": session.id}) }}"
-            id="js-session-delete-{{ session.id }}">
-            <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ session.id) }}"/>
-        </form>
-=======
     <span id="navSessionTitle" hidden>{{ currentSession.title }}</span>
 
     <div class="smooth--container" data-lg-smooth>
@@ -123,7 +76,7 @@
                     <form 
                         method="POST" 
                         hidden="hidden" 
-                        action="{{ path("app_session") }}"
+                        action="{{ path("app_session_delete", {"id": currentSession.id}) }}"
                         id="js-session-delete-{{ currentSession.id }}">
                         <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ currentSession.id) }}"/>
                     </form>
@@ -185,7 +138,6 @@
             </div>
 
         </div>
->>>>>>> 8d6e45c46f24069d43d1d3a1d22f70a7786db982
     </div>
 
     

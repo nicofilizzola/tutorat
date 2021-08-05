@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use App\Repository\SessionRepository;
 use App\Repository\ClassroomRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,9 +76,30 @@ class SecretaryController extends AbstractController
     /**
      * @Route("/session/{id<\d+>}/counter", name="app_session_counter")
      */
-    public function counterSession(Session $session, ClassroomRepository $classroomRepository, Request $request): Response
+    public function counterSession(Session $session, ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
-        dd($request->request);
+        $selectedClassroom = $request->request->get('classroom-for-' . $session->getId());
+        if (is_null($selectedClassroom)){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_sessions_pending');
+        }
+
+        $oldClassroom = $session->getClassroom();
+        $session->setClassroom($classroomRepository->findOneBy(['id' => $selectedClassroom]));
+        $em->persist($session);
+        $em->flush();
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+            ->to($session->getTutor()->getEmail())
+            ->subject('Salle de cours changée')
+            ->htmlTemplate('email/session-countered.html.twig')
+            ->context([
+                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'session' => $session,
+                'oldClassroom' => $oldClassroom,
+            ]);
+        $mailer->send($email);
 
         return $this->render('secretary/manage.html.twig', [
             'session' => $session,

@@ -1,0 +1,6 @@
+<h1>La salle pour ton cours de tutorat a été changée !</h1>
+<p>La salle que tu as demandé initialement n'est pas disponible pour le créneau proposé, mais une salle différente pourra être mise à disposition.</p>
+<p>Salle demandée (indisponible) : {{ oldClassroom.name }}</p>
+<p>Salle proposée (disponible): {{ session.classroom.name }}</p> 
+<p>Date : {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
+<p>Maintenant il faut que tu cherches le badge de la salle en question au secrétariat pendant les horaires d'ouverture.</p>

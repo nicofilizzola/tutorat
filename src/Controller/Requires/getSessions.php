@@ -1,10 +1,11 @@
 <?php
 
 use App\Entity\User;
+use App\Entity\Session;
 use App\Repository\SessionRepository;
 
-function getSessions(SessionRepository $sessionRepository, User $user, $isValid){
-    $allSessions = $sessionRepository->findBy(['isValid' => $isValid], ['id' => 'ASC']);
+function getSessions(SessionRepository $sessionRepository, array $criteria, User $user, Session $except = null){
+    $allSessions = $sessionRepository->findBy($criteria, ['id' => 'ASC']);
     $facultySessions = [];
     foreach ($allSessions as $session) {
         if ($session->getSubject()->getFaculty() == $user->getFaculty()){
@@ -17,5 +18,15 @@ function getSessions(SessionRepository $sessionRepository, User $user, $isValid)
             array_push($sessionsAfterToday, $session);
         }
     }
-    return $sessionsAfterToday;
+
+    if (is_null($except)){
+        return $sessionsAfterToday;
+    }
+
+    for ($i = 0; $i < count($sessionsAfterToday); $i++) {
+        if ($session == $except){
+            unset($sessionsAfterToday[$i]);
+            return array_values($sessionsAfterToday);
+        }
+    }
 }

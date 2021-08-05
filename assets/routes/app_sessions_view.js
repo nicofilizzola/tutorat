@@ -1,4 +1,4 @@
-import "../sass/utils/session_view.scss";
+import "../sass/utils/sessions_view.scss";
 
 // import { gsap } from 'gsap'
 

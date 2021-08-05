@@ -38,7 +38,11 @@ class SecretaryController extends AbstractController
         require_once("Requires/getSessions.php");
 
         return $this->render('secretary/sessions-pending.html.twig', [
-           'sessions' => getSessions($sessionRepository, $this->getUser(), 0), // 0 -> same as false
+           'sessions' => getSessions(
+               $sessionRepository, 
+               ['isValid' => 0], // 0 -> same as false
+               $this->getUser()
+            ), 
            'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);
     }
@@ -67,6 +71,7 @@ class SecretaryController extends AbstractController
             ]);
         $mailer->send($email);
 
+        $this->addFlash('success', 'La demande de salle a bien été validée !');
         return $this->redirectToRoute('app_sessions_pending', [
             'session' => $session,
             'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
@@ -84,8 +89,9 @@ class SecretaryController extends AbstractController
             return $this->redirectToRoute('app_sessions_pending');
         }
 
-        $oldClassroom = $session->getClassroom();
+        $oldClassroom = $session->getClassroom()->getName();
         $session->setClassroom($classroomRepository->findOneBy(['id' => $selectedClassroom]));
+        $session->setIsValid(true);
         $em->persist($session);
         $em->flush();
 
@@ -101,7 +107,8 @@ class SecretaryController extends AbstractController
             ]);
         $mailer->send($email);
 
-        return $this->render('secretary/manage.html.twig', [
+        $this->addFlash('success', 'La changement de salle a bien été transmis !');
+        return $this->redirectToRoute('app_sessions_pending', [
             'session' => $session,
             'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);

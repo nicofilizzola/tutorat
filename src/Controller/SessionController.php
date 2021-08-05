@@ -70,21 +70,25 @@ class SessionController extends AbstractController
             }
         }
 
-        return $this->render('session/index.html.twig', [
-           'sessions' => getSessions($sessionRepository, $this->getUser(), true),
+        return $this->render('sessions/index.html.twig', [
+           'sessions' => getSessions(
+               $sessionRepository, 
+               ['isValid' => true], 
+               $this->getUser()
+            ),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
            'tutors' => getTutors($userRepository, $this->getUser()),
         ]);
     }
 
     /**
-     * @Route("/session/{id<\d+>}/join", name="app_session_join", methods={"POST"})
+     * @Route("/sessions/{id<\d+>}/join", name="app_sessions_join", methods={"POST"})
      */
     public function join(EntityManagerInterface $em, Session $session, Request $request): Response
     {
         if (!$this->sessionIsJoinable($session) || !$this->isCsrfTokenValid('join-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_session_view', ['session' => $session]);
+            return $this->redirectToRoute('app_sessions_view', ['session' => $session]);
         }
 
         $session->addStudent($this->getUser());
@@ -92,11 +96,11 @@ class SessionController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
-        return $this->redirectToRoute('app_session_view', ['session' => $session]);
+        return $this->redirectToRoute('app_sessions_view', ['session' => $session]);
     }
 
     /**
-     * @Route("/session/create", name="app_session_create", methods={"GET", "POST"})
+     * @Route("/sessions/create", name="app_sessions_create", methods={"GET", "POST"})
      */
     public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
@@ -120,14 +124,14 @@ class SessionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             if (!isset($_POST['session']['faceToFace'])){
                 $this->addFlash("danger", "Votre requête n'a pas pu être traitée.");
-                return $this->redirectToRoute("app_session_create"); 
+                return $this->redirectToRoute("app_sessions_create"); 
             }
             $ftf = $_POST['session']['faceToFace'];
             $session->setFaceToFace($ftf == 1 ? 1 : 2);
             if ($session->getFaceToFace() == 1){
                 if (is_null($session->getClassroom())){
                     $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
-                    return $this->redirectToRoute("app_session_create");
+                    return $this->redirectToRoute("app_sessions_create");
                 } 
 
                 $session->setIsValid(false); // needs further secretary validation
@@ -144,7 +148,7 @@ class SessionController extends AbstractController
             if ($session->getFaceToFace() == 2){
                 if (is_null($session->getLink())){
                     $this->addFlash("danger", "Pas de lien de visio.");
-                    return $this->redirectToRoute("app_session_create");
+                    return $this->redirectToRoute("app_sessions_create");
                 }
                 $session->setIsValid(true);
             } 
@@ -154,46 +158,64 @@ class SessionController extends AbstractController
             $em->persist($session);
             $em->flush();
 
-            $this->addFlash('success', 'Ton cours de ' . $session->getSubject() . ' a bien été proposé !');
-            return $this->redirectToRoute("app_session_create");
+            $flashMessage = $session->getFaceToFace() == 1 ? " La demande de salle a ainsi été envoyée au secrétariat (Tu recevras une réponse par mail)." : "";
+            $this->addFlash('success', 'Ton cours de ' . $session->getSubject() . ' a bien été proposé !' . $flashMessage);
+            return $this->redirectToRoute("app_sessions");
         }
 
-        return $this->render('session/create.html.twig', [
+        return $this->render('sessions/create.html.twig', [
             'form' => $formView
         ]);
     }
 
     /**
-     * @Route("/session/{id<\d+>}/delete", name="app_session_delete", methods={"POST"})
+     * @Route("/sessions/{id<\d+>}/delete", name="app_sessions_delete", methods={"POST"})
      */
     public function delete(Request $request, EntityManagerInterface $em, Session $session): Response
     {
         if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_session');
+            return $this->redirectToRoute('app_sessions');
         }
 
         $em->remove($session);
         $em->flush();
 
         $this->addFlash('success', 'Le cours a bien été suprimmé !');
-        return $this->redirectToRoute('app_session');
+        return $this->redirectToRoute('app_sessions');
     }
 
     /**
-     * @Route("/session/{id<\d+>}", name="app_session_view", methods={"GET"})
+     * @Route("/sessions/{id<\d+>}", name="app_sessions_view", methods={"GET"})
      */
-    public function view(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository, Session $session): Response
+    public function view(SessionRepository $sessionRepository, Session $session): Response
     {
         require_once('Requires/getSessions.php');
 
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_session');
+            return $this->redirectToRoute('app_sessions');
         }
 
-        return $this->render('session/view.html.twig', [
-           'sessions' => getSessions($sessionRepository, $this->getUser(), true),
+        $allSessions = getSessions(
+            $sessionRepository, [
+                 'isValid' => true,
+                 'subject' => $session->getSubject()
+             ], 
+             $this->getUser(), 
+             $session
+        );
+        if (count($allSessions) >= 3){
+            $sessions = [];
+            for ($i = 0; $i < 2; $i++){
+                array_push($sessions, $allSessions[$i]);
+            }
+        } else {
+            $sessions = $allSessions;
+        }
+
+        return $this->render('sessions/view.html.twig', [
+           'sessions' => $sessions,
            'currentSession' => $session
         ]);
     }

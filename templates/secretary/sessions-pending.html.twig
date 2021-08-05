@@ -27,8 +27,8 @@
                 <form action="{{ path('app_session_counter', {'id': session.id}) }}" method="POST">
                     {% for classroom in classrooms %}
                         {% if session.classroom.id != classroom.id %}
-                            <label for="classroom-for-{{ classroom.name }}">{{ classroom.name }}</label>
-                            <input id="classroom-for-{{ classroom.name }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
+                            <label for="classroom-{{ classroom.id }}-for-{{ session.id }}">{{ classroom.name }}</label>
+                            <input id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
                         {% endif %}
                     {% endfor %}
                     <input type="hidden" name="token" value="{{ csrf_token('session-counter' ~ session.id) }}"/>

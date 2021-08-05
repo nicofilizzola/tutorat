@@ -98,9 +98,6 @@
                                         <br>
                                         <span class="subject">{{ session.subject }}</span>
                                     </div>
-                                    {# <div class="description">
-                                        <span>{{ session.description }}</span>
-                                    </div> #}
                                     <div class="text">
                                         <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
                                         <br>
@@ -120,7 +117,7 @@
                         </button>
                         <form 
                             id="js-session-view-{{ session.id }}"
-                            action="{{ path('app_session_view', {"id": session.id}) }}" 
+                            action="{{ path('app_sessions_view', {"id": session.id}) }}" 
                             method="GET"
                             display="none">
                         </form>

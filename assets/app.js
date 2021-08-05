@@ -15,7 +15,7 @@ import './bootstrap';
 import { gsap } from 'gsap'
 import luge from '@waaark/luge'
 
-import { manageSuccesMessages } from "./functions/manageSuccesMessages.js";
+import { manageFlashMessages } from "./functions/manageFlashMessages.js";
 
 const domCache = {
    // Cursor
@@ -76,8 +76,24 @@ domCache.customNavPathContainer.appendChild(customPathFragment)
 domCache.navPath.remove()
 
 // Success messages
-document.querySelector('p.success')?manageSuccesMessages(document.querySelector("p.success")):null
-document.querySelector('p.danger')?manageSuccesMessages(document.querySelector("p.danger")):null
+let flashMessageCross = null
+if (document.querySelector("p.success")) {
+   manageFlashMessages(document.querySelector("p.success"))
+   flashMessageCross = document.querySelector('.flash--container .cross')
+}
+if (document.querySelector("p.danger")) {
+   manageFlashMessages(document.querySelector("p.danger"))
+   flashMessageCross = document.querySelector('.flash--container .cross')
+}
+if (flashMessageCross) {
+   flashMessageCross.addEventListener('click', () => {
+      const flashContainer = document.querySelector('.flash--container')
+      gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
+      setTimeout(() => {
+         flashContainer.remove()
+      }, 750);
+   })
+}
 
 // Get mouse postition
 document.addEventListener('mousemove', (mouse) => {

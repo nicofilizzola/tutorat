@@ -296,7 +296,7 @@ a {
 }
 
 // flash message
-.success--container {
+.flash--container {
    position: fixed;
    display: flex;
    flex-direction: column;
@@ -309,13 +309,23 @@ a {
    z-index: 5;
 
    .text--container {
+      position: relative;
       width: 90vw;
       max-width: 400px;
       padding: 10px 15px;
-      border: 1px solid #000;
+      border: 1px solid #fff;
       border-radius: 3px;
-      background-color: #fff;
+      background-color: $grey;
       text-align: center;
+      color: #fff;
+   }
+
+   .cross {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 5px 10px;
+      cursor: pointer;
    }
 
    .background {
@@ -324,7 +334,7 @@ a {
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: $lessOpacityGrey;
+      background-color: rgba($grey, .1);
       z-index: -1;
    }
 }

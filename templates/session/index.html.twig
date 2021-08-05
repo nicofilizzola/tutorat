@@ -68,11 +68,7 @@
             <div class="session--container">
                 {% for session in sessions %}
                     <div class="card--container">
-<<<<<<< HEAD
-                        <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
-=======
                         <button class="inscription hoveredItems" onclick="document.getElementById('js-session-view-{{ session.id }}').submit();">
->>>>>>> 16df28e0ec9fbdbe616619a642861ec0570a25e5
                             <div class="card--hovered">
                                 <div class="text">
                                     <div>
@@ -108,7 +104,7 @@
                                     <div class="text">
                                         <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
                                         <br>
-                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</b></span>
+                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
                                     </div>
                                 </div>
                                 <div class="card--participants">
@@ -116,13 +112,10 @@
                                     {% if participantsLength == 0 %}
                                         {% set participantsMessage = "NOUVEAU" %}
                                     {% else %}
-                                        {% set participantsMessage = participantsLength ~ "/" ~ session.studentLimit %}
+                                        {% set participantsMessage = participantsLength ~ "/" ~ session.studentLimit ~ " participant.es" %}
                                     {% endif %}
                                     <span>{{ participantsMessage }}</span>
                                 </div>
-                                {% for sheesh in session.participants %}
-                                    <span>{{ sheesh }}</span>
-                                {% endfor %}
                             </div>
                         </button>
                         <form 

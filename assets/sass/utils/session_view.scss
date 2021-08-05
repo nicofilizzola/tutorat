@@ -1,160 +1,130 @@
 @import 'var';
 
-.global--container {
+.cours--container {
    display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   width: 100vw;
-}
-
-// Filtres
-.filter--container {
-   position: relative;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   width: 90%;
-   max-width: 1000px;
+   flex-direction: row;
+   justify-content: space-around;
+   align-items: flex-start;
    margin-top: 100px;
+   width: 95%;
+   max-width: 1200px;
 
-   input,
-   select {
-      padding: 15px 10px;
-      // margin-left: 15px;
-      
-      @media only screen and (max-width: 600px) {
-         padding: 25px 20px;
-      }
-   }
-
-   button {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 15%;
-      min-width: 125px;
-      padding: 15px;
-      outline: none;
-      border: none;
-      border-bottom: 1px solid $darkerRed;
-      background-color: #fff;
-      color: $darkerRed;
-      font-weight: bold;
-      font-size: 1em;
-      border-radius: 2px;
-      cursor: pointer;
-      overflow: hidden;
-
-      svg {
-         transform: rotate(0deg);
-         transition: transform .5s ease-in-out;
-
-         path {
-            stroke: $darkerRed;
-         }
-      }
-   }
+   // margin-left: 200px;
+   // background-color: red;
 }
 
-.filter--content {
-   position: absolute;
+.cours--content {
    display: flex;
    flex-direction: column;
    justify-content: space-between;
    align-items: flex-start;
-   flex-wrap: wrap;
-   width: fit-content;
-   background-color: hsl(0, 65%, 95%);
-   border: 1px solid $darkerRed;
-   border-radius: 2px;
-   max-width: 100%;
-   padding: 15px 20px;
-   top: 65px;
-   left: 50%;
-   transform: translateX(-50%);
-   opacity: 0;
-   user-select: none;
-   pointer-events: none;
-   z-index: 2;
-   transition: opacity .5s ease-in-out, top .5s ease-in-out;
+   width: 90%;
+   max-width: 800px;
+}
 
-   .categorie {
-      margin-top: 15px;
+.text {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+   // width: 65%;
+   // height: 100%;
+}
+
+.titre {
+   color: $primaryRed;
+   margin: 0;
+   font-size: 3em;
+}
+
+.subject {
+   margin-top: -10px;
+   font-weight: bold;
+}
+
+.tutor {
+   span {
+      font-weight: bold;
+      color: $darkerRed;
    }
 }
 
-.list {
+.description {
+   margin: 25px 0;
+   text-align: justify;
+   font-weight: 300;
    width: 100%;
+   max-width: 500px;
+}
+
+.localisation {
+   .link {
+      color: $darkerRed;
+   }
+}
+
+.form--button {
+   padding: 15px 40px;
+   margin-top: 25px;
+   outline: none;
+   border: none;
+   cursor: pointer;
+   background-color: rgba($primaryRed, .5);
+   color: #fff;
+   font-weight: bold;
+   font-size: 1.2em;
+   border-radius: 2px;
+   overflow: hidden;
+   position: relative;
+
+   &:before {
+      content: "";
+      width: 24px;
+      height: 24px;
+      background: $primaryRed;
+      border-radius: 50%;
+      position: absolute;
+      transition: .5s ease-out;
+      z-index: -1;
+
+      top: calc(50% - 12px);
+      left: calc(50% - 12px);
+      transform: scale(0);
+   }
+
+   &:hover:before {
+      transform: scale(15);
+   }
+}
+
+
+.suggestions--container {
    display: flex;
-   flex-direction: row;
+   flex-direction: column;
    justify-content: flex-start;
-   flex-wrap: wrap;
+   align-items: flex-start;
+   overflow-y: scroll;
+   height: 80%;
+   // background-color: green;
 
-   input[type=checkbox] {
+   .suggestion--titre {
+      font-weight: bold;
+      margin-bottom: 15px;
+   }
+
+   @include desktop-sm() {
       display: none;
-
-      &:checked {
-         + div {
-            background-color: $primaryRed;
-
-            span {
-               color: #fff;
-               // transition: color .2s ease-in-out;
-
-               &:before {
-                  // bottom: 35px;
-                  // transform: scaleY(2.2);
-                  // transition: transform .25s ease-in-out;
-                  // transform-origin: top;
-               }
-            }
-         }
-      }
    }
    
-   label {
-      display: flex;
-      border: 1px solid #000;
-      border-radius: 2px;
-      user-select: none;
-      cursor: pointer;
-      margin: 0 15px 15px 0;
-      
-      div {
-         background-color: #fff;
-         padding: 10px 10px 8px 10px;
-         width: 100%;
-         text-align: center;
-
-         span {
-            font-weight: 300;
-            line-height: 0;
-         }
-      }
-
+   @media only screen and (orientation: portrait) {
+      display: none;
    }
 }
 
-// Cours
-.session--container {
-   display: flex;
-   flex-direction: row;
-   justify-content: space-evenly;
-   flex-wrap: wrap;
-   width: 90%;
-   max-width: 1600px;
-   margin: 3% auto;
-   // background-color: green;
-}
-
-.card--container {
-   // margin-bottom: 5%;
-   max-width: 410px;
-   width: 90%;
-   margin: 0 25px 75px 25px;
+.card--container__minify {
+   width: 250px;
+   margin: 0 25px 25px 0;
 }
 
 .inscription {
@@ -166,7 +136,7 @@
    padding: 0;
    cursor: pointer;
    width: 100%;
-   height: 150px;
+   height: 100px;
    transform: scale(.97);
    transition: transform .25s ease-in-out;
    
@@ -255,7 +225,6 @@
    flex-direction: column;
    justify-content: center;
    margin: auto;
-   // padding: 30px;
 }
 
 .card--content {
@@ -271,54 +240,7 @@
    }
 
    .title {
-      font-size: 2.5em;
-      font-weight: bold;
-   }
-
-   .description {
-      text-align: justify;
-      font-weight: 100;
-   }
-
-   .name {
-      color: $darkerRed;
-      font-weight: 600;
-   }
-   
-   span {
-      font-size: 1em;
-   }
-}
-
-.card--participants {
-   position: absolute;
-   bottom: -40px;
-   right: -15%;
-   padding: 15px;
-   margin: 0;
-   border: 1px solid #000;
-   border-radius: 2px;
-   background-color: #fff;
-   z-index: 3;
-   overflow: hidden;
-
-   &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      transform: translateY(-100%);
-      transition: transform .5s ease-in-out;
-      background-color: #000;
-      z-index: -1;
-   }
-   
-   span {
-      font-size: 20px;
-      color: #000;
-      transition: color .5s ease-in-out;
+      font-size: 1.7em;
       font-weight: bold;
    }
 }
@@ -354,7 +276,7 @@
       span {
          position: relative;
          color: #fff;
-         font-size: 30px;
+         font-size: 17px;
          font-weight: bold;
          transform: translateY(50px) rotateZ(15deg);
          transition: transform .75s ease-in-out, opacity .75s ease-in-out;

@@ -1,0 +1,20 @@
+@import 'var';
+
+.subjects--container {
+   max-width: 900px !important;
+   margin-top: 100px !important;
+   margin-bottom: 100px;
+
+   .content {
+      width: 22.5% !important;
+   }
+   
+   .manage {
+      width: 10% !important;
+      justify-content: center !important;
+   }
+
+   .title {
+      border-left: none;
+   }
+}

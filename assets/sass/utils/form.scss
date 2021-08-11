@@ -18,7 +18,7 @@
    justify-content: space-between;
    width: 100%;
    margin-bottom: 50px;
-   border-bottom: 1px solid $lessOpacityGrey;
+   border-bottom: 1px solid rgba($grey, .3);
    
    a {
       width: 50%;
@@ -37,7 +37,7 @@
    }
 
    .notActive {
-      background-color: $lessOpacityGrey;
+      background-color: rgba($grey, .3);
       color: rgba(#000, .3);
       transition: color .25s ease-out;
       cursor: pointer;

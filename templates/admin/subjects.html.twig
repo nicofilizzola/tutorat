@@ -3,16 +3,75 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block stylesheets %}
+    {{ encore_entry_link_tags('app_add-subject') }}
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
 
-{% block body %}
-    {{ form_start(form) }}
-        {{ form_row(form) }}
-        <button type="submit">Ajouter</button>
-    {{ form_end(form) }}
 
-    {% for subject in subjects %}
-        {{ subject }}
-    {% endfor %}
+{% block body %}
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--container">
+                <div class="form--content">
+                    {{ form_start(form) }}
+                        <div class="collapse collapse_3">
+                            {{ form_row(form.title, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.semester, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.short, {'attr': {'class':'hoveredItems'}}) }}
+                        </div>
+                        <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <div class="subjects--container">
+                {% set YA_ENCORE_UN_COURS_BRO = false %}
+                {% for subject in subjects %}
+                    <div class="subjectContent--container">
+                        <div class="content title">
+                            <span>{{ subject.title | upper }}</span>
+                        </div>
+
+                        <div class="content semester">
+                            <span>Semestre {{ subject.semester }}</span>
+                        </div>
+                        
+                        <div class="content faculty">
+                            <span>{{ subject.faculty.name | capitalize }}</span>
+                        </div>
+                        
+                        {# Nombre de cours où le module est utilisé #}
+                        <div class="content statut">
+                            {% if YA_ENCORE_UN_COURS_BRO == true %}
+                                <span>Module utilisé dans x cours</span>
+                            {% else %}
+                                <span>Module non utilisé</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="content manage">
+                            {% if YA_ENCORE_UN_COURS_BRO %}
+                                <button title="Il y a au moins un cours qui existe avec ce module, suppression impossible." disabled class="hoveredItems refuse disabled">
+                                    <span>🗑️</span>
+                                </button>
+                            {% else %}
+                                <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
+                                    <span>🗑️</span>
+                                </button>
+                                {# <form 
+                                    id="js-subject-delete-form-{{ subject.id }}"
+                                    display="none" 
+                                    hidden
+                                    action="{{ path('app_subject_delete', {"id": subject.id}) }}" 
+                                    method="POST">
+                                    <input type="hidden" name="token" value="{{ csrf_token('delete-subject' ~ subject.id) }}"/>
+                                </form> #}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

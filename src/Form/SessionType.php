@@ -101,15 +101,15 @@ class SessionType extends AbstractType
                     ])
                 ]
             ])
-            ->add('timeFormat', ChoiceType::class, [
-                'choices' => [
-                    '30min' => 1,
-                    '45min' => 2,
-                    '1h' => 3,
-                ],
-                'expanded' => true,
-                'multiple' => false
-            ])
+            // ->add('timeFormat', ChoiceType::class, [
+            //     'choices' => [
+            //         '30min' => 1,
+            //         '45min' => 2,
+            //         '1h' => 3,
+            //     ],
+            //     'expanded' => true,
+            //     'multiple' => false
+            // ])
             ->add('comment', TextareaType::class, [
                 'required' => false
             ])

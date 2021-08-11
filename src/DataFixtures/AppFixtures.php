@@ -56,6 +56,18 @@ class AppFixtures extends Fixture
             $user->updateTimestamp();
             $user->setFaculty($faculty);
 
+            $user = new User();
+            $user->setFirstName('Tutor');
+            $user->setLastName($i);
+            $user->setEmail('Tutor'. $i .'@iut-tarbes.fr');
+            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR"]);
+            $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
+            $user->setYear(1);
+            $user->setIsValid(2);
+            $user->setIsVerified(1);
+            $user->updateTimestamp();
+            $user->setFaculty($faculty);
+
             for ($j = 0; $j < 5; $j++) {
                 $user = new User();
                 $user->setFirstName('User' . $j);
@@ -63,7 +75,7 @@ class AppFixtures extends Fixture
                 $user->setEmail('user'. $j . $i .'@iut-tarbes.fr');
                 $user->setRoles(["ROLE_STUDENT"]);
                 $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
-                $user->setYear(4);
+                $user->setYear(1);
                 $user->setIsValid(2);
                 $user->setIsVerified(1);
                 $user->updateTimestamp();

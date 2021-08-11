@@ -90,7 +90,7 @@ class SessionType extends AbstractType
             ->add('studentLimit', null, [
                 'constraints' => [
                     new LessThanOrEqual([
-                        'value' => 10,
+                        'value' => 15,
                         'message' => "Les cours de tutorat ne peuvent compter plus de {{ compared_value }} personnes en plus du tuteur."
                     ]),
                     new Positive([

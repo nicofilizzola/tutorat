@@ -62,10 +62,16 @@
 
                         </div>
                     </div>
+
+                    {# MUTED TEXT #}
+                    <span class="mutedText">Si tu souhaites faire ton cours de tutorat en présentiel, le secrétariat sera prévenu automatiquement par mail afin de t'assigner une salle.</span>
+                    <span class="mutedText">Une fois que tu auras reçu ta réponse par mail, tu pourras chercher le badge/clé de la salle au secrétariat pendant les horaires d'ouverture.</span>
+
+
                     <div class="collapse collapse_3">
                         {{ form_row(form.studentLimit, {
                             "label": "Limite d'étudiants",
-                            'attr': {'class':'hoveredItems', 'max':'10', 'min':'1', 'value':'1'}
+                            'attr': {'class':'hoveredItems', 'max':'15', 'min':'1', 'value':'1'}
                         }) }}
 
                         {{ form_row(form.subject, {
@@ -118,10 +124,6 @@
                             'rows':'5'
                         }
                     }) }}
-
-                    {# MUTED TEXT #}
-                    <p>Si tu souhaites faire ton cours de tutorat en présentiel, le secrétariat sera prévenu automatiquement par mail afin de t'assigner une salle.</p>
-                    <p>Une fois que tu auras reçu ta réponse par mail, tu pourras chercher le badge/clé de la salle au secrétariat pendant les horaires d'ouverture.</p>
 
                     <button type="submit" class="form--btn form--btn__propose hoveredItems">Proposer</button>
                     {{ form_end(form) }}

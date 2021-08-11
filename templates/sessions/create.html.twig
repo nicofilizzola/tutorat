@@ -60,10 +60,6 @@
                                 'attr': {'class':'hoveredItems'}
                             }) }}
 
-                            {{ form_row(form.classroom, {
-                                "label": "Salle de cours",
-                                'attr': {'class':'hoveredItems'}
-                            }) }}
                         </div>
                     </div>
                     <div class="collapse collapse_2">
@@ -81,6 +77,19 @@
                     {{ form_row(form.dateTime, {
                         "label": "Date et heure",
                         'attr': {'class':'hoveredItems'},
+                    }) }}
+
+                    {{ form_row(form.timeFormat, {
+                        "label": "Format de cours",
+                        
+                    }) }}
+
+                    {{ form_row(form.comment, {
+                        "label": "Commentaire",
+                        "help": "Si tu as un message ou une demande spécifique à transmettre auprès du département, tu peux l'indiquer ici.",
+                        "attr": {
+                            "placeholder": "Nous avons besoin d'une salle avec des ordinateurs parce que..."
+                        }
                     }) }}
 
                     {# MUTED TEXT #}

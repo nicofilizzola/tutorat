@@ -118,7 +118,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/add-subject", name="app_add-subject", methods={"GET", "POST"})
+     * @Route("/subject", name="app_subject", methods={"GET", "POST"})
      */
     public function addSubject(SubjectRepository $subjectRepository, Request $request, EntityManagerInterface $em): Response
     {  
@@ -134,7 +134,7 @@ class AdminController extends AbstractController
             $em->flush();
 
             $this->addFlash("success", "La matière " . $subject->getTitle() . " a bien été ajoutée !");
-            return $this->redirectToRoute('app_add-subject');
+            return $this->redirectToRoute('app_subject');
         }
 
         return $this->render('admin/subjects.html.twig', [

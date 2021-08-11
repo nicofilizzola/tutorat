@@ -2,18 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Subject;
 use App\Entity\User;
-use App\Repository\SubjectRepository;
+use App\Entity\Subject;
+use App\Form\SubjectType;
 use App\Repository\UserRepository;
+use App\Repository\SessionRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\SubjectType;
-use App\Repository\SessionRepository;
-use Doctrine\ORM\Mapping\Entity;
 
 class AdminController extends AbstractController
 {
@@ -149,12 +148,11 @@ class AdminController extends AbstractController
      */
     public function sessionsLog(SessionRepository $sessionRepository, EntityManagerInterface $em): Response
     {  
-        require_once('Requires/getFacultySessions.php');
-        
+        require_once("Requires/getSessions.php");
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => getFacultySessions(
                 $sessionRepository, 
-                [], 
+                ['isValid' => true], 
                 $this->getUser()
              ),
         ]);

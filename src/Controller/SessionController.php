@@ -46,7 +46,7 @@ class SessionController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
-        require_once('Requires/getFacultySessionsAfterToday.php');
+        require_once('Requires/getSessions.php');
         function getTutors($userRepository, $user){
             $facultyUsers = $userRepository->findBy(['faculty' => $user->getFaculty()]);
             $tutors = [];
@@ -191,7 +191,7 @@ class SessionController extends AbstractController
      */
     public function view(SessionRepository $sessionRepository, Session $session): Response
     {
-        require_once('Requires/getFacultySessionsAfterToday.php');
+        require_once('Requires/getSessions.php');
 
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $this->addFlash('danger', 'Une erreur est survenue.');

@@ -55,14 +55,6 @@ class SessionType extends AbstractType
                     ])
                 ]
             ])
-            // ->add('classroom', EntityType::class, [
-            //     'class' => Classroom::class,
-            //     'choice_label' => "name",
-            //     'query_builder' => function (ClassroomRepository $classroomRepository) {
-            //         return $classroomRepository->createQueryBuilder('c')
-            //             ->where('c.faculty = ' . $this->security->getUser()->getFaculty()->getId());
-            //     }
-            // ]) // !faceToFace ? classroom == null
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,
                 'query_builder' => function (SubjectRepository $subjectRepository) {
@@ -101,15 +93,6 @@ class SessionType extends AbstractType
                     ])
                 ]
             ])
-            // ->add('timeFormat', ChoiceType::class, [
-            //     'choices' => [
-            //         '30min' => 1,
-            //         '45min' => 2,
-            //         '1h' => 3,
-            //     ],
-            //     'expanded' => true,
-            //     'multiple' => false
-            // ])
             ->add('comment', TextareaType::class, [
                 'required' => false
             ])

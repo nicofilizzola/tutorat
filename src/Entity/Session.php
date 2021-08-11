@@ -169,7 +169,7 @@ class Session
         return $this->participants;
     }
 
-    public function setParticipants(?array $participants): self
+    public function icipants(?array $participants): self
     {
         $this->participants = $participants;
 

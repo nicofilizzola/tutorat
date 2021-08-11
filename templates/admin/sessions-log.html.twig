@@ -10,6 +10,39 @@
 {% block body %}
     {% for session in sessions %}
         <p>{{ session.title }}</p>
+
+        <p>{{ session.tutor }}</p>
+
+        <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
+
+        {% if session.timeFormat == 1 %}
+            {% set timeFormatMessage = "30 minutes" %}
+        {% elseif session.timeFormat == 2 %}
+            {% set timeFormatMessage = "45 minutes" %}
+        {% else %}
+            {% set timeFormatMessage = "1 heure" %}
+        {% endif %}
+        <p>{{ timeFormatMessage }}</p>
+
+        {% if session.participants is empty %}
+            <p>Pas effectué</p>
+            {% if session.students is empty %}
+                <p>Pas d'étudiants inscrits</p>
+            {% else %}
+                <p>Étudiants inscrits :</p>
+                <ul>
+                {% for student in session.students %}
+                    <li>{{ student }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% else %}
+            <p>Cours effectué</p>
+            {% for participant in session.participants %}
+                <p>{{ participant["tutor"] }}</p>
+                <p>{{ participant["present"] == true ? "Présent" : "Absent" }}</p>
+            {% endfor %}
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

@@ -3,9 +3,20 @@
 use App\Entity\User;
 use App\Entity\Session;
 use App\Repository\SessionRepository;
-use App\Controller\Requires\getFacultySessions;
+
+function getFacultySessions(SessionRepository $sessionRepository, array $criteria, User $user){
+    $allSessions = $sessionRepository->findBy($criteria, ['id' => 'ASC']);
+    $facultySessions = [];
+    foreach ($allSessions as $session) {
+        if ($session->getSubject()->getFaculty() == $user->getFaculty()){
+            array_push($facultySessions, $session);
+        }
+    }
+    return $facultySessions;
+}
 
 function getFacultySessionsAfterToday(SessionRepository $sessionRepository, array $criteria, User $user, Session $except = null){
+
     $facultySessions = getFacultySessions($sessionRepository, $criteria, $user);
 
     $sessionsAfterToday = [];

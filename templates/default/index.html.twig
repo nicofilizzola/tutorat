@@ -25,7 +25,7 @@
         {% endif %}
         {% if ("ROLE_ADMIN" in app.user.roles) and (app.user.isValid == 2) %}
             <a href="{{ path('app_users') }}">Gérer les utilisateurs</a><br>
-            <a href="{{ path('app_add-subject') }}">Gérer les matières</a><br>
+            <a href="{{ path('app_subject') }}">Gérer les matières</a><br>
         {% endif %}
     {% else %}
         <a href="{{ path('app_register') }}">Inscription</a><br>

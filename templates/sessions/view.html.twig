@@ -18,7 +18,7 @@
                 {# already joined #}
             {% elseif (app.user == currentSession.tutor) or (("ROLE_ADMIN" in app.user.roles) and (app.user.faculty == currentSession.subject.faculty)) %}
                 {% set sessionViewMode = 2 %}
-                {# tutor author #}
+                {# tutor author/admin #}
             {% else %}
                 {% set sessionViewMode = 3 %}
                 {# student joinable #}
@@ -45,40 +45,51 @@
                         <span class="participants"><b>{{ currentSession.students | length}}</b> étudiant.es inscrit.es sur <b>{{ currentSession.studentLimit}}</b></span>
                     </div>
 
-                    {% if currentSession.students | length != currentSession.studentLimit %}    
-                        {% if sessionViewMode == 3 %}
+                    {% if sessionViewMode == 3 %}
+                        {% if currentSession.students | length < currentSession.studentLimit %}    
                             <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}')">S'inscrire</button>
-                        {% elseif sessionViewMode == 1 %}
-                            <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-remove-session-{{ currentSession.id }}')">Se désinscrire</button>
+                        {% else %}
+                            <button class="form--button hoveredItems" disabled>S'inscrire</button>  
                         {% endif %}
-                        {% if sessionViewMode == 2 %}
-                            <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Suprimmer le cours</button>
-                        {% endif %}
-                    {% else %}
-                        {% if sessionViewMode == 3 %}
-                            <button class="form--button hoveredItems" disabled>S'inscrire</button>
-                        {% elseif sessionViewMode == 1 %}
-                            <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-remove-session-{{ currentSession.id }}')">Se désinscrire</button>
-                        {% endif %}
-                        {% if sessionViewMode == 2 %}
-                            <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Suprimmer le cours</button>
-                        {% endif %}
+
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_sessions_join", {"id": currentSession.id}) }}"
+                            id="js-join-session-{{ currentSession.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
+                        </form>
+
+                    {% elseif sessionViewMode == 1 %}
+                        <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-leave-session-{{ currentSession.id }}')">Se désinscrire</button>
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}"
+                            id="js-session-leave-{{ currentSession.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('leave-session' ~ currentSession.id) }}"/>
+                        </form>
+
+                    {% elseif sessionViewMode == 2 %}
+                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Suprimmer le cours</button>
+                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-participants-{{ currentSession.id }}').submit();">Faire l'appel</button>
+
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}"
+                            id="js-session-delete-{{ currentSession.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ currentSession.id) }}"/>
+                        </form>
+                        <form 
+                            method="POST" 
+                            hidden="hidden" 
+                            action="{{ path("app_sessions_participants", {"id": currentSession.id}) }}"
+                            id="js-session-participants-{{ currentSession.id }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('session-participants' ~ currentSession.id) }}"/>
+                        </form>
                     {% endif %}
 
-                    <form 
-                        method="POST" 
-                        hidden="hidden" 
-                        action="{{ path("app_sessions_join", {"id": currentSession.id}) }}"
-                        id="js-join-session-{{ currentSession.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
-                    </form>
-                    <form 
-                        method="POST" 
-                        hidden="hidden" 
-                        action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}"
-                        id="js-session-delete-{{ currentSession.id }}">
-                        <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ currentSession.id) }}"/>
-                    </form>
                 </div>
                 <div class="suggestions--container">
                     {% if sessions is empty == false %}

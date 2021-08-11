@@ -100,6 +100,15 @@ class SessionController extends AbstractController
     }
 
     /**
+     * @Route("/sessions/{id<\d+>}/leave", name="app_sessions_leave", methods={"POST"})
+     */
+    public function leave(EntityManagerInterface $em, Session $session, Request $request): Response
+    {
+        return $this->redirectToRoute('app_login');
+ 
+    }
+
+    /**
      * @Route("/sessions/create", name="app_sessions_create", methods={"GET", "POST"})
      */
     public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
@@ -218,6 +227,16 @@ class SessionController extends AbstractController
         return $this->render('sessions/view.html.twig', [
            'sessions' => $sessions,
            'currentSession' => $session
+        ]);
+    }
+
+    /**
+     * @Route("/sessions/{id<\d+>}/participants", name="app_sessions_participants", methods={"GET", "POST"})
+     */
+    public function manageParticipants(Session $session): Response
+    {  
+        return $this->render('sessions/participants.html.twig', [
+            'session' => $session
         ]);
     }
 }

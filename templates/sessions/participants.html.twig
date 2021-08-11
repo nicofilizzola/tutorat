@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!{% endblock %}
+
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_sessions') }}
+{% endblock %}
+
+{% block body %}
+	<form action="{{ path("app_sessions_participants", { 'id': session.id }) }}">
+		{% for student in session.students %}
+			<p>{{ student }}</p>
+			<label for="present-{{ student.id }}"></label>
+			<input 
+				type="radio" 
+				name="{{ student.id }}" 
+				value="present"
+				id="js-present-{{ student.id }}">
+			<label for="absent-{{ student.id }}"></label>
+			<input 
+				type="radio" 
+				name="{{ student.id }}" 
+				value="absent"
+				id="absent-{{ student.id }}">
+		{% endfor %}
+	</form>
+
+	{# MODAL: ARE YOU SURE? #}
+
+{% endblock %}

@@ -33,6 +33,7 @@ Encore
     .addEntry('app_subject', './assets/routes/app_subject.js')
     .addEntry('app_sessions_pending', './assets/routes/app_sessions_pending.js')
     .addEntry('app_sessions_log', './assets/routes/app_sessions_log.js')
+    .addEntry('app_sessions_participants', './assets/routes/app_sessions_participants.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

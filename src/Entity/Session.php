@@ -84,6 +84,16 @@ class Session
      */
     private $isValid;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timeFormat;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -246,6 +256,30 @@ class Session
     public function setIsValid(?bool $isValid): self
     {
         $this->isValid = $isValid;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getTimeFormat(): ?int
+    {
+        return $this->timeFormat;
+    }
+
+    public function setTimeFormat(int $timeFormat): self
+    {
+        $this->timeFormat = $timeFormat;
 
         return $this;
     }

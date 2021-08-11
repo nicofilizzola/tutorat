@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\SubjectType;
+use App\Repository\SessionRepository;
 use Doctrine\ORM\Mapping\Entity;
 
 class AdminController extends AbstractController
@@ -120,7 +121,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/subject", name="app_subject", methods={"GET", "POST"})
      */
-    public function addSubject(SubjectRepository $subjectRepository, Request $request, EntityManagerInterface $em): Response
+    public function subject(SubjectRepository $subjectRepository, Request $request, EntityManagerInterface $em): Response
     {  
         $subject = new Subject;
         $form = $this->createForm(SubjectType::class, $subject);
@@ -140,6 +141,22 @@ class AdminController extends AbstractController
         return $this->render('admin/subjects.html.twig', [
             'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
             'form' => $formView
+        ]);
+    }
+
+    /**
+     * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
+     */
+    public function sessionsLog(SessionRepository $sessionRepository, EntityManagerInterface $em): Response
+    {  
+        require_once('Requires/getSessions.php');
+        
+        return $this->render('admin/sessions-log.html.twig', [
+            'sessions' => getSessions(
+                $sessionRepository, 
+                ['isValid' => true], 
+                $this->getUser()
+             ),
         ]);
     }
 }

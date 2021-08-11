@@ -111,7 +111,7 @@ class SessionType extends AbstractType
                 'multiple' => false
             ])
             ->add('comment', TextareaType::class, [
-
+                'required' => false
             ])
         ;
     }

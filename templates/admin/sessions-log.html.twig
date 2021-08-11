@@ -19,7 +19,7 @@
             {% set timeFormatMessage = "30 minutes" %}
         {% elseif session.timeFormat == 2 %}
             {% set timeFormatMessage = "45 minutes" %}
-        {% else %}
+        {% elseif session.timeFormat == 3 %}
             {% set timeFormatMessage = "1 heure" %}
         {% endif %}
         <p>{{ timeFormatMessage }}</p>
@@ -38,9 +38,13 @@
             {% endif %}
         {% else %}
             <p>Cours validé</p>
-            {% for participant in session.participants %}
-                <p>{{ participant["tutor"] }}</p>
-                <p>{{ participant["present"] == true ? "Présent" : "Absent" }}</p>
+            {% for student in session.students %}
+                <p>{{ student }}</p>
+                {% for participant in session.participants %}
+                    {% if student.id == participant.studentId %}
+                        <p>{{ participant["present"] == true ? "Présent" : "Absent" }}</p>     
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         {% endif %}
     {% endfor %}

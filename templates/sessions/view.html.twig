@@ -53,17 +53,16 @@
                     {% if sessionViewMode == 3 %}
                         {% if currentSession.students | length < currentSession.studentLimit %}    
                             <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">S'inscrire</button>
+                            <form 
+                                method="POST" 
+                                hidden="hidden" 
+                                action="{{ path("app_sessions_join", {"id": currentSession.id}) }}"
+                                id="js-join-session-{{ currentSession.id }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
+                            </form>
                         {% else %}
                             <button class="form--button hoveredItems" disabled>S'inscrire</button>  
                         {% endif %}
-
-                        <form 
-                            method="POST" 
-                            hidden="hidden" 
-                            action="{{ path("app_sessions_join", {"id": currentSession.id}) }}"
-                            id="js-join-session-{{ currentSession.id }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
-                        </form>
 
                     {% elseif sessionViewMode == 1 %}
                         <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-leave-session-{{ currentSession.id }}').submit();">Se désinscrire</button>
@@ -77,8 +76,6 @@
 
                     {% elseif (sessionViewMode == 2) or (sessionViewMode == 4) %}
                         <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Suprimmer le cours</button>
-                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-participants-{{ currentSession.id }}').submit();">Faire l'appel</button>
-
                         <form 
                             method="POST" 
                             hidden="hidden" 
@@ -86,13 +83,14 @@
                             id="js-session-delete-{{ currentSession.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ currentSession.id) }}"/>
                         </form>
-                        <form 
-                            method="POST" 
-                            hidden="hidden" 
-                            action="{{ path("app_sessions_participants", {"id": currentSession.id}) }}"
-                            id="js-session-participants-{{ currentSession.id }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('session-participants' ~ currentSession.id) }}"/>
-                        </form>
+
+                        {% if (currentSession.students is empty) or (currentSession.participants is empty == false) %}
+                            <button class="form--button hoveredItems" disabled>Faire l'appel (disabled)</button>
+                        {% else %}
+                            <a href="{{ path("app_sessions_participants", {"id": currentSession.id}) }}">
+                                <button class="form--button hoveredItems">Faire l'appel</button>
+                            </a>
+                        {% endif %}
                     {% endif %}
 
                 </div>

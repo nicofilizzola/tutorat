@@ -58,7 +58,6 @@ class AppFixtures extends Fixture
 
             $manager->persist($user);
 
-
             $user = new User();
             $user->setFirstName('Tutor');
             $user->setLastName($i);
@@ -72,7 +71,6 @@ class AppFixtures extends Fixture
             $user->setFaculty($faculty);
 
             $manager->persist($user);
-
 
             for ($j = 0; $j < 5; $j++) {
                 $user = new User();

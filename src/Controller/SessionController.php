@@ -234,10 +234,24 @@ class SessionController extends AbstractController
     /**
      * @Route("/sessions/{id<\d+>}/participants", name="app_sessions_participants", methods={"GET", "POST"})
      */
-    public function manageParticipants(Session $session): Response
+    public function manageParticipants(Session $session, Request $request, UserRepository $userRepository, EntityManagerInterface $em): Response
     {  
-        if (!$this->isTutor() && $session->getTutor() !== $this->getUser()){
+        if (!$this->isTutor() && $session->getTutor() !== $this->getUser() || !empty($session->getParticipants())){
             return $this->redirectToRoute('app_home');
+        }
+
+        if ($request->isMethod('post')){
+            $participants = [];
+            foreach($request->request as $key => $present){
+                array_push($participants, [
+                    'studentId' => $userRepository->findOneBy(['id' => $key])->getId(),
+                    'present' => $present
+                ]);
+            }
+            $session->setParticipants($participants);
+
+            $em->persist($session);
+            $em->flush();
         }
 
         return $this->render('sessions/participants.html.twig', [

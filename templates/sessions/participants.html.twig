@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block body %}
-	<form action="{{ path("app_sessions_participants", { 'id': session.id }) }}">
+	<form 
+		action="{{ path("app_sessions_participants", { 'id': session.id }) }}"
+		method="POST">
 		{% for student in session.students %}
 			<p>{{ student }}</p>
 			<label for="present-{{ student.id }}">Présent</label>
@@ -23,6 +25,7 @@
 				value="absent"
 				id="absent-{{ student.id }}">
 		{% endfor %}
+		<button type="submit">Envoyer</button>
 	</form>
 
 	{# MODAL: ARE YOU SURE? #}

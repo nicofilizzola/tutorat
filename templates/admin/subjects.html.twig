@@ -15,9 +15,9 @@
                 <div class="form--content">
                     {{ form_start(form) }}
                         <div class="collapse collapse_3">
-                            {{ form_row(form.title, {'attr': {'class':'hoveredItems'}}) }}
-                            {{ form_row(form.semester, {'attr': {'class':'hoveredItems'}}) }}
-                            {{ form_row(form.short, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.title, {"label": "Titre"}, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.semester, {"label": "Semestre"}, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.short, {"label": "Abréviation"}, {'attr': {'class':'hoveredItems'}}) }}
                         </div>
                         <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
                     {{ form_end(form) }}

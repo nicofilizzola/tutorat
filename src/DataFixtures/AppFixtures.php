@@ -87,8 +87,7 @@ class AppFixtures extends Fixture
                 $user->updateTimestamp();
                 $user->setFaculty($faculty);
 
-            $manager->persist($user);
-
+                $manager->persist($user);
             }            
         }
 

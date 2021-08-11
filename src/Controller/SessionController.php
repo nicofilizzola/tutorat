@@ -23,7 +23,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SessionController extends AbstractController
 {
     private function sessionIsJoinable(Session $session){
-        if (in_array($this->getUser()->getId(), $session->getStudents()->getValues())){
+        $isJoinable = true;
+        if (in_array($this->getUser(), $session->getStudents()->getValues())){
             $isJoinable = false;
         } else if ($this->getUser() === $session->getTutor()){
             $isJoinable = false;
@@ -88,7 +89,7 @@ class SessionController extends AbstractController
     {
         if (!$this->sessionIsJoinable($session) || !$this->isCsrfTokenValid('join-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_sessions_view', ['session' => $session]);
+            return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
         }
 
         $session->addStudent($this->getUser());
@@ -96,7 +97,7 @@ class SessionController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
-        return $this->redirectToRoute('app_sessions_view', ['session' => $session]);
+        return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
     }
 
     /**
@@ -235,6 +236,10 @@ class SessionController extends AbstractController
      */
     public function manageParticipants(Session $session): Response
     {  
+        if (!$this->isTutor() && $session->getTutor() !== $this->getUser()){
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('sessions/participants.html.twig', [
             'session' => $session
         ]);

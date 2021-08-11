@@ -10,13 +10,13 @@
 	<form action="{{ path("app_sessions_participants", { 'id': session.id }) }}">
 		{% for student in session.students %}
 			<p>{{ student }}</p>
-			<label for="present-{{ student.id }}"></label>
+			<label for="present-{{ student.id }}">Présent</label>
 			<input 
 				type="radio" 
 				name="{{ student.id }}" 
 				value="present"
-				id="js-present-{{ student.id }}">
-			<label for="absent-{{ student.id }}"></label>
+				id="present-{{ student.id }}">
+			<label for="absent-{{ student.id }}">Absent</label>
 			<input 
 				type="radio" 
 				name="{{ student.id }}" 

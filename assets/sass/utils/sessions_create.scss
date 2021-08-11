@@ -141,3 +141,11 @@
       display: flex !important;
    }
 }
+
+.mutedText, .help-text {
+   opacity: .5;
+   user-select: none;
+   text-align: justify;
+   font-size: .9em;
+   margin-bottom: 15px;
+}

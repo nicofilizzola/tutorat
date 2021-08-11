@@ -46,7 +46,7 @@ class SessionController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
-        require_once('Requires/getSessions.php');
+        require_once('Requires/getFacultySessionsAfterToday.php');
         function getTutors($userRepository, $user){
             $facultyUsers = $userRepository->findBy(['faculty' => $user->getFaculty()]);
             $tutors = [];
@@ -71,7 +71,7 @@ class SessionController extends AbstractController
         }
 
         return $this->render('sessions/index.html.twig', [
-           'sessions' => getSessions(
+           'sessions' => getFacultySessionsAfterToday(
                $sessionRepository, 
                ['isValid' => true], 
                $this->getUser()
@@ -122,7 +122,7 @@ class SessionController extends AbstractController
         $formView = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()){
-            if (!isset($_POST['session']['faceToFace'])){
+            if (!isset($_POST['session']['faceToFace']) || !isset($_POST['session']['timeFormat'])){
                 $this->addFlash("danger", "Votre requête n'a pas pu être traitée.");
                 return $this->redirectToRoute("app_sessions_create"); 
             }
@@ -154,6 +154,7 @@ class SessionController extends AbstractController
             } 
 
             $session->setTutor($this->getUser());
+            $session->setTimeFormat($_POST['session']['timeFormat']);
             $session->updateTimestamp();
             $em->persist($session);
             $em->flush();
@@ -190,14 +191,14 @@ class SessionController extends AbstractController
      */
     public function view(SessionRepository $sessionRepository, Session $session): Response
     {
-        require_once('Requires/getSessions.php');
+        require_once('Requires/getFacultySessionsAfterToday.php');
 
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions');
         }
 
-        $allSessions = getSessions(
+        $allSessions = getFacultySessionsAfterToday(
             $sessionRepository, [
                  'isValid' => true,
                  'subject' => $session->getSubject()

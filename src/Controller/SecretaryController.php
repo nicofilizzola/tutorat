@@ -35,10 +35,10 @@ class SecretaryController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        require_once("Requires/getSessions.php");
+        require_once("Requires/getFacultySessionsAfterToday.php");        
 
         return $this->render('secretary/sessions-pending.html.twig', [
-           'sessions' => getSessions(
+           'sessions' => getFacultySessionsAfterToday(
                $sessionRepository, 
                ['isValid' => 0], // 0 -> same as false
                $this->getUser()

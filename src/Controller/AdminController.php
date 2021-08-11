@@ -149,12 +149,12 @@ class AdminController extends AbstractController
      */
     public function sessionsLog(SessionRepository $sessionRepository, EntityManagerInterface $em): Response
     {  
-        require_once('Requires/getSessions.php');
+        require_once('Requires/getFacultySessions.php');
         
         return $this->render('admin/sessions-log.html.twig', [
-            'sessions' => getSessions(
+            'sessions' => getFacultySessions(
                 $sessionRepository, 
-                ['isValid' => true], 
+                [], 
                 $this->getUser()
              ),
         ]);

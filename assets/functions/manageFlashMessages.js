@@ -12,7 +12,7 @@ function manageFlashMessages(message) {
 
    const cross = document.createElement('span')
    cross.classList.add('cross')
-   cross.innerHTML = 'x'
+   cross.innerHTML = '&times;'
 
    textContainer.appendChild(message)
    textContainer.appendChild(cross)

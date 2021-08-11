@@ -33,16 +33,87 @@
                         </div>
                     </div>
                     <div class="categorie subject--container">
-                        <span>Matières<span>
+                        <span>Modules<span>
                         <div class="list">
                             {% for subject in subjects %}
-                                <label for="{{ subject.id }}_{{subject.semester }}" class="hoveredItems">
-                                    <input name="{{ subject.id }}_{{subject.semester }}" id="{{ subject.id }}_{{subject.semester }}" type="checkbox" hidden>
+                                <label for="{{ subject.id }}_{{subject.title }}" class="hoveredItems">
+                                    <input name="{{ subject.id }}_{{subject.title }}" id="{{ subject.id }}_{{subject.title }}" type="checkbox" hidden>
                                     <div>
-                                        <span>{{ subject }}</span>
+                                        <span>{{ subject.title }}</span>
                                     </div>
                                 </label>
                             {% endfor %}
+                        </div>
+                    </div>
+                    <div class="categorie semester--container">
+                        <span>Semestres<span>
+                        <div class="list">
+                            <label for="semester_1" class="hoveredItems">
+                                <input name="semester_1" id="semester_1" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 1</span>
+                                </div>
+                            </label>
+
+                            <label for="semester_2" class="hoveredItems">
+                                <input name="semester_2" id="semester_2" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 2</span>
+                                </div>
+                            </label>
+
+                            <label for="semester_3" class="hoveredItems">
+                                <input name="semester_3" id="semester_3" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 3</span>
+                                </div>
+                            </label>
+
+                            <label for="semester_4" class="hoveredItems">
+                                <input name="semester_4" id="semester_4" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 4</span>
+                                </div>
+                            </label>
+
+                            <label for="semester_5" class="hoveredItems">
+                                <input name="semester_5" id="semester_5" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 5</span>
+                                </div>
+                            </label>
+
+                            <label for="semester_6" class="hoveredItems">
+                                <input name="semester_6" id="semester_6" type="checkbox" hidden>
+                                <div>
+                                    <span>Semestre 6</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="categorie timeFormat--container">
+                        <span>Format<span>
+                        <div class="list">
+                            <label for="timeFormat_1" class="hoveredItems">
+                                <input name="timeFormat_1" id="timeFormat_1" type="checkbox" hidden>
+                                <div>
+                                    <span>30min</span>
+                                </div>
+                            </label>
+
+                            <label for="timeFormat_2" class="hoveredItems">
+                                <input name="timeFormat_2" id="timeFormat_2" type="checkbox" hidden>
+                                <div>
+                                    <span>45min</span>
+                                </div>
+                            </label>
+
+                            <label for="timeFormat_3" class="hoveredItems">
+                                <input name="timeFormat_3" id="timeFormat_3" type="checkbox" hidden>
+                                <div>
+                                    <span>1h</span>
+                                </div>
+                            </label>
                         </div>
                     </div>
                     <div class="categorie environnement--container">
@@ -96,12 +167,14 @@
                                     <div class="text">
                                         <span class="title">{{ session.title }}</span>
                                         <br>
-                                        <span class="subject">{{ session.subject }}</span>
+                                        <span class="subject">{{ session.subject.title }}</span>
                                     </div>
                                     <div class="text">
                                         <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
                                         <br>
                                         <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
+                                        <br>
+                                        <span>Durée : <b>{{ session.timeFormat }}</b></span>
                                     </div>
                                 </div>
                                 <div class="card--participants">

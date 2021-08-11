@@ -62,16 +62,46 @@
 
                         </div>
                     </div>
-                    <div class="collapse collapse_2">
+                    <div class="collapse collapse_3">
                         {{ form_row(form.studentLimit, {
                             "label": "Limite d'étudiants",
                             'attr': {'class':'hoveredItems', 'max':'10', 'min':'1', 'value':'1'}
                         }) }}
 
                         {{ form_row(form.subject, {
-                            "label": "Matière",
+                            "label": "Module",
                             'attr': {'class':'hoveredItems'}
                         }) }}
+                        
+                        <div class="timeFormat--container">
+                            {{ form_label(form.timeFormat, "Format de cours", { 'attr': { 'class':'required' } }) }}
+                            <div id="session_timeFormat" class="hoveredItems">
+                                <div class="choice--container choice--container__1">
+                                    <label for="session_timeFormat_0" class="required notRequired">
+                                        <input type="radio" id="session_timeFormat_0" name="session[timeFormat]" required="required" value="1" checked='checked'>
+                                        <div class="choice">
+                                            <span>30min</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="choice--container choice--container__2">
+                                    <label for="session_timeFormat_1" class="required notRequired">
+                                        <input type="radio" id="session_timeFormat_1" name="session[timeFormat]" required="required" value="2">
+                                        <div class="choice">
+                                            <span>45min</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="choice--container choice--container__3">
+                                    <label for="session_timeFormat_2" class="required notRequired">
+                                        <input type="radio" id="session_timeFormat_2" name="session[timeFormat]" required="required" value="3">
+                                        <div class="choice">
+                                            <span>1h</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{ form_row(form.dateTime, {
@@ -79,16 +109,13 @@
                         'attr': {'class':'hoveredItems'},
                     }) }}
 
-                    {{ form_row(form.timeFormat, {
-                        "label": "Format de cours",
-                        
-                    }) }}
-
                     {{ form_row(form.comment, {
                         "label": "Commentaire",
                         "help": "Si tu as un message ou une demande spécifique à transmettre auprès du département, tu peux l'indiquer ici.",
                         "attr": {
-                            "placeholder": "Nous avons besoin d'une salle avec des ordinateurs parce que..."
+                            'class':'hoveredItems description',
+                            "placeholder": "Nous avons besoin d'une salle avec des ordinateurs parce que...",
+                            'rows':'5'
                         }
                     }) }}
 

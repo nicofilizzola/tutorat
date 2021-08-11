@@ -14,47 +14,40 @@ errorMessages.forEach(error => {
   })
 });
 
-const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput, classroomInput) => {
+const toggleLinkAndClassroom = (faceToFaceInputValue, linkInput) => {
   if (faceToFaceInputValue == 1) {
     // faceToFace
     linkInput.disabled = true;
-    classroomInput.disabled = false;
 
-    switchOptionContainer.children[0].style.display = "none";
-    switchOptionContainer.children[0].hidden = true;
-    switchOptionContainer.children[1].style.display = "flex";
-    switchOptionContainer.children[1].hidden = false;
+    // switchOptionContainer.children[0].style.display = "none";
+    // switchOptionContainer.children[0].hidden = true;
   } else {
     //remote
     linkInput.disabled = false;
-    classroomInput.disabled = true;
 
-    switchOptionContainer.children[0].style.display = "flex";
-    switchOptionContainer.children[0].hidden = false;
-    switchOptionContainer.children[1].style.display = "none";
-    switchOptionContainer.children[1].hidden = true;
+    // switchOptionContainer.children[0].style.display = "flex";
+    // switchOptionContainer.children[0].hidden = false;
   }
 };
 
 const manageFaceToFace = () => {
-  const getFTFAndToggle = (faceToFaceInputs, link, classroom) => {
+  const getFTFAndToggle = (faceToFaceInputs, link) => {
     const faceToFaceValue = faceToFaceInputs[0].checked ? 1 : 2;
-    toggleLinkAndClassroom(faceToFaceValue, link, classroom);
+    toggleLinkAndClassroom(faceToFaceValue, link);
   };
 
   const link = document.querySelector("#session_link");
-  const classroom = document.querySelector("#session_classroom");
 
   const faceToFaceInputs = [
     document.querySelector("#session_faceToFace_0"),
     document.querySelector("#session_faceToFace_1"),
   ];
 
-  getFTFAndToggle(faceToFaceInputs, link, classroom);
+  getFTFAndToggle(faceToFaceInputs, link);
 
   faceToFaceInputs.forEach((element) => {
     element.addEventListener("change", function () {
-      getFTFAndToggle(faceToFaceInputs, link, classroom);
+      getFTFAndToggle(faceToFaceInputs, link);
     });
   });
 };

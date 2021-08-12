@@ -55,17 +55,17 @@
                                     <span>🗑️</span>
                                 </button>
                             {% else %}
-                                <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
+                                <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit();" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
-                                {# <form 
+                                <form 
                                     id="js-subject-delete-form-{{ subject.id }}"
                                     display="none" 
                                     hidden
                                     action="{{ path('app_subject_delete', {"id": subject.id}) }}" 
                                     method="POST">
                                     <input type="hidden" name="token" value="{{ csrf_token('delete-subject' ~ subject.id) }}"/>
-                                </form> #}
+                                </form>
                             {% endif %}
                         </div>
                     </div>

@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,17 +61,17 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $submittedToken = $request->request->get('token');
-        if ($this->isCsrfTokenValid('validate-user' . $user->getId(), $submittedToken)) {
-            $user->setIsValid(2);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été validé !");
+        if (!$this->isCsrfTokenValid('validate-user' . $user->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
 
+        $user->setIsValid(2);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été validé !");
         return $this->redirectToRoute('app_users');
     }
     /**
@@ -82,17 +83,17 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $submittedToken = $request->request->get('token');
-        if ($this->isCsrfTokenValid('cancel-user' . $user->getId(), $submittedToken)) {
-            $user->setIsValid(3);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
+        if ($this->isCsrfTokenValid('cancel-user' . $user->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
 
+        $user->setIsValid(3);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
         return $this->redirectToRoute('app_users');
     }
     /**
@@ -104,14 +105,15 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        if ($this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-
-            $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
+        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
 
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
         return $this->redirectToRoute('app_users');
     }
 
@@ -141,7 +143,24 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
+     /**
+     * @Route("/subject/{id<\d+>}/delete", name="app_subject_delete", methods={"POST"})
+     */
+    public function subjectDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('delete-subject' . $subject->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
+            return $this->redirectToRoute('app_subject');
+        }
 
+        // verify if module used
+
+        $em->remove($subject);
+        $em->flush();
+
+        $this->addFlash('success', 'Le module ' . $subject . ' a bien été suprimmé !');
+        return $this->redirectToRoute("app_subject");
+    }
 
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})

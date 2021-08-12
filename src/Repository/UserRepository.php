@@ -76,4 +76,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
         return $tutors;
     }
+
+    public function findFacultyAdminEmails($faculty){
+        $users = $this->findBy(['faculty' => $faculty]);
+
+        $adminEmails = [];
+        foreach ($users as $user){
+            if (in_array("ROLE_ADMIN", $user->getRoles())){
+                array_push($adminEmails, $user->getEmail());
+            }
+        }
+        return $adminEmails;   
+    }
 }

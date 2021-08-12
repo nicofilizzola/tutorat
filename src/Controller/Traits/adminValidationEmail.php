@@ -11,17 +11,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 trait adminValidationEmail{
     private function sendAdminsEmailForPendingUser(MailerInterface $mailer, UserRepository $userRepository){
-        function getAdminMails($users){
-            $adminEmails = [];
-            foreach ($users as $user){
-                if (in_array("ROLE_ADMIN", $user->getRoles())){
-                    array_push($adminEmails, $user->getEmail());
-                }
-            }
-            return $adminEmails;   
-        }
-    
-        $toAddresses = getAdminMails($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
+
+        $toAddresses = $userRepository->findFacultyAdminEmails($this->getUser()->getFaculty());
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
             ->to(...$toAddresses)

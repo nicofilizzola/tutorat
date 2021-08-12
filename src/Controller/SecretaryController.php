@@ -89,7 +89,6 @@ class SecretaryController extends AbstractController
             return $this->redirectToRoute('app_sessions_pending');
         }
 
-        $oldClassroom = $session->getClassroom()->getName();
         $session->setClassroom($classroomRepository->findOneBy(['id' => $selectedClassroom]));
         $session->setIsValid(true);
         $em->persist($session);
@@ -103,7 +102,6 @@ class SecretaryController extends AbstractController
             ->context([
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'session' => $session,
-                'oldClassroom' => $oldClassroom,
             ]);
         $mailer->send($email);
 

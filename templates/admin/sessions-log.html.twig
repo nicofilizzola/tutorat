@@ -8,45 +8,52 @@
 
 
 {% block body %}
-    {% for session in sessions %}
-        <p>{{ session.title }}</p>
+    {% if sessions is empty == false %}
+        {% for session in sessions %}
+            <p>{{ session.title }}</p>
 
-        <p>{{ session.tutor }}</p>
+            <p>{{ session.tutor }}</p>
 
-        <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
+            <p>{{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</p>
 
-        {% if session.timeFormat == 1 %}
-            {% set timeFormatMessage = "30 minutes" %}
-        {% elseif session.timeFormat == 2 %}
-            {% set timeFormatMessage = "45 minutes" %}
-        {% elseif session.timeFormat == 3 %}
-            {% set timeFormatMessage = "1 heure" %}
-        {% endif %}
-        <p>{{ timeFormatMessage }}</p>
+            {% if session.timeFormat == 1 %}
+                {% set timeFormatMessage = "30 minutes" %}
+            {% elseif session.timeFormat == 2 %}
+                {% set timeFormatMessage = "45 minutes" %}
+            {% elseif session.timeFormat == 3 %}
+                {% set timeFormatMessage = "1 heure" %}
+            {% endif %}
+            <p>{{ timeFormatMessage }}</p>
 
-        {% if session.participants is empty %}
-            <p>Cours non validé</p>
-            {% if session.students is empty %}
-                <p>Pas d'étudiants inscrits</p>
+            {% if session.participants is empty %}
+                <p>Cours non validé</p>
+                {% if session.students is empty %}
+                    <p>Pas d'étudiants inscrits</p>
+                {% else %}
+                    <p>Étudiants inscrits :</p>
+                    <ul>
+                        {% for student in session.students %}
+                            <li>{{ student }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% else %}
+                <p>Cours validé</p>
                 <p>Étudiants inscrits :</p>
-                <ul>
-                {% for student in session.students %}
-                    <li>{{ student }}</li>
-                {% endfor %}
+                <ul>            
+                    {% for student in session.students %}
+                        <p>{{ student }}</p>
+                        {% for participant in session.participants %}
+                            {% if student.id == participant.studentId %}
+                                <p>{{ participant["present"] == true ? "Présent" : "Absent" }}</p>     
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 </ul>
             {% endif %}
-        {% else %}
-            <p>Cours validé</p>
-            {% for student in session.students %}
-                <p>{{ student }}</p>
-                {% for participant in session.participants %}
-                    {% if student.id == participant.studentId %}
-                        <p>{{ participant["present"] == true ? "Présent" : "Absent" }}</p>     
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p>Pas de sessions</p>
+    {% endif %}
 
 {% endblock %}

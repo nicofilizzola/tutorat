@@ -48,7 +48,21 @@ class AppFixtures extends Fixture
             $user->setFirstName('Admin');
             $user->setLastName($i);
             $user->setEmail('admin'. $i .'@iut-tarbes.fr');
-            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_ADMIN"]);
+            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_SECRETARY","ROLE_ADMIN"]);
+            $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
+            $user->setYear(4);
+            $user->setIsValid(2);
+            $user->setIsVerified(1);
+            $user->updateTimestamp();
+            $user->setFaculty($faculty);
+
+            $manager->persist($user);
+
+            $user = new User();
+            $user->setFirstName('Secretary');
+            $user->setLastName($i);
+            $user->setEmail('secretary'. $i .'@iut-tarbes.fr');
+            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_SECRETARY"]);
             $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
             $user->setYear(4);
             $user->setIsValid(2);

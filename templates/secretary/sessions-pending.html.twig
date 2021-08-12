@@ -3,11 +3,11 @@
 {% block title %}Hello SecretaryController!{% endblock %}
 
 {% block body %}
+
 {% if sessions is empty == false %}
     {% for session in sessions %}
         <div>
             {# haute importance #}
-            <h2>{{ session.classroom.name }}</h2>
             <h3>{{ session.datetime | date('d-m-Y') }}</h3>
             <h3>à {{ session.datetime | date('h:i') }}</h3>
             <h3>Pour {{ session.studentLimit }} étudiants</h3>
@@ -26,10 +26,8 @@
             <div display="none">
                 <form action="{{ path('app_session_counter', {'id': session.id}) }}" method="POST">
                     {% for classroom in classrooms %}
-                        {% if session.classroom.id != classroom.id %}
-                            <label for="classroom-{{ classroom.id }}-for-{{ session.id }}">{{ classroom.name }}</label>
-                            <input id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
-                        {% endif %}
+                        <label for="classroom-{{ classroom.id }}-for-{{ session.id }}">{{ classroom.name }}</label>
+                        <input id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
                     {% endfor %}
                     <input type="hidden" name="token" value="{{ csrf_token('session-counter' ~ session.id) }}"/>
                     <button>Valider</button>

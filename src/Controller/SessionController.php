@@ -139,12 +139,8 @@ class SessionController extends AbstractController
             $ftf = $_POST['session']['faceToFace'];
             $session->setFaceToFace($ftf == 1 ? 1 : 2);
             if ($session->getFaceToFace() == 1){
-                // if (is_null($session->getClassroom())){
-                //     $this->addFlash("danger", "Pas de salle de cours sélectionnée.");
-                //     return $this->redirectToRoute("app_sessions_create");
-                // } 
-
                 $session->setIsValid(false); // needs further secretary validation
+                
                 $secretaryMail = getSecretaryMail($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))

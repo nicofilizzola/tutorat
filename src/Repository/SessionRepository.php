@@ -53,7 +53,7 @@ class SessionRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT session.* FROM user, session, session_user
+            SELECT session.id FROM user, session, session_user
             WHERE user.id = :userId
             AND user.id = session_user.user_id
             AND session.id = session_user.session_id
@@ -61,6 +61,13 @@ class SessionRepository extends ServiceEntityRepository
         $stmt = $conn->prepare($sql);
         $stmt->execute(['userId' => $user->getId()]);
 
-        return $stmt->fetchAllAssociative();
+        $sessionIds = $stmt->fetchAllAssociative();
+
+        $sessions = [];
+        foreach ($sessionIds as $sessionId){
+            array_push($sessions, $this->findOneBy(['id' => $sessionId]));
+        }
+        
+        return $sessions;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
+use App\Repository\SessionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -236,5 +237,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return ucfirst($this->firstName) . " " . ucfirst($this->lastName);
+    }
+
+    public function getTutorHours(SessionRepository $sessionRepository){
+        if (in_array("ROLE_TUTOR", $this->getRoles())){
+            $tutorSessions = $sessionRepository->findBy([
+                'tutor' => $this,
+                'isValid' => true
+            ]);
+            $validatedSessionHours = 0;
+            foreach ($tutorSessions as $session){
+                if (!empty($session->getParticipants())){
+                    switch ($session->getTimeFormat()){
+                        case 1:
+                            $addedTime = 0.5;
+                            break;
+                        case 2:
+                            $addedTime = 0.75;
+                            break;
+                        case 3:
+                            $addedTime = 1;
+                            break;
+                    }
+                    $validatedSessionHours += $addedTime;
+                }
+            }
+            return $validatedSessionHours . "h";
+        } else {
+            return;
+        }
     }
 }

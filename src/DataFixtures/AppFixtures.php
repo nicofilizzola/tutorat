@@ -27,9 +27,9 @@ class AppFixtures extends Fixture
             for ($j = 0; $j < 3; $j++) {
                 for ($h = 0; $h < 3; $h++) {
                     $subject = new Subject();
-                    $subject->setTitle('Module ' . $i);
-                    $subject->setShort('MO' . $i);
-                    $subject->setSemester($h + 1);
+                    $subject->setTitle('Module ' . $h);
+                    $subject->setShort('MO' . $h);
+                    $subject->setSemester($j);
                     $subject->setFaculty($faculty);
         
                     $manager->persist($subject);

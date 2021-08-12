@@ -76,17 +76,26 @@ domCache.customNavPathContainer.appendChild(customPathFragment)
 domCache.navPath.remove()
 
 // Success messages
-let flashMessageCross = null
+let flashMessageCross, flashContainerBackground = null
 if (document.querySelector("p.success")) {
    manageFlashMessages(document.querySelector("p.success"))
    flashMessageCross = document.querySelector('.flash--container .cross')
+   flashContainerBackground = document.querySelector('.flash--container .background')
 }
 if (document.querySelector("p.danger")) {
    manageFlashMessages(document.querySelector("p.danger"))
    flashMessageCross = document.querySelector('.flash--container .cross')
+   flashContainerBackground = document.querySelector('.flash--container .background')
 }
-if (flashMessageCross) {
+if (flashMessageCross || flashContainerBackground) {
    flashMessageCross.addEventListener('click', () => {
+      const flashContainer = document.querySelector('.flash--container')
+      gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
+      setTimeout(() => {
+         flashContainer.remove()
+      }, 750);
+   })
+   flashContainerBackground.addEventListener('click', () => {
       const flashContainer = document.querySelector('.flash--container')
       gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
       setTimeout(() => {

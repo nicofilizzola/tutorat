@@ -2,11 +2,12 @@ import '../sass/utils/home.scss';
 
 import { gsap } from 'gsap'
 
-let becomeTutorButton, cross, flashContainer = null
+let becomeTutorButton, cross, flashContainer, flashContainerBackground = null
 if (document.getElementById('becomeTutor')) {
    becomeTutorButton = document.getElementById('becomeTutor')
    cross = document.querySelector('.flash--container .cross')
    flashContainer = document.querySelector('.flash--container')
+   flashContainerBackground = document.querySelector('.flash--container .background')
 }
 
 if (becomeTutorButton) {
@@ -16,8 +17,14 @@ if (becomeTutorButton) {
    })
 }
 
-if (cross) {
+if (cross || flashContainerBackground) {
    cross.addEventListener('click', () => {
+      gsap.to(flashContainer, .75, { opacity: 0, pointerEvents: 'none', ease: 'Power3.easeInOut' })
+      setTimeout(() => {
+         flashContainer.hidden = true
+      }, 750);
+   })
+   flashContainerBackground.addEventListener('click', () => {
       gsap.to(flashContainer, .75, { opacity: 0, pointerEvents: 'none', ease: 'Power3.easeInOut' })
       setTimeout(() => {
          flashContainer.hidden = true

@@ -147,8 +147,8 @@
                 </div>
 
 
+                {{dump(sessions)}}
 
-                
                 {% if "ROLE_TUTOR" not in app.user.roles %}
                     <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
                 {% endif %}

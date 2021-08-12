@@ -72,7 +72,7 @@
    width: 100%;
 }
 
-.sessionsChoice--container {
+.buttons--container {
    display: flex;
    flex-direction: column;
    justify-content: space-between;
@@ -81,6 +81,12 @@
 
    a {
       margin-bottom: 15px;
+   }
+
+   &__row {
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
    }
 
    @include phone-sm() {

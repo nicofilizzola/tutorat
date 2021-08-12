@@ -104,4 +104,26 @@ class SessionRepository extends ServiceEntityRepository
             }
         }
     }
+
+    public function findThreeSubjectRelatedSessions(Session $session){
+        $allSessions = $this->findFacultySessionsAfterToday(
+            $session->getSubject()->getFaculty(),
+            [
+                'isValid' => true,
+                'subject' => $session->getSubject()
+            ],
+            $session
+        );
+
+        if (!is_null($allSessions) && count($allSessions) >= 3){
+            $sessions = [];
+            for ($i = 0; $i < 2; $i++){
+                array_push($sessions, $allSessions[$i]);
+            }
+        } else {
+            $sessions = $allSessions;
+        }
+
+        return $sessions;
+    }
 }

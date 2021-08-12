@@ -186,26 +186,8 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_sessions');
         }
 
-        $allSessions = $sessionRepository->findFacultySessionsAfterToday(
-            $this->getUser()->getFaculty(),
-            [
-                'isValid' => true,
-                'subject' => $session->getSubject()
-            ],
-            $session
-        );
-        
-        if (!is_null($allSessions) && count($allSessions) >= 3){
-            $sessions = [];
-            for ($i = 0; $i < 2; $i++){
-                array_push($sessions, $allSessions[$i]);
-            }
-        } else {
-            $sessions = $allSessions;
-        }
-
         return $this->render('sessions/view.html.twig', [
-           'sessions' => $sessions,
+           'sessions' => $sessionRepository->findThreeSubjectRelatedSessions($session),
            'currentSession' => $session
         ]);
     }

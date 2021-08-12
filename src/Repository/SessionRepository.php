@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Entity\Faculty;
 use App\Entity\Session;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -69,5 +70,38 @@ class SessionRepository extends ServiceEntityRepository
         }
         
         return $sessions;
+    }
+
+    public function findFacultySessions(Faculty $faculty, array $criteria){
+        $allSessions = $this->findBy($criteria, ['id' => 'ASC']);
+        $facultySessions = [];
+        foreach ($allSessions as $session) {
+            if ($session->getSubject()->getFaculty() == $faculty){
+                array_push($facultySessions, $session);
+            }
+        }
+        return $facultySessions;
+    }
+
+    public function findFacultySessionsAfterToday(Faculty $faculty, array $criteria, Session $except = null){
+        $facultySessions = $this->findFacultySessions($faculty, $criteria);
+
+        $sessionsAfterToday = [];
+        foreach ($facultySessions as $session) {
+            if (date('Y-m-d h:i:s', strtotime('+1 hour')) < date('Y-m-d h:i:s', $session->getDateTime()->getTimestamp())){
+                array_push($sessionsAfterToday, $session);
+            }
+        }
+
+        if (is_null($except)){
+            return $sessionsAfterToday;
+        }
+
+        for ($i = 0; $i < count($sessionsAfterToday); $i++) {
+            if ($sessionsAfterToday[$i] == $except){
+                unset($sessionsAfterToday[$i]);
+                return array_values($sessionsAfterToday);
+            }
+        }
     }
 }

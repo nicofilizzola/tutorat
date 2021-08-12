@@ -47,38 +47,17 @@ class SessionController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
     {
-        require_once('Requires/getSessions.php');
-        function getTutors($userRepository, $user){
-            $facultyUsers = $userRepository->findBy(['faculty' => $user->getFaculty()]);
-            $tutors = [];
-            foreach ($facultyUsers as $user){
-                if (in_array("ROLE_TUTOR", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
-                    array_push($tutors, $user);
-                }
-            }
-            return $tutors;
-        }
-
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
         }
 
-        $facultyUsers = $userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]);
-        $tutors = [];
-        foreach ($facultyUsers as $user){
-            if (in_array("ROLE_TUTOR", $user->getRoles())/*/ && !in_array("ROLE_ADMIN", $user->getRoles())*/){
-                array_push($tutors, $user);
-            }
-        }
-
         return $this->render('sessions/index.html.twig', [
-           'sessions' => getFacultySessionsAfterToday(
-               $sessionRepository, 
+           'sessions' => $sessionRepository->findFacultySessionsAfterToday(
+                $this->getUser()->getFaculty(),
                ['isValid' => true], 
-               $this->getUser()
             ),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
-           'tutors' => getTutors($userRepository, $this->getUser()),
+           'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),
         ]);
     }
 
@@ -202,21 +181,20 @@ class SessionController extends AbstractController
      */
     public function view(SessionRepository $sessionRepository, Session $session): Response
     {
-        require_once('Requires/getSessions.php');
-
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions');
         }
 
-        $allSessions = getFacultySessionsAfterToday(
-            $sessionRepository, [
-                 'isValid' => true,
-                 'subject' => $session->getSubject()
-             ], 
-             $this->getUser(), 
-             $session
+        $allSessions = $sessionRepository->findFacultySessionsAfterToday(
+            $this->getUser()->getFaculty(),
+            [
+                'isValid' => true,
+                'subject' => $session->getSubject()
+            ],
+            $session
         );
+        
         if (!is_null($allSessions) && count($allSessions) >= 3){
             $sessions = [];
             for ($i = 0; $i < 2; $i++){

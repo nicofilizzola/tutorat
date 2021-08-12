@@ -1,5 +1,3 @@
-import { gsap } from 'gsap'
-
 function manageFlashMessages(message) {
    const flashContainer = document.createElement('div')
    flashContainer.classList.add('flash--container')

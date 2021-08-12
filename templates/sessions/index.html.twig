@@ -174,7 +174,13 @@
                                         <br>
                                         <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
                                         <br>
-                                        <span>Durée : <b>{{ session.timeFormat }}</b></span>
+                                        {% set duration = "30min" %}
+                                        {% if session.timeFormat == 2 %}
+                                            {% set duration = "45min" %}
+                                        {% else %}
+                                            {% set duration = "1h" %}
+                                        {% endif %}
+                                        <span>Durée : <b>{{ duration }}</b></span>
                                     </div>
                                 </div>
                                 <div class="card--participants">

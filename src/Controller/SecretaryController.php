@@ -86,6 +86,11 @@ class SecretaryController extends AbstractController
      */
     public function refuseSession(Session $session, ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
+        if (!$this->isCsrfTokenValid('session-refuse' . $session->getId(), $request->request->get('token'))){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_sessions_pending');
+        }
+
         $em->remove($session);
         $em->flush();
 

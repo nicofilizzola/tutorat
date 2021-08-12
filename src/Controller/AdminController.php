@@ -26,7 +26,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/users", name="app_users")
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, SessionRepository $sessionRepository): Response
     {
         if (!$this->isAdmin()){
             return $this->redirectToRoute('app_home');
@@ -47,10 +47,10 @@ class AdminController extends AbstractController
 
         return $this->render('admin/users.html.twig', [
             'users' => $users,
-            'adminCount' => $adminCount
+            'adminCount' => $adminCount,
+            'sessionRepository' => $sessionRepository
         ]);
     }
-
     /**
      * @Route("/user/{id<\d+>}/validate", name="app_user_validate")
      */
@@ -73,7 +73,6 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_users');
     }
-    
     /**
      * @Route("/user/{id<\d+>}/cancel", name="app_user_cancel", methods="POST")
      */
@@ -96,7 +95,6 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_users');
     }
-
     /**
      * @Route("/user/{id<\d+>}/delete", name="app_user_delete", methods="POST")
      */
@@ -116,6 +114,7 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_users');
     }
+
 
     /**
      * @Route("/subject", name="app_subject", methods={"GET", "POST"})
@@ -142,6 +141,7 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
+
 
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})

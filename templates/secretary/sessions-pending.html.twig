@@ -8,10 +8,12 @@
     {% for session in sessions %}
         <div>
             {# haute importance #}
-            <h3>{{ session.datetime | date('d-m-Y') }}</h3>
-            <h3>à {{ session.datetime | date('h:i') }}</h3>
-            <h3>Pour {{ session.studentLimit }} étudiants</h3>
-            <h4>Étudiant référent : {{ session.tutor.firstName }} {{ session.tutor.lastName }} (DUT{{ session.tutor.year }})</h4>
+            <h3>Le {{ session.datetime | date('d-m-Y') }} à {{ session.datetime | date('h:i') }}</h3>
+            <h3>Pour {{ session.studentLimit + 1 }} étudiants</h3>
+            <h4>Étudiant référent : {{ session.tutor.firstName }} {{ session.tutor.lastName }} - {{ session.tutor.year }}A - {{ session.tutor.email }}</h4>
+            {% if session.comment is null == false %}
+                <p>{{ session.comment }}</p>
+            {% endif %}
             
             <form action="{{ path('app_session_validate', {'id': session.id}) }}" method="POST">
                 {% for classroom in classrooms %}
@@ -20,6 +22,15 @@
                 {% endfor %}
                 <input type="hidden" name="token" value="{{ csrf_token('session-validate' ~ session.id) }}"/>
                 <button>Valider</button>
+            </form>
+
+            <button onclick="event.preventDefault(); document.querySelector('#js-session-refuse-{{ session.id }}').submit();">Refuser</button>
+            <form 
+                action="{{ path('app_session_refuse', {'id': session.id}) }}"
+                method="POST"
+                id="js-session-refuse-{{ session.id }}"
+                display="none">
+                <input type="hidden" name="token" value="{{ csrf_token('session-refuse' ~ session.id) }}"/>
             </form>
         </div>
     {% endfor %}

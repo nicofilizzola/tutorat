@@ -253,6 +253,10 @@ class SessionController extends AbstractController
 
             $em->persist($session);
             $em->flush();
+
+            $this->addFlash('success', "La liste d'appel a été transmise et le cours a bien été validé !");
+            return $this->redirectToRoute('app_sessions');
+
         }
 
         return $this->render('sessions/participants.html.twig', [

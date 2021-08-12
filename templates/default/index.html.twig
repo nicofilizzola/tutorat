@@ -148,7 +148,7 @@
 
 
 
-                {# 
+                
                 {% if "ROLE_TUTOR" not in app.user.roles %}
                     <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
                 {% endif %}
@@ -162,7 +162,7 @@
                     <a href="{{ path('app_users') }}">Gérer les utilisateurs</a><br>
                     <a href="{{ path('app_subject') }}">Gérer les matières</a><br>
                     <a href="{{ path('app_sessions_log') }}">Log</a><br>
-                {% endif %} #}
+                {% endif %}
 
             {% else %}
                 <a href="{{ path('app_register') }}">Inscription</a><br>

@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Session;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Session|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,19 @@ class SessionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findUserSession(User $user){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT session.* FROM user, session, session_user
+            WHERE user.id = :userId
+            AND user.id = session_user.user_id
+            AND session.id = session_user.session_id
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['userId' => $user->getId()]);
+
+        return $stmt->fetchAllAssociative();
+    }
 }

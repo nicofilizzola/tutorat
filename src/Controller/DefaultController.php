@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Controller\Traits\adminValidationEmail;
+use App\Entity\Session;
+use App\Repository\SessionRepository;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
@@ -24,9 +26,15 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(): Response
+    public function index(SessionRepository $sessionRepository): Response
     {
+        if (!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
+        
         return $this->render('default/index.html.twig', [
+            'sessions' => $sessionRepository->findUserSession($this->getUser())
         ]);
     }
 

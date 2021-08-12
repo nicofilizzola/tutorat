@@ -127,6 +127,8 @@ class SessionController extends AbstractController
         }
 
         $session = new Session;
+        $session->setTutor($this->getUser());
+
         $form = $this->createForm(SessionType::class, $session, ['allow_extra_fields' => true]);
         $form->handleRequest($request);
         $formView = $form->createView();
@@ -136,18 +138,22 @@ class SessionController extends AbstractController
                 $this->addFlash("danger", "Votre requête n'a pas pu être traitée.");
                 return $this->redirectToRoute("app_sessions_create"); 
             }
+
             $ftf = $_POST['session']['faceToFace'];
             $session->setFaceToFace($ftf == 1 ? 1 : 2);
             if ($session->getFaceToFace() == 1){
                 $session->setIsValid(false); // needs further secretary validation
-                
+
                 $secretaryMail = getSecretaryMail($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($secretaryMail)
                     ->subject('Demande de salle de cours')
                     ->htmlTemplate('email/new-pending-session.html.twig')
-                    ->context(['link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
+                    ->context([
+                        'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                        'session' => $session
+                    ]);
                 $mailer->send($email);
             } 
 
@@ -159,7 +165,6 @@ class SessionController extends AbstractController
                 $session->setIsValid(true);
             } 
 
-            $session->setTutor($this->getUser());
             $session->setTimeFormat($_POST['session']['timeFormat']);
             $session->updateTimestamp();
             $em->persist($session);

@@ -1,8 +1,15 @@
 <h1>Nouvelle demande de salle de cours pour le tutorat</h1>
-<p>Un étudiant tuteur souhaite réaliser un cours dans une salle du département.</p>
-<p>Vos actions :</p>
-<ul>
-    <li>Valider la salle de cours ;</li>
-    <li>Proposer une salle de cours différente.</li>
-</ul>
-<p><a href="{{ link }}">Faites votre choix ici</a> ou allez directement dans votre espace de secrétaire.</p>
+<p>Un étudiant tuteur souhaite réaliser un cours en présentiel dans une salle du département. Voici les détails :</p>
+
+<h2>Le {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</h2>
+<h3>Étudiant référent : {{ session.tutor }} ({{ session.tutor.email }})</h3>
+<h4>Pour {{ session.studentLimit + 1 }} étudiants</h4>
+<h4>{{ session.subject }}</h4>
+
+{% if session.comment is null == false %}
+    <h5>Commentaire :</h5>
+    <p>{{ session.comment }}</p>
+{% endif %}
+
+<a href="{{ link }}">Gérer cette demande</a>
+

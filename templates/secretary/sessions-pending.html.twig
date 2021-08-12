@@ -12,27 +12,15 @@
             <h3>à {{ session.datetime | date('h:i') }}</h3>
             <h3>Pour {{ session.studentLimit }} étudiants</h3>
             <h4>Étudiant référent : {{ session.tutor.firstName }} {{ session.tutor.lastName }} (DUT{{ session.tutor.year }})</h4>
-
-            <button onclick="event.preventDefault(); document.querySelector('#js-validate-session-{{ session.id }}').submit();">Valider créneau</button>
-            <form
-                action="{{ path('app_session_validate', {'id': session.id}) }}"
-                id="js-validate-session-{{ session.id }}"
-                method="POST"
-                display="none">
-            </form>
             
-            {# onclick display popup with classroom select #}
-            <button>Proposer une salle différente</button> 
-            <div display="none">
-                <form action="{{ path('app_session_counter', {'id': session.id}) }}" method="POST">
-                    {% for classroom in classrooms %}
-                        <label for="classroom-{{ classroom.id }}-for-{{ session.id }}">{{ classroom.name }}</label>
-                        <input id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
-                    {% endfor %}
-                    <input type="hidden" name="token" value="{{ csrf_token('session-counter' ~ session.id) }}"/>
-                    <button>Valider</button>
-                </form>
-            </div>
+            <form action="{{ path('app_session_validate', {'id': session.id}) }}" method="POST">
+                {% for classroom in classrooms %}
+                    <label for="classroom-{{ classroom.id }}-for-{{ session.id }}">{{ classroom.name }}</label>
+                    <input id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" type="radio" value="{{ classroom.id }}">
+                {% endfor %}
+                <input type="hidden" name="token" value="{{ csrf_token('session-validate' ~ session.id) }}"/>
+                <button>Valider</button>
+            </form>
         </div>
     {% endfor %}
 {% else %}

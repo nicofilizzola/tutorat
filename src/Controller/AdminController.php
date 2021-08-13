@@ -20,7 +20,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
-    private function isAdmin(){
+    // Must be included as the FIRST instruction in EVERY AdminController route
+    private function isAdmin(){ 
         if (!$this->getUser() || !in_array("ROLE_ADMIN", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
             return false;
         }
@@ -32,9 +33,7 @@ class AdminController extends AbstractController
      */
     public function index(UserRepository $userRepository, SessionRepository $sessionRepository): Response
     {
-        if (!$this->isAdmin()){
-            return $this->redirectToRoute('app_home');
-        }
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         $users = $userRepository->findBy([
             'isVerified' => 1,
@@ -60,9 +59,7 @@ class AdminController extends AbstractController
      */
     public function validate(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->isAdmin()){
-            return $this->redirectToRoute('app_home');
-        }
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         if (!$this->isCsrfTokenValid('validate-user' . $user->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
@@ -82,9 +79,7 @@ class AdminController extends AbstractController
      */
     public function cancel(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->isAdmin()){
-            return $this->redirectToRoute('app_home');
-        }
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         if ($this->isCsrfTokenValid('cancel-user' . $user->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
@@ -104,9 +99,7 @@ class AdminController extends AbstractController
      */
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->isAdmin()){
-            return $this->redirectToRoute('app_home');
-        }
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
@@ -125,7 +118,9 @@ class AdminController extends AbstractController
      * @Route("/subject", name="app_subject", methods={"GET", "POST"})
      */
     public function subject(SubjectRepository $subjectRepository, Request $request, EntityManagerInterface $em): Response
-    {  
+    { 
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+        
         $subject = new Subject;
         $form = $this->createForm(SubjectType::class, $subject);
         $form->handleRequest($request);
@@ -151,6 +146,8 @@ class AdminController extends AbstractController
      */
     public function subjectDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
     {
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
         if (!$this->isCsrfTokenValid('delete-subject' . $subject->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_subject');
@@ -168,6 +165,8 @@ class AdminController extends AbstractController
      */
     public function sessionsLog(SessionRepository $sessionRepository): Response
     {  
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findFacultySessions(
                 $this->getUser()->getFaculty(),
@@ -181,6 +180,8 @@ class AdminController extends AbstractController
      */
     public function classroom(ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em): Response
     {  
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
         $classroom = new Classroom;
         $form = $this->createForm(ClassroomType::class, $classroom);
         $form->handleRequest($request);
@@ -206,6 +207,8 @@ class AdminController extends AbstractController
      */
     public function classroomDelete(Classroom $classroom, EntityManagerInterface $em, Request $request): Response
     {
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
         if (!$this->isCsrfTokenValid('delete-classroom' . $classroom->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_classroom');

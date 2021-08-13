@@ -78,14 +78,22 @@ class SessionController extends AbstractController
         $this->addFlash('success', "Tu t'es inscrit au cours avec succès !");
         return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
     }
-
     /**
      * @Route("/sessions/{id<\d+>}/leave", name="app_sessions_leave", methods={"POST"})
      */
     public function leave(EntityManagerInterface $em, Session $session, Request $request): Response
     {
-        return $this->redirectToRoute('app_login');
- 
+        if (!$this->isCsrfTokenValid('leave-session' . $session->getId(), $request->request->get('token'))){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
+        }
+
+        $session->removeStudent($this->getUser());
+        $em->persist($session);
+        $em->flush();
+
+        $this->addFlash('success', "Tu t'es bien désinscrit du cours !");
+        return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
     }
 
     /**

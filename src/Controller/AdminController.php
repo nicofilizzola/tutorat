@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Subject;
+use App\Entity\Classroom;
 use App\Form\SubjectType;
+use App\Form\ClassroomType;
+use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
+use App\Repository\ClassroomRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -153,8 +156,6 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_subject');
         }
 
-        // verify if module used
-
         $em->remove($subject);
         $em->flush();
 
@@ -165,7 +166,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
      */
-    public function sessionsLog(SessionRepository $sessionRepository, EntityManagerInterface $em, UserRepository $userRepository): Response
+    public function sessionsLog(SessionRepository $sessionRepository): Response
     {  
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findFacultySessions(
@@ -173,5 +174,47 @@ class AdminController extends AbstractController
                 ['isValid' => true], 
              ),
         ]);
+    }
+
+    /**
+     * @Route("/classroom", name="app_classroom", methods={"GET", "POST"})
+     */
+    public function classroom(ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em): Response
+    {  
+        $classroom = new Classroom;
+        $form = $this->createForm(ClassroomType::class, $classroom);
+        $form->handleRequest($request);
+        $formView = $form->createView();
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $classroom->setFaculty($this->getUser()->getFaculty());
+
+            $em->persist($classroom);
+            $em->flush();
+
+            $this->addFlash("success", "La salle de cours " . $classroom->getName() . " a bien été ajoutée !");
+            return $this->redirectToRoute('app_subject');
+        }
+
+        return $this->render('admin/classrooms.html.twig', [
+            'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
+            'form' => $formView
+        ]);
+    }
+     /**
+     * @Route("/classroom/{id<\d+>}/delete", name="app_classroom_delete", methods={"POST"})
+     */
+    public function classroomDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('delete-subject' . $subject->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
+            return $this->redirectToRoute('app_subject');
+        }
+
+        $em->remove($subject);
+        $em->flush();
+
+        $this->addFlash('success', 'Le module ' . $subject . ' a bien été suprimmé !');
+        return $this->redirectToRoute("app_classroom");
     }
 }

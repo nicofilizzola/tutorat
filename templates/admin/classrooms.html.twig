@@ -15,9 +15,7 @@
                 <div class="form--content">
                     {{ form_start(form) }}
                         <div class="collapse collapse_3">
-                            {{ form_row(form.title, {"label": "Titre"}, {'attr': {'class':'hoveredItems'}}) }}
-                            {{ form_row(form.semester, {"label": "Semestre"}, {'attr': {'class':'hoveredItems'}}) }}
-                            {{ form_row(form.short, {"label": "Abréviation"}, {'attr': {'class':'hoveredItems'}}) }}
+                            {{ form_row(form.name, {"label": "Numéro"}, {'attr': {'class':'hoveredItems'}}) }}
                         </div>
                         <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
                     {{ form_end(form) }}
@@ -25,23 +23,15 @@
             </div>
 
             <div class="subjects--container">
-                {% for subject in subjects %}
-                    {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %}
+                {% for classroom in classrooms %}
+                    {# {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %} #}
                     <div class="subjectContent--container">
                         <div class="content title">
-                            <span>{{ subject.title | upper }}</span>
-                        </div>
-
-                        <div class="content semester">
-                            <span>Semestre {{ subject.semester }}</span>
-                        </div>
-                        
-                        <div class="content faculty">
-                            <span>{{ subject.faculty.name | capitalize }}</span>
+                            <span>{{ classroom.name }}</span>
                         </div>
                         
                         {# Nombre de cours où le module est utilisé #}
-                        <div class="content statut">
+                        {# <div class="content statut">
                             {% if subjectHasSessions == false %}
                                 <span>Module non utilisé</span>
                             {% else %}
@@ -49,13 +39,13 @@
                             {% endif %}
                         </div>
                         
-                        <div class="content manage">
+                        <div class="content manage"> #}
                             {# {% if subjectHasSessions %}
                                 <button title="Il y a au moins un cours qui existe avec ce module, suppression impossible." disabled class="hoveredItems refuse disabled">
                                     <span>🗑️</span>
                                 </button>
                             {% else %} #}
-                                <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
+                                {# <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                                 <form 
@@ -65,9 +55,9 @@
                                     action="{{ path('app_subject_delete', {"id": subject.id}) }}" 
                                     method="POST">
                                     <input type="hidden" name="token" value="{{ csrf_token('delete-subject' ~ subject.id) }}"/>
-                                </form>
+                                </form> #}
                             {# {% endif %} #}
-                        </div>
+                        {# </div> #}
                     </div>
                 {% endfor %}
             </div>

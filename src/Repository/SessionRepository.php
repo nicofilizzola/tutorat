@@ -50,7 +50,7 @@ class SessionRepository extends ServiceEntityRepository
     }
     */
 
-    public function findUserSession(User $user){
+    public function findUserSessions(User $user){
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '

@@ -160,6 +160,7 @@
                 {% if ("ROLE_ADMIN" in app.user.roles) and (app.user.isValid == 2) %}
                     <a href="{{ path('app_users') }}">Gérer les utilisateurs</a><br>
                     <a href="{{ path('app_subject') }}">Gérer les matières</a><br>
+                    <a href="{{ path('app_classroom') }}">Gérer les salles de cours</a><br>
                     <a href="{{ path('app_sessions_log') }}">Log</a><br>
                 {% endif %}
 

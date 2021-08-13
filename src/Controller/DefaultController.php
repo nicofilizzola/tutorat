@@ -32,9 +32,8 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        
         return $this->render('default/index.html.twig', [
-            'sessions' => $sessionRepository->findUserSession($this->getUser())
+            'sessions' => $sessionRepository->findUserSessions($this->getUser())
         ]);
     }
 

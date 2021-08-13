@@ -50,7 +50,7 @@ class SessionRepository extends ServiceEntityRepository
     }
     */
 
-    public function findUserSessions(User $user){
+    public function findByStudent(User $user){
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
@@ -72,7 +72,7 @@ class SessionRepository extends ServiceEntityRepository
         return $sessions;
     }
 
-    public function findFacultySessions(Faculty $faculty, array $criteria){
+    public function findByFaculty(Faculty $faculty, array $criteria){
         $allSessions = $this->findBy($criteria, ['id' => 'ASC']);
         $facultySessions = [];
         foreach ($allSessions as $session) {
@@ -83,8 +83,8 @@ class SessionRepository extends ServiceEntityRepository
         return $facultySessions;
     }
 
-    public function findFacultySessionsAfterToday(Faculty $faculty, array $criteria, Session $except = null){
-        $facultySessions = $this->findFacultySessions($faculty, $criteria);
+    public function findByFacultyAfterToday(Faculty $faculty, array $criteria, Session $except = null){
+        $facultySessions = $this->findByFaculty($faculty, $criteria);
 
         $sessionsAfterToday = [];
         foreach ($facultySessions as $session) {
@@ -105,8 +105,8 @@ class SessionRepository extends ServiceEntityRepository
         }
     }
 
-    public function findThreeSubjectRelatedSessions(Session $session){
-        $allSessions = $this->findFacultySessionsAfterToday(
+    public function findThreeBySessionSubject(Session $session){
+        $allSessions = $this->findByFacultyAfterToday(
             $session->getSubject()->getFaculty(),
             [
                 'isValid' => true,

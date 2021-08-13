@@ -47,4 +47,9 @@ class SemesterRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findCurrentFacultySemester($faculty){
+        return $this->findOneBy(['faculty' => $faculty], ['id' => 'DESC']
+        );
+    }
 }

@@ -107,7 +107,6 @@ class AppFixtures extends Fixture
             $semester->setFaculty($faculty);
 
             $manager->persist($semester);
-            
         }
 
         $adminCode = new AdminCode();

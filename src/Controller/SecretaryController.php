@@ -36,7 +36,7 @@ class SecretaryController extends AbstractController
         }
 
         return $this->render('secretary/sessions-pending.html.twig', [
-           'sessions' => $sessionRepository->findFacultySessionsAfterToday(
+           'sessions' => $sessionRepository->findByFacultyAfterToday(
                 $this->getUser()->getFaculty(),
                ['isValid' => 0],
             ), 

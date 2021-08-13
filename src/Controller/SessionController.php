@@ -53,7 +53,7 @@ class SessionController extends AbstractController
         }
 
         return $this->render('sessions/index.html.twig', [
-           'sessions' => $sessionRepository->findFacultySessionsAfterToday(
+           'sessions' => $sessionRepository->findByFacultyAfterToday(
                 $this->getUser()->getFaculty(),
                ['isValid' => true], 
             ),
@@ -72,7 +72,7 @@ class SessionController extends AbstractController
         }
 
         return $this->render('sessions/view.html.twig', [
-           'sessions' => $sessionRepository->findThreeSubjectRelatedSessions($session),
+           'sessions' => $sessionRepository->findThreeBySessionSubject($session),
            'currentSession' => $session
         ]);
     }
@@ -165,10 +165,7 @@ class SessionController extends AbstractController
             } 
 
             $session->setTimeFormat($_POST['session']['timeFormat']);
-            $session->setSemester($semesterRepository->findOneBy(
-                ['faculty' => $session->getSubject()->getFaculty()],
-                ['id' => 'DESC']
-            ));
+            $session->setSemester($semesterRepository->findCurrentFacultySemester($session->getSubject()->getFaculty()));
             $session->updateTimestamp();
             $em->persist($session);
             $em->flush();

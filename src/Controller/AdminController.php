@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\ClassroomRepository;
+use App\Repository\SemesterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,14 +32,18 @@ class AdminController extends AbstractController
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
      */
-    public function sessionsLog(SessionRepository $sessionRepository): Response
+    public function sessionsLog(SessionRepository $sessionRepository, SemesterRepository $semesterRepository): Response
     {  
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
+        $faculty = $this->getUser()->getFaculty();
         return $this->render('admin/sessions-log.html.twig', [
-            'sessions' => $sessionRepository->findFacultySessions(
-                $this->getUser()->getFaculty(),
-                ['isValid' => true], 
+            'sessions' => $sessionRepository->findByFaculty(
+                $$faculty,
+                [
+                    'isValid' => true,
+                    'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
+                ], 
              ),
         ]);
     }
@@ -58,16 +63,26 @@ class AdminController extends AbstractController
         ['isValid' => 'ASC']);
 
         $adminCount = 0;
+        $tutorHours = [];
+        require('Requires/Roles.php');
         foreach ($users as $user) {
-            if (in_array("ROLE_ADMIN", $user->getRoles())){
+            $userRoles = $user->getRoles();
+
+            if (in_array($roles[3], $userRoles)){
                 $adminCount++;
+            }
+
+            if (in_array($roles[1], $userRoles) && $userRoles[count($userRoles) - 1] == $roles[1]){
+                array_push($tutorHours, $user->getTutorHours($sessionRepository));
+            } else {
+                array_push($tutorHours, null);
             }
         }
 
         return $this->render('admin/users.html.twig', [
             'users' => $users,
             'adminCount' => $adminCount,
-            'sessionRepository' => $sessionRepository
+            'tutorHours' => $tutorHours
         ]);
     }
     /**

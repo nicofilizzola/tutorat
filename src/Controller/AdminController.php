@@ -204,17 +204,17 @@ class AdminController extends AbstractController
      /**
      * @Route("/classroom/{id<\d+>}/delete", name="app_classroom_delete", methods={"POST"})
      */
-    public function classroomDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
+    public function classroomDelete(Classroom $classroom, EntityManagerInterface $em, Request $request): Response
     {
-        if (!$this->isCsrfTokenValid('delete-subject' . $subject->getId(), $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('delete-classroom' . $classroom->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
-            return $this->redirectToRoute('app_subject');
+            return $this->redirectToRoute('app_classroom');
         }
 
-        $em->remove($subject);
+        $em->remove($classroom);
         $em->flush();
 
-        $this->addFlash('success', 'Le module ' . $subject . ' a bien été suprimmé !');
+        $this->addFlash('success', 'La salle de cours ' . $classroom->getName() . ' a bien été suprimmé !');
         return $this->redirectToRoute("app_classroom");
     }
 }

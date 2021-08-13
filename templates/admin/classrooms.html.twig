@@ -30,34 +30,19 @@
                             <span>{{ classroom.name }}</span>
                         </div>
                         
-                        {# Nombre de cours où le module est utilisé #}
-                        {# <div class="content statut">
-                            {% if subjectHasSessions == false %}
-                                <span>Module non utilisé</span>
-                            {% else %}
-                                <span>Module utilisé dans {{ subjectHasSessions }} cours</span>
-                            {% endif %}
+                        <div class="content manage">
+                            <button title="Supprimer la salle de cours." onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ classroom.id }}').submit()" class="delete hoveredItems refuse">
+                                <span>🗑️</span>
+                            </button>
+                            <form 
+                                id="js-classroom-delete-form-{{ classroom.id }}"
+                                display="none" 
+                                hidden
+                                action="{{ path('app_classroom_delete', {"id": classroom.id}) }}" 
+                                method="POST">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-classroom' ~ classroom.id) }}"/>
+                            </form> 
                         </div>
-                        
-                        <div class="content manage"> #}
-                            {# {% if subjectHasSessions %}
-                                <button title="Il y a au moins un cours qui existe avec ce module, suppression impossible." disabled class="hoveredItems refuse disabled">
-                                    <span>🗑️</span>
-                                </button>
-                            {% else %} #}
-                                {# <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
-                                    <span>🗑️</span>
-                                </button>
-                                <form 
-                                    id="js-subject-delete-form-{{ subject.id }}"
-                                    display="none" 
-                                    hidden
-                                    action="{{ path('app_subject_delete', {"id": subject.id}) }}" 
-                                    method="POST">
-                                    <input type="hidden" name="token" value="{{ csrf_token('delete-subject' ~ subject.id) }}"/>
-                                </form> #}
-                            {# {% endif %} #}
-                        {# </div> #}
                     </div>
                 {% endfor %}
             </div>

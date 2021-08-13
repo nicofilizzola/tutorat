@@ -3,150 +3,137 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block stylesheets %}
+	{{ encore_entry_link_tags('app_home') }}
 	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 
 {% block body %}
-
     {% if app.user %}
         <div class="smooth--container" data-lg-smooth>
             <div class="welcome--container">
             
-                <div class="leftSide">
-                    <div class="home--container">
-                        <div class="welcome">
-                            <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
-                            <span><b>Heureux de te revoir !</b></span>
+                {% if "ROLE_ADMIN" not in app.user.roles %}
+                    <div class="leftSide">
+                        <div class="home--container">
+                            <div class="welcome">
+                                <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
+                                <span><b>Heureux de te revoir !</b></span>
+                            </div>
+
+                            {% if sessions | length == 0 %}
+                                <span>Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
+                            {% else %}
+                                <span>Tu es inscrit.e à <span><b>{{ sessions | length}}</b></span> cours ! Tu peux voir la liste à côté 👀</span>                             
+                            {% endif %}
+                            <div class="buttons">
+                                <div class="buttons--container">
+                                    <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
+                                    {# <span><b>ou</b></span> #}
+                                    {% if ("ROLE_TUTOR" in app.user.roles) and (app.user.isValid == 2) %}
+                                        <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
+                                    {% else %}
+                                        <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+                            </div>
                         </div>
-                        {# {% if condition %} #}
-                    
-                            {# {% if condition %} #}
-                                {# <span>Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span> #}
-                            {# {% else %} #}
-                                <span>Tu es inscrit.e à <span>x</span> cours ! Retrouves les sur le côté 👀</span>     
-                            {# {% endif %} #}
                         
-                        {# {% endif %} #}
-                        <div class="buttons">
-                            <div class="sessionsChoice--container">
-                                <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
-                                {# <span><b>ou</b></span> #}
-                                {% if ("ROLE_TUTOR" in app.user.roles) and (app.user.isValid == 2) %}
-                                    <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
-                                {% else %}
-                                    <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
-                                {% endif %}
-                            </div>
-                            <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+                    </div>
+
+                    <div class="rightSide">
+                        <div class="sessions--container">
+                            {% for session in sessions %}
+                                <div class="studentCourse">
+                                    <div class="link hoveredItems">
+                                        <a href="{{ path('app_sessions_view', {"id": session.id}) }}"><span>{{ session.dateTime | date('d/m/Y') }} - {{ session.dateTime | date('h') }}:{{ session.dateTime | date('i') }}</span></a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                            <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="lineGap"></div>
+                                    <div class="infos">
+                                        <span>{{ session.subject.title }} - Semestre {{ session.subject.semester }} - {{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
+
+                {% elseif ("ROLE_ADMIN" in app.user.roles) and (app.user.isValid == 2) %}
                     
-                </div>
+                    <div class="leftSide">
+                        <div class="home--container">
+                            <div class="welcome">
+                                <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
+                                <span><b>Heureux de te revoir !</b></span>
+                            </div>
 
-                <div class="rightSide">
-                    <div class="sessions--container">
-                        {# {% for item in items %} #}
-                            <div class="studentCourse">
-                                <div class="link hoveredItems">
-                                    <a href=""><span>xx/xx - hh/mm</span></a>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                        <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                            <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                            <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                            <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        </g>
-                                    </svg>
+                            {# {% if sessions | length == 0 %}
+                                <span>Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
+                            {% else %} #}
+                                <span>Voici les dernières demandes reçues :</span>                             
+                            {# {% endif %} #}
+
+                            {# <div class="sessions--container">
+                            {% for session in sessions %}
+                                <div class="studentCourse">
+                                    <div class="link hoveredItems">
+                                        <a href="{{ path('app_users') }}"><span>{{ session.dateTime | date('d/m/Y') }} - {{ session.dateTime | date('h') }}:{{ session.dateTime | date('i') }}</span></a>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                            <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="lineGap"></div>
+                                    <div class="infos">
+                                        <span>{{ session.subject.title }} - Semestre {{ session.subject.semester }} - {{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                    </div>
                                 </div>
-                                <div class="lineGap"></div>
-                                <div class="infos">
-                                    <span>Module - Semestre - Environnement</span>
+                            {% endfor %}
+                            </div> #}
+
+                            <div class="buttons">
+                                <div class="buttons--container buttons--container__row">
+                                    <a href="{{ path('app_sessions_log') }}"><button class="btn btn__tinyEffect hoveredItems">Logs admin</button></a>
+                                    <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Liste des cours</button></a>
+                                    <a href="{{ path('app_users') }}"><button class="btn btn__tinyEffect hoveredItems">Gérer les utilisateurs</button></a>
+                                    <a href="{{ path('app_subject') }}"><button class="btn btn__tinyEffect hoveredItems">Gérer les modules</button></a>
                                 </div>
-                            </div>
-                        {# {% endfor %} #}
-                        <div class="studentCourse">
-                            <div class="link hoveredItems">
-                                <a href=""><span>xx/xx - hh/mm</span></a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                    <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                        <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lineGap"></div>
-                            <div class="infos">
-                                <span>Module - Semestre - Environnement</span>
-                            </div>
-                        </div>
-                        <div class="studentCourse">
-                            <div class="link hoveredItems">
-                                <a href=""><span>xx/xx - hh/mm</span></a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                    <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                        <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lineGap"></div>
-                            <div class="infos">
-                                <span>Module - Semestre - Environnement</span>
-                            </div>
-                        </div>
-                        <div class="studentCourse">
-                            <div class="link hoveredItems">
-                                <a href=""><span>xx/xx - hh/mm</span></a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                    <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                        <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lineGap"></div>
-                            <div class="infos">
-                                <span>Module - Semestre - Environnement</span>
-                            </div>
-                        </div>
-                        <div class="studentCourse">
-                            <div class="link hoveredItems">
-                                <a href=""><span>xx/xx - hh/mm</span></a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                    <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                        <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lineGap"></div>
-                            <div class="infos">
-                                <span>Module - Semestre - Environnement</span>
-                            </div>
-                        </div>
-                        <div class="studentCourse">
-                            <div class="link hoveredItems">
-                                <a href=""><span>xx/xx - hh/mm</span></a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                    <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                        <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                        <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="lineGap"></div>
-                            <div class="infos">
-                                <span>Module - Semestre - Environnement</span>
+                                <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                    {# <div class="rightSide">
+                        
+                    </div> #}
+                    
+                    {# {% if "ROLE_TUTOR" not in app.user.roles %}
+                        <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
+                    {% endif %}
+                    {% if ("ROLE_TUTOR" in app.user.roles) and (app.user.isValid == 2) %}
+                        <a href="{{ path('app_sessions_create') }}">Proposer un cours</a><br>
+                    {% endif %}
+                    {% if ("ROLE_SECRETARY" in app.user.roles) and (app.user.isValid == 2) %}
+                        <a href="{{ path('app_sessions_pending') }}">Demandes de salle de cours</a><br>
+                    {% endif %}
+                    {% if ("ROLE_ADMIN" in app.user.roles) and (app.user.isValid == 2) %}
+                        <a href="{{ path('app_users') }}">Gérer les utilisateurs</a><br>
+                        <a href="{{ path('app_subject') }}">Gérer les matières</a><br>
+                        <a href="{{ path('app_sessions_log') }}">Log</a><br>
+                    {% endif %} #}
+                {% endif %}
+                
 
+<<<<<<< HEAD
 
                 {% if "ROLE_TUTOR" not in app.user.roles %}
                     <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
@@ -163,10 +150,28 @@
                     <a href="{{ path('app_classroom') }}">Gérer les salles de cours</a><br>
                     <a href="{{ path('app_sessions_log') }}">Log</a><br>
                 {% endif %}
+=======
+                {# {{dump(sessions)}} #}
+
+>>>>>>> 58b2878c76e59978c0a97330e34c810fbe0e56c8
 
             {% else %}
                 <a href="{{ path('app_register') }}">Inscription</a><br>
                 <a href="{{ path('app_login') }}">Se co</a><br>
+            {% endif %}
+
+            {# if a student wanna become a tutor #}
+            {% if "ROLE_TUTOR" not in app.user.roles %}
+                <div class="flash--container">
+                    <div class="text--container">
+                        <span>Tu dois être un tuteur pour pouvoir proposer un cours.</span>
+                        <br>
+                        <a href="{{ path('app_become-tutor') }}" style="color:#fff" class="hoveredItems lineHoverEffect"><span>Clique ici pour faire la demande.</span></a>
+                        <span class="cross">&times;</span>
+                    </div>
+                    <div class="background">
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

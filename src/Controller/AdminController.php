@@ -29,6 +29,22 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
+     */
+    public function sessionsLog(SessionRepository $sessionRepository): Response
+    {  
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
+        return $this->render('admin/sessions-log.html.twig', [
+            'sessions' => $sessionRepository->findFacultySessions(
+                $this->getUser()->getFaculty(),
+                ['isValid' => true], 
+             ),
+        ]);
+    }
+
+
+    /**
      * @Route("/users", name="app_users")
      */
     public function index(UserRepository $userRepository, SessionRepository $sessionRepository): Response
@@ -160,21 +176,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute("app_subject");
     }
 
-    /**
-     * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
-     */
-    public function sessionsLog(SessionRepository $sessionRepository): Response
-    {  
-        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
-
-        return $this->render('admin/sessions-log.html.twig', [
-            'sessions' => $sessionRepository->findFacultySessions(
-                $this->getUser()->getFaculty(),
-                ['isValid' => true], 
-             ),
-        ]);
-    }
-
+    
     /**
      * @Route("/classroom", name="app_classroom", methods={"GET", "POST"})
      */

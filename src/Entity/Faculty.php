@@ -44,11 +44,17 @@ class Faculty
      */
     private $short;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Semester::class, mappedBy="faculty", orphanRemoval=true)
+     */
+    private $semesters;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->classrooms = new ArrayCollection();
         $this->subjects = new ArrayCollection();
+        $this->semesters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +172,36 @@ class Faculty
     public function setShort(string $short): self
     {
         $this->short = $short;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Semester[]
+     */
+    public function getSemesters(): Collection
+    {
+        return $this->semesters;
+    }
+
+    public function addSemester(Semester $semester): self
+    {
+        if (!$this->semesters->contains($semester)) {
+            $this->semesters[] = $semester;
+            $semester->setFaculty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSemester(Semester $semester): self
+    {
+        if ($this->semesters->removeElement($semester)) {
+            // set the owning side to null (unless already changed)
+            if ($semester->getFaculty() === $this) {
+                $semester->setFaculty(null);
+            }
+        }
 
         return $this;
     }

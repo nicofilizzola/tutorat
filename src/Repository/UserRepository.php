@@ -23,6 +23,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+    private $validAndVerifiedCriteria = [
+        'isValid' => 2,
+        'isVerified' => true
+    ];
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -67,7 +72,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     */
 
     public function findFacultyTutors(Faculty $faculty){
-        $facultyUsers = $this->findBy(['faculty' => $faculty]);
+        $facultyUsers = $this->findBy([
+            'faculty' => $faculty,
+            ...$this->validAndVerifiedCriteria
+        ]);
         $tutors = [];
         foreach ($facultyUsers as $user){
             if (in_array("ROLE_TUTOR", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
@@ -78,7 +86,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     public function findFacultyAdminEmails($faculty){
-        $users = $this->findBy(['faculty' => $faculty]);
+        $users = $this->findBy([
+            'faculty' => $faculty,
+            ...$this->validAndVerifiedCriteria
+        ]);
 
         $adminEmails = [];
         foreach ($users as $user){
@@ -87,5 +98,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             }
         }
         return $adminEmails;   
+    }
+
+    public function findFacultySecretaryEmail($faculty){
+        foreach ($this->findBy([
+            'faculty' => $this->getUser()->getFaculty(),
+            ...$this->validAndVerifiedCriteria
+            ]) as $user){
+            if (in_array("ROLE_SECRETARY", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
+                return $user->getEmail();
+            }
+        }
     }
 }

@@ -101,14 +101,6 @@ class SessionController extends AbstractController
      */
     public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
-        function getSecretaryMail($users){
-            foreach ($users as $user){
-                if (in_array("ROLE_SECRETARY", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
-                    return $user->getEmail();
-                }
-            }
-        }  
-
         if (!$this->isTutor()){
             return $this->redirectToRoute('app_login');
         }
@@ -131,7 +123,7 @@ class SessionController extends AbstractController
             if ($session->getFaceToFace() == 1){
                 $session->setIsValid(false); // needs further secretary validation
 
-                $secretaryMail = getSecretaryMail($userRepository->findBy(['faculty' => $this->getUser()->getFaculty()]));
+                $secretaryMail = getSecretaryMail();
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($secretaryMail)

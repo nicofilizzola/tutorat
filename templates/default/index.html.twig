@@ -133,7 +133,6 @@
                 {% endif %}
                 
 
-<<<<<<< HEAD
 
                 {% if "ROLE_TUTOR" not in app.user.roles %}
                     <a href="{{ path('app_become-tutor') }}">Devenir tuteur</a><br>
@@ -150,15 +149,13 @@
                     <a href="{{ path('app_classroom') }}">Gérer les salles de cours</a><br>
                     <a href="{{ path('app_sessions_log') }}">Log</a><br>
                 {% endif %}
-=======
-                {# {{dump(sessions)}} #}
-
->>>>>>> 58b2878c76e59978c0a97330e34c810fbe0e56c8
 
             {% else %}
                 <a href="{{ path('app_register') }}">Inscription</a><br>
                 <a href="{{ path('app_login') }}">Se co</a><br>
             {% endif %}
+
+            
 
             {# if a student wanna become a tutor #}
             {% if "ROLE_TUTOR" not in app.user.roles %}

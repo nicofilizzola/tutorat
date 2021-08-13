@@ -72,12 +72,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     */
 
     public function findFacultyTutors(Faculty $faculty){
-        $facultyUsers = $this->findBy([
-            'faculty' => $faculty,
-            ...$this->validAndVerifiedCriteria
-        ]);
         $tutors = [];
-        foreach ($facultyUsers as $user){
+        foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
             if (in_array("ROLE_TUTOR", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
                 array_push($tutors, $user);
             }
@@ -86,13 +82,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     public function findFacultyAdminEmails($faculty){
-        $users = $this->findBy([
-            'faculty' => $faculty,
-            ...$this->validAndVerifiedCriteria
-        ]);
-
         $adminEmails = [];
-        foreach ($users as $user){
+        foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
             if (in_array("ROLE_ADMIN", $user->getRoles())){
                 array_push($adminEmails, $user->getEmail());
             }
@@ -101,10 +92,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     public function findFacultySecretaryEmail($faculty){
-        foreach ($this->findBy([
-            'faculty' => $this->getUser()->getFaculty(),
-            ...$this->validAndVerifiedCriteria
-            ]) as $user){
+        foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
             if (in_array("ROLE_SECRETARY", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
                 return $user->getEmail();
             }

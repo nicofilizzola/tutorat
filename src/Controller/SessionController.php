@@ -6,6 +6,7 @@ use App\Entity\Session;
 use App\Entity\User;
 use App\Form\SessionType;
 use App\Form\DateFilterType;
+use App\Repository\SemesterRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
@@ -34,13 +35,13 @@ class SessionController extends AbstractController
 
         return !$isJoinable ? false : true;
     }
-
     private function isTutor(){
         if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
             return false;
         }
         return true;
     }
+
 
     /**
      * @Route("/sessions", name="app_sessions", methods="GET")
@@ -60,6 +61,22 @@ class SessionController extends AbstractController
            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),
         ]);
     }
+    /**
+     * @Route("/sessions/{id<\d+>}", name="app_sessions_view", methods={"GET"})
+     */
+    public function view(SessionRepository $sessionRepository, Session $session): Response
+    {
+        if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
+            $this->addFlash('danger', 'Une erreur est survenue.');
+            return $this->redirectToRoute('app_sessions');
+        }
+
+        return $this->render('sessions/view.html.twig', [
+           'sessions' => $sessionRepository->findThreeSubjectRelatedSessions($session),
+           'currentSession' => $session
+        ]);
+    }
+
 
     /**
      * @Route("/sessions/{id<\d+>}/join", name="app_sessions_join", methods={"POST"})
@@ -96,10 +113,13 @@ class SessionController extends AbstractController
         return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
     }
 
+
+    // TUTOR ONLY
+
     /**
      * @Route("/sessions/create", name="app_sessions_create", methods={"GET", "POST"})
      */
-    public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
+    public function create(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
         if (!$this->isTutor()){
             return $this->redirectToRoute('app_login');
@@ -123,7 +143,7 @@ class SessionController extends AbstractController
             if ($session->getFaceToFace() == 1){
                 $session->setIsValid(false); // needs further secretary validation
 
-                $secretaryMail = getSecretaryMail();
+                $secretaryMail = $userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty());
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($secretaryMail)
@@ -145,6 +165,10 @@ class SessionController extends AbstractController
             } 
 
             $session->setTimeFormat($_POST['session']['timeFormat']);
+            $session->setSemester($semesterRepository->findOneBy(
+                ['faculty' => $session->getSubject()->getFaculty()],
+                ['id' => 'DESC']
+            ));
             $session->updateTimestamp();
             $em->persist($session);
             $em->flush();
@@ -158,7 +182,6 @@ class SessionController extends AbstractController
             'form' => $formView
         ]);
     }
-
     /**
      * @Route("/sessions/{id<\d+>}/delete", name="app_sessions_delete", methods={"POST"})
      */
@@ -175,23 +198,6 @@ class SessionController extends AbstractController
         $this->addFlash('success', 'Le cours a bien été suprimmé !');
         return $this->redirectToRoute('app_sessions');
     }
-
-    /**
-     * @Route("/sessions/{id<\d+>}", name="app_sessions_view", methods={"GET"})
-     */
-    public function view(SessionRepository $sessionRepository, Session $session): Response
-    {
-        if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
-            $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_sessions');
-        }
-
-        return $this->render('sessions/view.html.twig', [
-           'sessions' => $sessionRepository->findThreeSubjectRelatedSessions($session),
-           'currentSession' => $session
-        ]);
-    }
-
     /**
      * @Route("/sessions/{id<\d+>}/participants", name="app_sessions_participants", methods={"GET", "POST"})
      */

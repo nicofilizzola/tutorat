@@ -94,6 +94,12 @@ class Session
      */
     private $timeFormat;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Semester::class, inversedBy="sessions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $semester;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -280,6 +286,18 @@ class Session
     public function setTimeFormat(int $timeFormat): self
     {
         $this->timeFormat = $timeFormat;
+
+        return $this;
+    }
+
+    public function getSemester(): ?Semester
+    {
+        return $this->semester;
+    }
+
+    public function setSemester(?Semester $semester): self
+    {
+        $this->semester = $semester;
 
         return $this;
     }

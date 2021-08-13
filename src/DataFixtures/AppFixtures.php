@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\AdminCode;
 use App\Entity\User;
 use App\Entity\Faculty;
 use App\Entity\Session;
 use App\Entity\Subject;
+use App\Entity\Semester;
+use App\Entity\AdminCode;
 use App\Entity\Classroom;
 use App\Repository\UserRepository;
 use App\Repository\FacultyRepository;
@@ -100,7 +101,13 @@ class AppFixtures extends Fixture
                 $user->setFaculty($faculty);
 
                 $manager->persist($user);
-            }            
+            }
+            
+            $semester = new Semester;
+            $semester->setFaculty($faculty);
+
+            $manager->persist($semester);
+            
         }
 
         $adminCode = new AdminCode();

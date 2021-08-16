@@ -3,7 +3,7 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block stylesheets %}
-    {{ encore_entry_link_tags('app_classroom') }}
+    {{ encore_entry_link_tags('app_semester') }}
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
 
@@ -15,7 +15,9 @@
                 <div class="form--content">
                     {{ form_start(form) }}
                         <div class="collapse collapse_3">
-                            {{ form_row(form) }} 
+                            {{ form_row(form.startYear, {'label':'Année du début', 'attr': {'class':'hoveredItems'}}) }} 
+                            {{ form_row(form.endYear, {'label':'Année de fin', 'attr': {'class':'hoveredItems'}}) }} 
+                            {{ form_row(form.yearOrder, {'label':'Semestre', 'attr': {'class':'hoveredItems'}}) }} 
                         </div>
                         <p>Après avoir créé un nouveau semestre :</p>
                         <ul>
@@ -29,22 +31,23 @@
                 </div>
             </div>
 
-            <div class="classrooms--container">
+            <div class="semesters--container">
                 {% for semester in semesters %}
-                    {% if loop.index0 == 0 %}
-                        <span>Session actuelle</span>
-                    {% else %}
-                        {# DISABLE DELETE AND DON'T COMPILE FORM #}
-                    {% endif %}
-                    <div class="classroomContent--container">
-                        <div class="content classroom">
+                    <div class="semesterContent--container">
+                        <div class="content semester">
                             <span>{{ semester }}</span>
                         </div>
                         
                         <div class="content manage">
-                            <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-semester-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
-                                <span>🗑️</span>
-                            </button>
+                            {% if loop.index0 == 0 %}
+                                <button title="Semestre actuelle, supression impossible" disabled class="disabled hoveredItems refuse">
+                                    <span>🗑️</span>
+                                </button>
+                            {% else %}
+                                <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-semester-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
+                                    <span>🗑️</span>
+                                </button>
+                            {% endif %}
                             <form 
                                 id="js-semester-delete-form-{{ semester.id }}"
                                 display="none" 

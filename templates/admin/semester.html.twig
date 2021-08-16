@@ -19,6 +19,13 @@
                             {{ form_row(form.endYear, {'label':'Année de fin', 'attr': {'class':'hoveredItems'}}) }} 
                             {{ form_row(form.yearOrder, {'label':'Semestre', 'attr': {'class':'hoveredItems'}}) }} 
                         </div>
+                        <p>Après avoir créé un nouveau semestre :</p>
+                        <ul>
+                            <li>Le compteur d'heures de cours validées sera bloqué pour le semestre actuel (vous en aurez toujours accès si vous ne l'avez pas suprimmé ) ;</li>
+                            <li>Toutes les nouvelles heures de cours validées seront attribuées au nouveau semestre ;</li>
+                            <li>Les étudiants ne pourront plus accéder aux cours proposés durant le semestre actuel ;</li>
+                            <li>Les étudiants seront prévenus par mail ;</li>
+                        </ul>
                         <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
                     {{ form_end(form) }}
                 </div>
@@ -52,6 +59,12 @@
                         </div>
                     </div>
                 {% endfor %}
+                <span>{{ semesters | length }}/5</span>
+                <button>?</button> 
+                {# The button must display the hidden div (hover or click) #}
+                <div hidden>
+                    <p>Nous limitons la quantité de semestres sauvegardés à 5 afin d'améliorer les performances de l'application à travers l'optimisation de la mémoire. Cela est également important pour ne pas surcharger nos serveurs, ce qui peut avoir un impact environnemental.</p>
+                </div>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@
             action="" 
             method="GET"
             id="js-semester">
-            <p>Semester :</p>
+            <p>Semestre :</p>
             <select name="semester" onchange="document.querySelector('#js-semester').submit();">
                 {% for semester in semesters %}
                     <option value="{{ semester.id }}">{{ semester }}</option>

@@ -53,6 +53,7 @@ class AdminController extends AbstractController
                             'faculty' => $faculty
                         ], ['id' => 'DESC'])
                 ], 
+                false
              ),
              'semesters' => $semesterRepository->findBy(['faculty' => $faculty])
         ]);
@@ -272,6 +273,8 @@ class AdminController extends AbstractController
             $semester->setFaculty($this->getUser()->getFaculty());
             $em->persist($semester);
             $em->flush();
+
+            // mail
 
             $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !");
             return $this->redirectToRoute('app_semester');

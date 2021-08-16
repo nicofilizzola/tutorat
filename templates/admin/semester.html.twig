@@ -24,7 +24,11 @@
 
             <div class="classrooms--container">
                 {% for semester in semesters %}
-                    {# {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %} #}
+                    {% if loop.index0 == 0 %}
+                        <span>Session actuelle</span>
+                    {% else %}
+                        {# DISABLE DELETE AND DON'T COMPILE FORM #}
+                    {% endif %}
                     <div class="classroomContent--container">
                         <div class="content classroom">
                             <span>{{ semester }}</span>

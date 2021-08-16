@@ -253,15 +253,29 @@ class AdminController extends AbstractController
 
 
      /**
-     * @Route("/semester", name="app_semester", methods={"GET"})
+     * @Route("/semester", name="app_semester", methods={"GET", "POST"})
      */
-    public function semester(SemesterRepository $semesterRepository, Request $request): Response
+    public function semester(SemesterRepository $semesterRepository, Request $request, EntityManagerInterface $em): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         $semester = new Semester;
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            if (intval($semester->getStartYear()) > intval($semester->getEndYear())){
+                $this->addFlash('danger', "Une erreur est survenue...");
+                return $this->redirectToRoute('app_semester');
+            }
+
+            $semester->setFaculty($this->getUser()->getFaculty());
+            $em->persist($semester);
+            $em->flush();
+
+            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !");
+            return $this->redirectToRoute('app_semester');
+        }
 
         return $this->render('admin/semester.html.twig', [
             'semesters' => $semesterRepository->findBy(

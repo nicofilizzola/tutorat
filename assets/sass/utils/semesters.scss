@@ -1,15 +1,15 @@
 @import 'var';
 
-.classrooms--container {
+.semesters--container {
    width: 90vw;
-   max-width: 250px;
+   max-width: 350px;
 }
 
-.classroom, .manage {
+.semester, .manage {
    width: 50% !important;
 }
 
-.classroom {
+.semester {
    border-left: none;
 }
 

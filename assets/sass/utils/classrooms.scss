@@ -1,0 +1,12 @@
+@import 'var';
+
+.classroom, .manage {
+   width: 50% !important;
+}
+
+.content {
+   display: flex;
+   flex-direction: row;
+   justify-content: center !important;
+   align-items: center !important;
+}

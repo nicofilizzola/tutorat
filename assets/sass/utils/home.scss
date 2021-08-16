@@ -128,7 +128,11 @@
 
 
    &__tinyEffect:hover:before {
-      transform: scale(11);
+      transform: scale(10);
+   }
+
+   &__mediumEffect:hover:before {
+      transform: scale(13);
    }
 
    &__tiny {

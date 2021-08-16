@@ -3,7 +3,7 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block stylesheets %}
-    {{ encore_entry_link_tags('app_subject') }}
+    {{ encore_entry_link_tags('app_classroom') }}
     {{ encore_entry_link_tags('app') }}
 {% endblock %}
 
@@ -14,19 +14,17 @@
             <div class="form--container">
                 <div class="form--content">
                     {{ form_start(form) }}
-                        <div class="collapse collapse_3">
-                            {{ form_row(form.name, {"label": "Numéro"}, {'attr': {'class':'hoveredItems'}}) }}
-                        </div>
+                        {{ form_row(form.name, {"label": "Numéro", 'attr': {'class':'hoveredItems'}}) }}
                         <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
                     {{ form_end(form) }}
                 </div>
             </div>
 
-            <div class="subjects--container">
+            <div class="classrooms--container">
                 {% for classroom in classrooms %}
                     {# {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %} #}
-                    <div class="subjectContent--container">
-                        <div class="content title">
+                    <div class="classroomContent--container">
+                        <div class="content classroom">
                             <span>{{ classroom.name }}</span>
                         </div>
                         

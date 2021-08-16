@@ -72,8 +72,10 @@ class SessionRepository extends ServiceEntityRepository
         return $sessions;
     }
 
-    public function findByFaculty(Faculty $faculty, array $criteria){
-        $allSessions = $this->findBy($criteria, ['id' => 'ASC']);
+    public function findByFaculty(Faculty $faculty, array $criteria, bool $idAsc = true){
+        $allSessions = $this->findBy(
+            $criteria, 
+            ['id' => $idAsc ? 'ASC' : 'DESC']);
         $facultySessions = [];
         foreach ($allSessions as $session) {
             if ($session->getSubject()->getFaculty() == $faculty){

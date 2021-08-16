@@ -42,6 +42,15 @@
 
                     <div class="text">
                         <span class="date">Le <b>{{ currentSession.datetime | date('d/m/Y') }}</b> à <b>{{ currentSession.datetime | date('h') }}h{{ currentSession.datetime | date('i') }}</b> en <b>{{ (currentSession.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
+
+                        {% set duration = "30min" %}
+                        {% if currentSession.timeFormat == 2 %}
+                            {% set duration = "45min" %}
+                        {% elseif currentSession.timeFormat == 3 %}
+                            {% set duration = "1h" %}
+                        {% endif %}
+                        <span>Durée : <b>{{ duration }}</b></span>
+
                         {% if currentSession.faceToFace == 1 %}
                             <span class="localisation">Salle {{ currentSession.classroom.name }} dans le département {{ currentSession.subject.faculty.name }}.</span>
                         {% else %}

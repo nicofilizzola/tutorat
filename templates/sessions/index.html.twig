@@ -177,7 +177,7 @@
                                         {% set duration = "30min" %}
                                         {% if session.timeFormat == 2 %}
                                             {% set duration = "45min" %}
-                                        {% else %}
+                                        {% elseif session.timeFormat == 3 %}
                                             {% set duration = "1h" %}
                                         {% endif %}
                                         <span>Durée : <b>{{ duration }}</b></span>

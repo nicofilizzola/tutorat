@@ -35,16 +35,16 @@
                         </div>
                         
                         <div class="content manage">
-                            <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
+                            <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-semester-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
                                 <span>🗑️</span>
                             </button>
                             <form 
-                                id="js-classroom-delete-form-{{ semester.id }}"
+                                id="js-semester-delete-form-{{ semester.id }}"
                                 display="none" 
                                 hidden
-                                action="{{ path('app_classroom_delete', {"id": semester.id}) }}" 
+                                action="{{ path('app_semester_delete', {"id": semester.id}) }}" 
                                 method="POST">
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-classroom' ~ semester.id) }}"/>
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-semester' ~ semester.id) }}"/>
                             </form> 
                         </div>
                     </div>

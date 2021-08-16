@@ -284,4 +284,22 @@ class AdminController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+     /**
+     * @Route("/semester/{id<\d+>}/delete", name="app_semester_delete", methods={"POST"})
+     */
+    public function semesterDelete(Request $request, Semester $semester, EntityManagerInterface $em): Response
+    {
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
+        if (!$this->isCsrfTokenValid('delete-semester' . $semester->getId(), $request->request->get('token'))) {
+            $this->addFlash('danger', "Une erreur est survenue.");
+            return $this->redirectToRoute('app_semester');
+        }
+
+        $em->remove($semester);
+        $em->flush();
+
+        $this->addFlash('success', 'Le semestre ' . $semester . ' et toutes les informations relatives à celui-ci ont été suprimmées !');
+        return $this->redirectToRoute("app_semester");
+    }
 }

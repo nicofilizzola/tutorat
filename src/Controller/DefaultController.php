@@ -33,7 +33,7 @@ class DefaultController extends AbstractController
         }
 
         return $this->render('default/index.html.twig', [
-            'sessions' => $sessionRepository->findUserSessions($this->getUser()),
+            'sessions' => $sessionRepository->findByStudent($this->getUser()),
             'users' => $userRepository->findBy([
                 'isValid' => 1, 
                 'isVerified' => true])

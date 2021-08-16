@@ -17,7 +17,7 @@
             <p>Semester :</p>
             <select name="semester" onchange="document.querySelector('#js-semester').submit();">
                 {% for semester in semesters %}
-                    <option value="{{ semester.id }}">{{ semester.id }}</option>
+                    <option value="{{ semester.id }}">{{ semester }}</option>
                 {% endfor %}
             </select>
         </form>

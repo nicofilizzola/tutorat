@@ -30,6 +30,22 @@ class Semester
      */
     private $sessions;
 
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $startYear;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $endYear;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $yearOrder;
+
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -78,6 +94,42 @@ class Semester
                 $session->setSemester(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStartYear(): ?string
+    {
+        return $this->startYear;
+    }
+
+    public function setStartYear(string $startYear): self
+    {
+        $this->startYear = $startYear;
+
+        return $this;
+    }
+
+    public function getEndYear(): ?string
+    {
+        return $this->endYear;
+    }
+
+    public function setEndYear(string $endYear): self
+    {
+        $this->endYear = $endYear;
+
+        return $this;
+    }
+
+    public function getYearOrder(): ?int
+    {
+        return $this->yearOrder;
+    }
+
+    public function setYearOrder(int $yearOrder): self
+    {
+        $this->yearOrder = $yearOrder;
 
         return $this;
     }

@@ -8,7 +8,7 @@
    width: 100vw;
 }
 
-.content--container, .subjects--container {
+.content--container, .subjects--container, .classrooms--container {
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -42,8 +42,13 @@
    }
 }
 
+.classrooms--container {
+   width: 90vw;
+   max-width: 250px;
+}
+
 // Liste
-.userContent--container, .subjectContent--container {
+.userContent--container, .subjectContent--container, .classroomContent--container {
    display: flex;
    flex-direction: row;
    justify-content: space-between;

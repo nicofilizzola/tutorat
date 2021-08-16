@@ -29,22 +29,30 @@ class AdminController extends AbstractController
         return true;
     }
 
+
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
      */
-    public function sessionsLog(SessionRepository $sessionRepository, SemesterRepository $semesterRepository): Response
+    public function sessionsLog(SessionRepository $sessionRepository, SemesterRepository $semesterRepository, Request $request): Response
     {  
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         $faculty = $this->getUser()->getFaculty();
+
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findByFaculty(
-                $$faculty,
+                $faculty,
                 [
                     'isValid' => true,
-                    'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
+                    'semester' => !$request->query->get('semester') ? 
+                        $semesterRepository->findCurrentFacultySemester($faculty) : 
+                        $semesterRepository->findOneBy([
+                            'id' => $request->query->get('semester'),
+                            'faculty' => $faculty
+                        ], ['id' => 'DESC'])
                 ], 
              ),
+             'semesters' => $semesterRepository->findBy(['faculty' => $faculty])
         ]);
     }
 
@@ -236,5 +244,20 @@ class AdminController extends AbstractController
 
         $this->addFlash('success', 'La salle de cours ' . $classroom->getName() . ' a bien été suprimmé !');
         return $this->redirectToRoute("app_classroom");
+    }
+
+
+     /**
+     * @Route("/semester", name="app_semester", methods={"GET"})
+     */
+    public function semester(SemesterRepository $semesterRepository): Response
+    {
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
+        return $this->render('admin/semester.html.twig', [
+            'semesters' => $semesterRepository->findBy(
+                ['faculty' => $this->getUser()->getFaculty()],
+                ['id' => 'DESC'])
+        ]);
     }
 }

@@ -13,32 +13,40 @@
         <div class="container">
             <div class="form--container">
                 <div class="form--content">
-                    {{ form_start(form) }}
-                        {{ form_row(form.name, {"label": "Numéro", 'attr': {'class':'hoveredItems'}}) }}
-                        <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
-                    {{ form_end(form) }}
+                    <form action="" method="POST">
+                        <select name="" id="">
+                        </select>
+                        <span>-</span>
+                        <select name="" id="">
+                        </select>
+
+                        <select name="" id="">
+                            <option value="1">S1</option>
+                            <option value="2">S2</option>
+                        </select>                        
+                    </form>
                 </div>
             </div>
 
             <div class="classrooms--container">
-                {% for classroom in classrooms %}
+                {% for semester in semesters %}
                     {# {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %} #}
                     <div class="classroomContent--container">
                         <div class="content classroom">
-                            <span>{{ classroom.name }}</span>
+                            <span>{{ semester.name }}</span>
                         </div>
                         
                         <div class="content manage">
-                            <button title="Supprimer la salle de cours." onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ classroom.id }}').submit()" class="delete hoveredItems refuse">
+                            <button title="Supprimer la salle de cours." onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
                                 <span>🗑️</span>
                             </button>
                             <form 
-                                id="js-classroom-delete-form-{{ classroom.id }}"
+                                id="js-classroom-delete-form-{{ semester.id }}"
                                 display="none" 
                                 hidden
-                                action="{{ path('app_classroom_delete', {"id": classroom.id}) }}" 
+                                action="{{ path('app_classroom_delete', {"id": semester.id}) }}" 
                                 method="POST">
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-classroom' ~ classroom.id) }}"/>
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-classroom' ~ semester.id) }}"/>
                             </form> 
                         </div>
                     </div>

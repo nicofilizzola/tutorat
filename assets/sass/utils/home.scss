@@ -132,7 +132,7 @@
    }
 
    &__mediumEffect:hover:before {
-      transform: scale(13);
+      transform: scale(14);
    }
 
    &__tiny {
@@ -148,9 +148,20 @@
    align-items: flex-start;
 }
 
-.studentCourse {
+.requests--container {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: flex-start;
+   flex-wrap: wrap;
+   margin: 50px 0;
+   width: 90vw;
+   max-width: 1000px;
+}
+
+.studentCourse, .request {
    width: 250px;
-   margin-bottom: 25px;
+   margin: 0 5px 25px 5px;
 
    @include desktop-sm() {
       width: 300px;

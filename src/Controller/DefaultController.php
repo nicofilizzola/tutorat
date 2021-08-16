@@ -26,14 +26,15 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function index(SessionRepository $sessionRepository, UserRepository $userRepository): Response
     {
         if (!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
 
         return $this->render('default/index.html.twig', [
-            'sessions' => $sessionRepository->findUserSessions($this->getUser())
+            'sessions' => $sessionRepository->findUserSessions($this->getUser()),
+            'users' => $userRepository->findBy(['isValid'=>1, 'isVerified'=>true])
         ]);
     }
 

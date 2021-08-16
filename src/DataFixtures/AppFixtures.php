@@ -104,6 +104,9 @@ class AppFixtures extends Fixture
             }
             
             $semester = new Semester;
+            $semester->setStartYear("2021");
+            $semester->setEndYear("2022");
+            $semester->setYearOrder(1);
             $semester->setFaculty($faculty);
 
             $manager->persist($semester);

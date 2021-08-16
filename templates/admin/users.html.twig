@@ -190,12 +190,12 @@
                                 </button>
                             {% endif %}
                             
-                            {% if (userRole == "ROLE_ADMIN") and (adminCount == 1) %}
-                                <button title="Il n'y a qu'un seul administrateur dans ce département, suppression impossible." disabled class="hoveredItems refuse disabled">
+                            {% if (userRole == "ROLE_ADMIN") and (adminCount == 1) and (app.user == user) %}
+                                <button title="Supression bloquée" disabled class="hoveredItems refuse disabled">
                                     <span>🗑️</span>
                                 </button>
                             {% else %}
-                                <button title="Supprimer l'utilisateur." onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
+                                <button title="Suprimmer l'utilisateur" onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                                 <form 

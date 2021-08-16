@@ -133,4 +133,9 @@ class Semester
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return ($this->startYear . "-" . $this->endYear . " S" . $this->yearOrder);
+    }
 }

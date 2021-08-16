@@ -13,18 +13,12 @@
         <div class="container">
             <div class="form--container">
                 <div class="form--content">
-                    <form action="" method="POST">
-                        <select name="" id="">
-                        </select>
-                        <span>-</span>
-                        <select name="" id="">
-                        </select>
-
-                        <select name="" id="">
-                            <option value="1">S1</option>
-                            <option value="2">S2</option>
-                        </select>                        
-                    </form>
+                    {{ form_start(form) }}
+                        <div class="collapse collapse_3">
+                            {{ form_row(form) }} 
+                        </div>
+                        <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
+                    {{ form_end(form) }}
                 </div>
             </div>
 
@@ -33,11 +27,11 @@
                     {# {% set subjectHasSessions = subject.sessions is empty ? false : subject.sessions | length %} #}
                     <div class="classroomContent--container">
                         <div class="content classroom">
-                            <span>{{ semester.name }}</span>
+                            <span>{{ semester }}</span>
                         </div>
                         
                         <div class="content manage">
-                            <button title="Supprimer la salle de cours." onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
+                            <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
                                 <span>🗑️</span>
                             </button>
                             <form 

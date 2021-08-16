@@ -4,15 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Subject;
+use App\Entity\Semester;
 use App\Entity\Classroom;
 use App\Form\SubjectType;
+use App\Form\SemesterType;
 use App\Form\ClassroomType;
 use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
-use App\Repository\ClassroomRepository;
 use App\Repository\SemesterRepository;
+use App\Repository\ClassroomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -136,11 +138,14 @@ class AdminController extends AbstractController
     /**
      * @Route("/user/{id<\d+>}/delete", name="app_user_delete", methods="POST")
      */
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token')) ||
+            $user == $this->getUser()
+            // missing validation if adminCount == 1
+        ) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
@@ -250,14 +255,19 @@ class AdminController extends AbstractController
      /**
      * @Route("/semester", name="app_semester", methods={"GET"})
      */
-    public function semester(SemesterRepository $semesterRepository): Response
+    public function semester(SemesterRepository $semesterRepository, Request $request): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
+        $semester = new Semester;
+        $form = $this->createForm(SemesterType::class, $semester);
+        $form->handleRequest($request);
 
         return $this->render('admin/semester.html.twig', [
             'semesters' => $semesterRepository->findBy(
                 ['faculty' => $this->getUser()->getFaculty()],
-                ['id' => 'DESC'])
+                ['id' => 'DESC']),
+            'form' => $form->createView()
         ]);
     }
 }

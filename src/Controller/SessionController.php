@@ -46,7 +46,7 @@ class SessionController extends AbstractController
     /**
      * @Route("/sessions", name="app_sessions", methods="GET")
      */
-    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
+    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
@@ -55,7 +55,10 @@ class SessionController extends AbstractController
         return $this->render('sessions/index.html.twig', [
            'sessions' => $sessionRepository->findByFacultyAfterToday(
                 $this->getUser()->getFaculty(),
-               ['isValid' => true], 
+               [
+                   'isValid' => true,
+                   'semester' => $semesterRepository->findCurrentFacultySemester($this->getUser()->getFaculty())
+                ], 
             ),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),

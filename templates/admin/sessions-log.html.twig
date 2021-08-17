@@ -11,13 +11,17 @@
 {% block body %}
 	<div class="smooth--container" data-lg-smooth>
         <form 
-            action="" 
-            method="GET"
+            action="{{ path('app_sessions_log') }}" 
+            method="POST"
             id="js-semester">
             <p>Semestre :</p>
             <select name="semester" onchange="document.querySelector('#js-semester').submit();">
                 {% for semester in semesters %}
-                    <option value="{{ semester.id }}">{{ semester }}</option>
+                    {% if semester == currentSemester %}
+                        <option value="{{ semester.id }}" selected="selected">{{ semester }}</option>
+                    {% else %}
+                        <option value="{{ semester.id }}">{{ semester }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </form>

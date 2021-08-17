@@ -11,15 +11,19 @@ use App\Form\SemesterType;
 use App\Form\ClassroomType;
 use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 
 class AdminController extends AbstractController
 {
@@ -41,21 +45,27 @@ class AdminController extends AbstractController
 
         $faculty = $this->getUser()->getFaculty();
 
+        $currentSemester = !$request->request->get('semester') ? 
+            $semesterRepository->findCurrentFacultySemester($faculty) : 
+            $semesterRepository->findOneBy([
+                'id' => $request->query->get('semester'),
+                'faculty' => $faculty
+            ], ['id' => 'DESC']);
+
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findByFaculty(
                 $faculty,
                 [
                     'isValid' => true,
-                    'semester' => !$request->query->get('semester') ? 
-                        $semesterRepository->findCurrentFacultySemester($faculty) : 
-                        $semesterRepository->findOneBy([
-                            'id' => $request->query->get('semester'),
-                            'faculty' => $faculty
-                        ], ['id' => 'DESC'])
+                    'semester' => $currentSemester
                 ], 
                 false
-             ),
-             'semesters' => $semesterRepository->findBy(['faculty' => $faculty])
+            ),
+            'semesters' => $semesterRepository->findBy(
+                ['faculty' => $faculty],
+                ['id' => 'DESC']
+            ),
+            'currentSemester' => $currentSemester
         ]);
     }
 
@@ -256,27 +266,44 @@ class AdminController extends AbstractController
      /**
      * @Route("/semester", name="app_semester", methods={"GET", "POST"})
      */
-    public function semester(SemesterRepository $semesterRepository, Request $request, EntityManagerInterface $em): Response
+    public function semester(SemesterRepository $semesterRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
+        $semesterLimit = 5;
         $semester = new Semester;
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            if (intval($semester->getStartYear()) > intval($semester->getEndYear())){
+            if (intval($semester->getStartYear()) + 1 !== intval($semester->getEndYear())){
                 $this->addFlash('danger', "Une erreur est survenue...");
                 return $this->redirectToRoute('app_semester');
             }
+            if ($semesterRepository->findOneBy([
+                'startYear' => $semester->getStartYear(),
+                'endYear' => $semester->getEndYear(),
+                'yearOrder' => $semester->getYearOrder()
+            ])) {
+                $this->addFlash('danger', "Erreur : le semestre que vous avez essayé de créer (" . $semester .") existe déjà...");
+                return $this->redirectToRoute('app_semester');
+            }
 
+            $deleteMessage = null;
+            $facultySemesters = $semesterRepository->findBy(
+                ['faculty' => $this->getUser()->getFaculty()],
+                ['id' => 'DESC']
+            );
+            if (count($facultySemesters) >= $semesterLimit){
+                $em->remove($facultySemesters[count($facultySemesters) - 1]);
+                $deleteMessage =  " Également, le semestre " . $facultySemesters[count($facultySemesters) - 1] . " a été supprimé";
+            }
             $semester->setFaculty($this->getUser()->getFaculty());
             $em->persist($semester);
             $em->flush();
 
-            // mail
-
-            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !");
+            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . 
+            $deleteMessage ?? "");
             return $this->redirectToRoute('app_semester');
         }
 
@@ -284,7 +311,8 @@ class AdminController extends AbstractController
             'semesters' => $semesterRepository->findBy(
                 ['faculty' => $this->getUser()->getFaculty()],
                 ['id' => 'DESC']),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'semesterLimit' => $semesterLimit
         ]);
     }
      /**

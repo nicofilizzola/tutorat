@@ -16,6 +16,7 @@ use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
+use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,11 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class AdminController extends AbstractController
 {
+    use getRoles;
+
     // Must be included as the FIRST instruction in EVERY AdminController route
     private function isAdmin(){ 
-        if (!$this->getUser() || !in_array("ROLE_ADMIN", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
+        if (!$this->getUser() || !in_array($this->getRoles()[3], $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
             return false;
         }
         return true;
@@ -85,15 +88,14 @@ class AdminController extends AbstractController
 
         $adminCount = 0;
         $tutorHours = [];
-        require('Requires/Roles.php');
         foreach ($users as $user) {
             $userRoles = $user->getRoles();
 
-            if (in_array($roles[3], $userRoles)){
+            if (in_array($this->getRoles()[3], $userRoles)){
                 $adminCount++;
             }
 
-            if (in_array($roles[1], $userRoles) && $userRoles[count($userRoles) - 1] == $roles[1]){
+            if (in_array($this->getRoles()[1], $userRoles) && $userRoles[count($userRoles) - 1] == $this->getRoles()[1]){
                 array_push($tutorHours, $user->getTutorHours($sessionRepository));
             } else {
                 array_push($tutorHours, null);
@@ -103,7 +105,8 @@ class AdminController extends AbstractController
         return $this->render('admin/users.html.twig', [
             'users' => $users,
             'adminCount' => $adminCount,
-            'tutorHours' => $tutorHours
+            'tutorHours' => $tutorHours,
+            'roles' => $this->getRoles()
         ]);
     }
     /**
@@ -196,7 +199,7 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
-     /**
+    /**
      * @Route("/subject/{id<\d+>}/delete", name="app_subject_delete", methods={"POST"})
      */
     public function subjectDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
@@ -243,7 +246,7 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
-     /**
+    /**
      * @Route("/classroom/{id<\d+>}/delete", name="app_classroom_delete", methods={"POST"})
      */
     public function classroomDelete(Classroom $classroom, EntityManagerInterface $em, Request $request): Response
@@ -263,7 +266,7 @@ class AdminController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/semester", name="app_semester", methods={"GET", "POST"})
      */
     public function semester(SemesterRepository $semesterRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
@@ -302,6 +305,8 @@ class AdminController extends AbstractController
             $em->persist($semester);
             $em->flush();
 
+            // mail tutors
+
             $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . 
             $deleteMessage ?? "");
             return $this->redirectToRoute('app_semester');
@@ -315,7 +320,7 @@ class AdminController extends AbstractController
             'semesterLimit' => $semesterLimit
         ]);
     }
-     /**
+    /**
      * @Route("/semester/{id<\d+>}/delete", name="app_semester_delete", methods={"POST"})
      */
     public function semesterDelete(Request $request, Semester $semester, EntityManagerInterface $em): Response

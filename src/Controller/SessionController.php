@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
+use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
 {
+    use getRoles;
+
     private function sessionIsJoinable(Session $session){
         $isJoinable = true;
         if (in_array($this->getUser(), $session->getStudents()->getValues())){
@@ -36,7 +39,7 @@ class SessionController extends AbstractController
         return !$isJoinable ? false : true;
     }
     private function isTutor(){
-        if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
+        if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array($this->getRoles()[1], $this->getUser()->getRoles())){
             return false;
         }
         return true;
@@ -76,7 +79,8 @@ class SessionController extends AbstractController
 
         return $this->render('sessions/view.html.twig', [
            'sessions' => $sessionRepository->findThreeBySessionSubject($session),
-           'currentSession' => $session
+           'currentSession' => $session,
+           'roles' => $this->getRoles()
         ]);
     }
 

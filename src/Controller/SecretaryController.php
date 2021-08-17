@@ -8,6 +8,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use App\Repository\SessionRepository;
 use App\Repository\ClassroomRepository;
+use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +20,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SecretaryController extends AbstractController
 {
+    use getRoles;
+
     private function isSecretary(){
-        if (!in_array("ROLE_SECRETARY", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() !== 2 || !$this->getUser()->isVerified()){
+        if (!in_array($this->getRoles()[2], $this->getUser()->getRoles()) || $this->getUser()->getIsValid() !== 2 || !$this->getUser()->isVerified()){
             return false;
         }
         return true;

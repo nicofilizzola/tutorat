@@ -19,7 +19,7 @@
             {% elseif (app.user == currentSession.tutor) %}
                 {% set sessionViewMode = 2 %}
                 {# tutor author #}
-            {% elseif (("ROLE_ADMIN" in app.user.roles) and (app.user.faculty == currentSession.subject.faculty))%}
+            {% elseif ((roles[3] in app.user.roles) and (app.user.faculty == currentSession.subject.faculty))%}
                 {% set sessionViewMode = 4 %}
                 {# admin #}
             {% else %}

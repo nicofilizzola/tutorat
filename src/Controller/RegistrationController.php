@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
                 }
             }
             function manageRoles(User $user, $form){
-                require('Requires/Roles.php');
+                require('../Requires/Roles.php');
                 $userRoles = [];
                 for ($i = 0; $i <= $form->get('role')->getData() - 1; $i++){
                     array_push($userRoles, $roles[$i]);

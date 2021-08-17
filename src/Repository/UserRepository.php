@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Faculty;
+use App\Traits\getRoles;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,6 +19,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    use getRoles;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -73,18 +76,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findFacultyTutors(Faculty $faculty){
         $tutors = [];
+        $tutorRole = $this->getRoles()[1];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array("ROLE_TUTOR", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
+            if (in_array($tutorRole, $user->getRoles()) && array_search($tutorRole, $this->getRoles()) == count($this->getRoles()) - 1){
                 array_push($tutors, $user);
             }
         }
         return $tutors;
     }
+    public function findFacultyTutorEmails($faculty){
+        $tutorEmails = [];
+        foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
+            if (in_array($this->getRoles[1], $user->getRoles())){
+                array_push($tutorEmails, $user->getEmail());
+            }
+        }
+        return $tutorEmails;  
+    }
 
     public function findFacultyAdminEmails($faculty){
         $adminEmails = [];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array("ROLE_ADMIN", $user->getRoles())){
+            if (in_array($this->getRoles[3], $user->getRoles())){
                 array_push($adminEmails, $user->getEmail());
             }
         }
@@ -92,8 +105,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     public function findFacultySecretaryEmail($faculty){
+        $secretaryRole = $this->getRoles()[2];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array("ROLE_SECRETARY", $user->getRoles()) && !in_array("ROLE_ADMIN", $user->getRoles())){
+            if (in_array($secretaryRole, $user->getRoles()) && array_search($secretaryRole, $this->getRoles()) == count($this->getRoles()) - 1){
                 return $user->getEmail();
             }
         }

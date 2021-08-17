@@ -7,6 +7,7 @@ use App\Entity\Session;
 use App\Repository\SessionRepository;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
+use App\Traits\getRoles;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -22,6 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class DefaultController extends AbstractController
 {
     use adminValidationEmail;
+    use getRoles;
 
     /**
      * @Route("/", name="app_home")
@@ -36,7 +38,9 @@ class DefaultController extends AbstractController
             'sessions' => $sessionRepository->findByStudent($this->getUser()),
             'users' => $userRepository->findBy([
                 'isValid' => 1, 
-                'isVerified' => true])
+                'isVerified' => true
+            ]),
+            'roles' => $this->getRoles()
         ]);
     }
 
@@ -47,13 +51,13 @@ class DefaultController extends AbstractController
     {
         require_once("Requires/getAdminsMails.php");
 
-        if (!$this->getUser() || in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
+        if (!$this->getUser() || in_array($this->getRoles()[1], $this->getUser()->getRoles())){
             return $this->redirectToRoute('app_home');
         }
 
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('become-tutor', $submittedToken)) {
-            $this->getUser()->setRoles(["ROLE_STUDENT", "ROLE_TUTOR"]);
+            $this->getUser()->setRoles([$this->getRoles()[0], $this->getRoles()[1]]);
             $this->getUser()->setIsValid(1);
 
             $em->persist($this->getUser());

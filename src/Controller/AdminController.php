@@ -47,13 +47,13 @@ class AdminController extends AbstractController
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         $faculty = $this->getUser()->getFaculty();
-
-        $currentSemester = !$request->request->get('semester') ? 
+        $requestedSemester = $request->request->get('semester');
+        $currentSemester = is_null($requestedSemester) ? 
             $semesterRepository->findCurrentFacultySemester($faculty) : 
             $semesterRepository->findOneBy([
-                'id' => $request->query->get('semester'),
+                'id' => $requestedSemester,
                 'faculty' => $faculty
-            ], ['id' => 'DESC']);
+            ]);
 
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findByFaculty(

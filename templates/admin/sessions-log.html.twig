@@ -10,33 +10,23 @@
 
 {% block body %}
 	<div class="smooth--container" data-lg-smooth>
-        {# form #}
-        <form 
-            action="{{ path('app_sessions_log') }}" 
-            method="POST"
-            id="js-semester">
-            <p>Semestre :</p>
-            <select name="semester" onchange="document.querySelector('#js-semester').submit();">
-                {% for semester in semesters %}
-                    {% if semester == currentSemester %}
-                        <option value="{{ semester.id }}" selected="selected">{{ semester }}</option>
-                    {% else %}
-                        <option value="{{ semester.id }}">{{ semester }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </form>
-
         <div class="container">
-            {# form #}
+            {{ dump(currentSemester) }}
             <div class="form--container">
                 <div class="form--content">
                     <div class="collapse collapse_2">
-                        <form action="" method="GET" id="js-semester">
+                        <form 
+                            action="{{ path('app_sessions_log') }}" 
+                            method="POST" 
+                            id="js-semester">
                             <span>Semestre</span>
                             <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-semester').submit();">
                                 {% for semester in semesters %}
-                                    <option value="{{ semester.id }}">{{ semester }}</option>
+                                    {% if semester == currentSemester %}
+                                        <option value="{{ semester.id }}" selected="selected">{{ semester }}</option>
+                                    {% else %}
+                                        <option value="{{ semester.id }}">{{ semester }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </form>

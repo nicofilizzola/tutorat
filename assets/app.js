@@ -16,6 +16,7 @@ import { gsap } from 'gsap'
 import luge from '@waaark/luge'
 
 import { manageFlashMessages } from "./functions/manageFlashMessages.js";
+import { nav } from "./functions/nav.js";
 
 const domCache = {
    // Cursor
@@ -28,9 +29,6 @@ const domCache = {
    menuBurgerCrossLine1: document.querySelector('.cross__1'),
    menuBurgerCrossLine2: document.querySelector('.cross__2'),
    menuContentContainer: document.querySelector('.menuContent--container'),
-   
-   customNavPathContainer: document.querySelector('.customNavPath--container'),
-   navPath: document.querySelector('.navPath'),
 }
 
 let state = {
@@ -43,37 +41,7 @@ let posY = 0
 let lowestElapsedTime = 0
 
 // Stylize nav path
-const cutPath = domCache.navPath.innerHTML.split('/')
-
-const customPathFragment = document.createDocumentFragment()
-const paths = []
-
-cutPath.forEach(path => {
-   if (path != '') {
-      const gap = document.createElement('span')
-      gap.innerHTML = '<'
-      gap.classList.add('gap')
-
-      const linkPath = document.createElement('a')
-      paths.push(path)
-      paths.forEach(path => {
-         linkPath.href += `/${path}`
-      })
-      linkPath.classList.add('hoveredItems')
-      linkPath.classList.add('lineHoverEffect')
-      
-      const textPath = document.createElement('span')
-      textPath.innerHTML = path
-
-      linkPath.appendChild(textPath)
-
-      customPathFragment.appendChild(gap)
-      customPathFragment.appendChild(linkPath)
-   }
-});
-
-domCache.customNavPathContainer.appendChild(customPathFragment)
-domCache.navPath.remove()
+nav()
 
 // Success messages
 let flashMessageCross, flashContainerBackground = null

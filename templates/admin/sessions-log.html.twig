@@ -10,6 +10,7 @@
 
 {% block body %}
 	<div class="smooth--container" data-lg-smooth>
+        {# form #}
         <form 
             action="{{ path('app_sessions_log') }}" 
             method="POST"
@@ -25,56 +26,86 @@
                 {% endfor %}
             </select>
         </form>
+
         <div class="container">
-            {% if sessions is empty == false %}
-                {% for session in sessions %}
-                    <div class="logs--container">
-                        <span>Titre du cours : {{ session.title }}</span>
-                        <span>Tuteur : {{ session.tutor }}</span>
-                        <span>Le {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</span>
+            {# form #}
+            <div class="form--container">
+                <div class="form--content">
+                    <div class="collapse collapse_2">
+                        <form action="" method="GET" id="js-semester">
+                            <span>Semestre</span>
+                            <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-semester').submit();">
+                                {% for semester in semesters %}
+                                    <option value="{{ semester.id }}">{{ semester }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                        <form action="" method="GET" id="js-tutor">
+                            <span>Tuteur</span>
+                            <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-tutor').submit();">
+                                {% set checkTutor = "" %}
+                                {% for session in sessions %}
+                                    {% if session.tutor != checkTutor %}
+                                        {% set checkTutor = session.tutor %}
+                                        <option value="{{ session.tutor }}">{{ session.tutor }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                        {% if session.timeFormat == 1 %}
-                            {% set timeFormatMessage = "30 minutes" %}
-                        {% elseif session.timeFormat == 2 %}
-                            {% set timeFormatMessage = "45 minutes" %}
-                        {% elseif session.timeFormat == 3 %}
-                            {% set timeFormatMessage = "1 heure" %}
-                        {% endif %}
-                        <span>Durée : {{ timeFormatMessage }}</span>
+            <div class="logs--container">
+                {% if sessions is empty == false %}
+                    {% for session in sessions %}
+                        <div class="logs--content">
+                            <span>Titre du cours : {{ session.title }}</span>
+                            <span>Tuteur : {{ session.tutor }}</span>
+                            <span>Le {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</span>
 
-                        {% if session.participants is empty %}
-                            <span>Statut : Cours non validé</span>
-                            {% if session.students is empty %}
-                                <span>Pas d'étudiants inscrits</span>
+                            {% if session.timeFormat == 1 %}
+                                {% set timeFormatMessage = "30 minutes" %}
+                            {% elseif session.timeFormat == 2 %}
+                                {% set timeFormatMessage = "45 minutes" %}
+                            {% elseif session.timeFormat == 3 %}
+                                {% set timeFormatMessage = "1 heure" %}
+                            {% endif %}
+                            <span>Durée : {{ timeFormatMessage }}</span>
+
+                            {% if session.participants is empty %}
+                                <span>Statut : Cours non validé</span>
+                                {% if session.students is empty %}
+                                    <span>Pas d'étudiants inscrits</span>
+                                {% else %}
+                                    <span>Étudiants inscrits :</span>
+                                    <ul>
+                                        {% for student in session.students %}
+                                            <li>{{ student }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             {% else %}
+                                <span>Cours validé</span>
                                 <span>Étudiants inscrits :</span>
-                                <ul>
+                                <ul>            
                                     {% for student in session.students %}
-                                        <li>{{ student }}</li>
+                                        <li>{{ student }} :
+                                        {% for participant in session.participants %}
+                                            {% if student.id == participant.studentId %}
+                                                {{ participant["present"] == true ? "Présent" : "Absent" }}   
+                                            {% endif %}
+                                        {% endfor %}
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
-                        {% else %}
-                            <span>Cours validé</span>
-                            <span>Étudiants inscrits :</span>
-                            <ul>            
-                                {% for student in session.students %}
-                                    <li>{{ student }} :
-                                    {% for participant in session.participants %}
-                                        {% if student.id == participant.studentId %}
-                                            {{ participant["present"] == true ? "Présent" : "Absent" }}   
-                                        {% endif %}
-                                    {% endfor %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-                    <hr>
-                {% endfor %}
-            {% else %}
-                <span><b>Pas de sessions</b></span>
-            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <span><b>Pas de sessions</b></span>
+                {% endif %}
+            </div>
         </div>
     </div>
 

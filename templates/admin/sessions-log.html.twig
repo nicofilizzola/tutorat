@@ -11,7 +11,6 @@
 {% block body %}
 	<div class="smooth--container" data-lg-smooth>
         <div class="container">
-            {{ dump(currentSemester) }}
             <div class="form--container">
                 <div class="form--content">
                     <div class="collapse collapse_2">
@@ -23,9 +22,9 @@
                             <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-semester').submit();">
                                 {% for semester in semesters %}
                                     {% if semester == currentSemester %}
-                                        <option value="{{ semester.id }}" selected="selected">{{ semester }}</option>
+                                        <option value="{{ semester.id }}" selected="selected">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
                                     {% else %}
-                                        <option value="{{ semester.id }}">{{ semester }}</option>
+                                        <option value="{{ semester.id }}">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>

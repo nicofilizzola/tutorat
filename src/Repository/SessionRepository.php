@@ -85,7 +85,7 @@ class SessionRepository extends ServiceEntityRepository
         return $facultySessions;
     }
 
-    public function findByFacultyAfterToday(Faculty $faculty, array $criteria, Session $except = null){
+    public function findByFacultyAfterToday(Faculty $faculty, array $criteria, Session $except = null, $onlyValidated = null){
         $facultySessions = $this->findByFaculty($faculty, $criteria);
 
         $sessionsAfterToday = [];
@@ -95,16 +95,25 @@ class SessionRepository extends ServiceEntityRepository
             }
         }
 
-        if (is_null($except)){
-            return $sessionsAfterToday;
-        }
-
-        for ($i = 0; $i < count($sessionsAfterToday); $i++) {
-            if ($sessionsAfterToday[$i] == $except){
-                unset($sessionsAfterToday[$i]);
-                return array_values($sessionsAfterToday);
+        if (!is_null($except)){
+            for ($i = 0; $i < count($sessionsAfterToday); $i++) {
+                if ($sessionsAfterToday[$i] == $except){
+                    unset($sessionsAfterToday[$i]);
+                    $sessionsAfterToday =  array_values($sessionsAfterToday);
+                }
             }
         }
+
+        if (!is_null($onlyValidated)){
+            for ($i = 0; $i < count($sessionsAfterToday); $i++) {
+                $unsetCondition = $onlyValidated == false ? !empty($sessionsAfterToday[$i]->getParticipants()) : empty($sessionsAfterToday[$i]->getParticipants());
+                if ($unsetCondition){
+                    unset($sessionsAfterToday[$i]);
+                }
+            }
+        }
+
+        return $sessionsAfterToday;    
     }
 
     public function findThreeBySessionSubject(Session $session){

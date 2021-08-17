@@ -62,6 +62,8 @@ class SessionController extends AbstractController
                    'isValid' => true,
                    'semester' => $semesterRepository->findCurrentFacultySemester($this->getUser()->getFaculty())
                 ], 
+                null,
+                false
             ),
            'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),

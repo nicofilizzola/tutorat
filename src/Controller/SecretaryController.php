@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Form\SemesterType;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
 use App\Repository\SessionRepository;
 use App\Repository\ClassroomRepository;
+use App\Repository\SemesterRepository;
 use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -32,16 +34,21 @@ class SecretaryController extends AbstractController
     /**
      * @Route("/sessions/pending", name="app_sessions_pending", methods="GET")
      */
-    public function sessionsPending(SessionRepository $sessionRepository, ClassroomRepository $classroomRepository): Response
+    public function sessionsPending(SessionRepository $sessionRepository, ClassroomRepository $classroomRepository, SemesterRepository $semesterRepository): Response
     {
         if (!$this->getUser() || !$this->isSecretary()){
             return $this->redirectToRoute('app_login');
         }
 
+        $faculty = $this->getUser()->getFaculty();
+
         return $this->render('secretary/sessions-pending.html.twig', [
            'sessions' => $sessionRepository->findByFacultyAfterToday(
-                $this->getUser()->getFaculty(),
-               ['isValid' => 0],
+                $faculty,
+               [
+                   'isValid' => 0,
+                   'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
+                ],
             ), 
            'classrooms' => $classroomRepository->findBy(['faculty' => $this->getUser()->getFaculty()])
         ]);

@@ -32,12 +32,9 @@
                         <form action="" method="GET" id="js-tutor">
                             <span>Tuteur</span>
                             <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-tutor').submit();">
-                                {% set checkTutor = "" %}
-                                {% for session in sessions %}
-                                    {% if session.tutor != checkTutor %}
-                                        {% set checkTutor = session.tutor %}
-                                        <option value="{{ session.tutor }}">{{ session.tutor }}</option>
-                                    {% endif %}
+                                <option value="">Tous</option>
+                                {% for tutor in tutors %}
+                                    <option value="{{ tutor.id }}">{{ tutor }}</option>
                                 {% endfor %}
                             </select>
                         </form>

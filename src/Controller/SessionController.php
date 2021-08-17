@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
+use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
 {
+    use getRoles;
+
     private function sessionIsJoinable(Session $session){
         $isJoinable = true;
         if (in_array($this->getUser(), $session->getStudents()->getValues())){
@@ -36,7 +39,7 @@ class SessionController extends AbstractController
         return !$isJoinable ? false : true;
     }
     private function isTutor(){
-        if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array("ROLE_TUTOR", $this->getUser()->getRoles())){
+        if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array($this->getRoles()[1], $this->getUser()->getRoles())){
             return false;
         }
         return true;
@@ -46,19 +49,31 @@ class SessionController extends AbstractController
     /**
      * @Route("/sessions", name="app_sessions", methods="GET")
      */
-    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository): Response
+    public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()){
             return $this->redirectToRoute('app_login');
         }
 
+        $faculty = $this->getUser()->getFaculty();
+
         return $this->render('sessions/index.html.twig', [
            'sessions' => $sessionRepository->findByFacultyAfterToday(
-                $this->getUser()->getFaculty(),
-               ['isValid' => true], 
+                $faculty,
+               [
+                   'isValid' => true,
+                   'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
+                ], 
+                null,
+                false
             ),
-           'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
-           'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),
+           'subjects' => $subjectRepository->findBy(['faculty' => $faculty]),
+           'tutors' => $userRepository->findFacultyTutors($faculty),
+           'tutorSessions' => $this->isTutor() ? 
+                $sessionRepository->findByFaculty($faculty, [
+                    'tutor' => $this->getUser()
+                ]) : 
+                null
         ]);
     }
     /**
@@ -73,7 +88,8 @@ class SessionController extends AbstractController
 
         return $this->render('sessions/view.html.twig', [
            'sessions' => $sessionRepository->findThreeBySessionSubject($session),
-           'currentSession' => $session
+           'currentSession' => $session,
+           'roles' => $this->getRoles()
         ]);
     }
 

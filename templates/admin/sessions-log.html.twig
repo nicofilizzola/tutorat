@@ -14,29 +14,34 @@
             <div class="form--container">
                 <div class="form--content">
                     <div class="collapse collapse_2">
-                        <form action="" method="GET" id="js-semester">
+                        <form 
+                            action="{{ path('app_sessions_log') }}" 
+                            method="POST" 
+                            id="js-semester">
                             <span>Semestre</span>
                             <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-semester').submit();">
                                 {% for semester in semesters %}
-                                    <option value="{{ semester.id }}">{{ semester }}</option>
+                                    {% if semester == currentSemester %}
+                                        <option value="{{ semester.id }}" selected="selected">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                                    {% else %}
+                                        <option value="{{ semester.id }}">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </form>
                         <form action="" method="GET" id="js-tutor">
                             <span>Tuteur</span>
                             <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-tutor').submit();">
-                                {% set checkTutor = "" %}
-                                {% for session in sessions %}
-                                    {% if session.tutor != checkTutor %}
-                                        {% set checkTutor = session.tutor %}
-                                        <option value="{{ session.tutor }}">{{ session.tutor }}</option>
-                                    {% endif %}
+                                <option value="">Tous</option>
+                                {% for tutor in tutors %}
+                                    <option value="{{ tutor.id }}">{{ tutor }}</option>
                                 {% endfor %}
                             </select>
                         </form>
                     </div>
                 </div>
             </div>
+
             <div class="logs--container">
                 {% if sessions is empty == false %}
                     {% for session in sessions %}
@@ -68,13 +73,13 @@
                                 {% endif %}
                             {% else %}
                                 <span>Cours validé</span>
-                                <span>Étudiants inscrits :</span>
+                                <span>Liste d'appel :</span>
                                 <ul>            
                                     {% for student in session.students %}
-                                        <li>{{ student }} :
+                                        <li>{{ student }} ({{ student.email }}) :
                                         {% for participant in session.participants %}
                                             {% if student.id == participant.studentId %}
-                                                {{ participant["present"] == true ? "Présent" : "Absent" }}   
+                                                {{ participant.present == true ? "Présent" : "Absent" }}   
                                             {% endif %}
                                         {% endfor %}
                                         </li>

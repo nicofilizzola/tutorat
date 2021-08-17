@@ -11,21 +11,28 @@ use App\Form\SemesterType;
 use App\Form\ClassroomType;
 use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
+use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 
 class AdminController extends AbstractController
 {
+    use getRoles;
+
     // Must be included as the FIRST instruction in EVERY AdminController route
     private function isAdmin(){ 
-        if (!$this->getUser() || !in_array("ROLE_ADMIN", $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
+        if (!$this->getUser() || !in_array($this->getRoles()[3], $this->getUser()->getRoles()) || $this->getUser()->getIsValid() != 2 || !$this->getUser()->isVerified()){
             return false;
         }
         return true;
@@ -35,27 +42,39 @@ class AdminController extends AbstractController
     /**
      * @Route("/sessions/log", name="app_sessions_log", methods={"GET", "POST"})
      */
-    public function sessionsLog(SessionRepository $sessionRepository, SemesterRepository $semesterRepository, Request $request): Response
+    public function sessionsLog(
+        Request $request, 
+        SessionRepository $sessionRepository, 
+        SemesterRepository $semesterRepository, 
+        UserRepository $userRepository
+        ): Response
     {  
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
         $faculty = $this->getUser()->getFaculty();
+        $requestedSemester = $request->request->get('semester');
+        $currentSemester = is_null($requestedSemester) ? 
+            $semesterRepository->findCurrentFacultySemester($faculty) : 
+            $semesterRepository->findOneBy([
+                'id' => $requestedSemester,
+                'faculty' => $faculty
+            ]);
 
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findByFaculty(
                 $faculty,
                 [
                     'isValid' => true,
-                    'semester' => !$request->query->get('semester') ? 
-                        $semesterRepository->findCurrentFacultySemester($faculty) : 
-                        $semesterRepository->findOneBy([
-                            'id' => $request->query->get('semester'),
-                            'faculty' => $faculty
-                        ], ['id' => 'DESC'])
+                    'semester' => $currentSemester
                 ], 
                 false
-             ),
-             'semesters' => $semesterRepository->findBy(['faculty' => $faculty])
+            ),
+            'semesters' => $semesterRepository->findBy(
+                ['faculty' => $faculty],
+                ['id' => 'DESC']
+            ),
+            'currentSemester' => $currentSemester,
+            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty())
         ]);
     }
 
@@ -75,15 +94,14 @@ class AdminController extends AbstractController
 
         $adminCount = 0;
         $tutorHours = [];
-        require('Requires/Roles.php');
         foreach ($users as $user) {
             $userRoles = $user->getRoles();
 
-            if (in_array($roles[3], $userRoles)){
+            if (in_array($this->getRoles()[3], $userRoles)){
                 $adminCount++;
             }
 
-            if (in_array($roles[1], $userRoles) && $userRoles[count($userRoles) - 1] == $roles[1]){
+            if (in_array($this->getRoles()[1], $userRoles) && $userRoles[count($userRoles) - 1] == $this->getRoles()[1]){
                 array_push($tutorHours, $user->getTutorHours($sessionRepository));
             } else {
                 array_push($tutorHours, null);
@@ -93,7 +111,8 @@ class AdminController extends AbstractController
         return $this->render('admin/users.html.twig', [
             'users' => $users,
             'adminCount' => $adminCount,
-            'tutorHours' => $tutorHours
+            'tutorHours' => $tutorHours,
+            'roles' => $this->getRoles()
         ]);
     }
     /**
@@ -186,7 +205,7 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
-     /**
+    /**
      * @Route("/subject/{id<\d+>}/delete", name="app_subject_delete", methods={"POST"})
      */
     public function subjectDelete(Subject $subject, EntityManagerInterface $em, Request $request): Response
@@ -233,7 +252,7 @@ class AdminController extends AbstractController
             'form' => $formView
         ]);
     }
-     /**
+    /**
      * @Route("/classroom/{id<\d+>}/delete", name="app_classroom_delete", methods={"POST"})
      */
     public function classroomDelete(Classroom $classroom, EntityManagerInterface $em, Request $request): Response
@@ -253,44 +272,96 @@ class AdminController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/semester", name="app_semester", methods={"GET", "POST"})
      */
-    public function semester(SemesterRepository $semesterRepository, Request $request, EntityManagerInterface $em): Response
+    public function semester(
+        Request $request, 
+        EntityManagerInterface $em, 
+        SemesterRepository $semesterRepository,
+        SessionRepository $sessionRepository
+        ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
+        $semesterLimit = 5;
         $semester = new Semester;
+        $faculty = $this->getUser()->getFaculty();
         $form = $this->createForm(SemesterType::class, $semester);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            if (intval($semester->getStartYear()) > intval($semester->getEndYear())){
+            if (intval($semester->getStartYear()) + 1 !== intval($semester->getEndYear())){
                 $this->addFlash('danger', "Une erreur est survenue...");
                 return $this->redirectToRoute('app_semester');
             }
+            if ($semesterRepository->findOneBy([
+                'startYear' => $semester->getStartYear(),
+                'endYear' => $semester->getEndYear(),
+                'yearOrder' => $semester->getYearOrder()
+            ])) {
+                $this->addFlash('danger', "Erreur : le semestre que vous avez essayé de créer (" . $semester .") existe déjà...");
+                return $this->redirectToRoute('app_semester');
+            }
 
-            $semester->setFaculty($this->getUser()->getFaculty());
-            $em->persist($semester);
+            function updatePendingSessions($sessions, $semester, $em){
+                if (!empty($sessions)){
+                    foreach($sessions as $session){
+                        $session->setSemester($semester);
+                        $em->persist($session);
+                    }
+                }
+            }
+            function deleteExcessSemester($semesters, $semesterLimit, $semester, $faculty, $em){
+                $deleteMessage = null;
+                if (count($semesters) >= $semesterLimit){
+                    $em->remove($semesters[count($semesters) - 1]);
+                    $deleteMessage =  " Également, le semestre " . $semesters[count($semesters) - 1] . " a été supprimé";
+                }
+                $semester->setFaculty($faculty);
+                $em->persist($semester);
+
+                return $deleteMessage;
+            }
+            $facultySemesters = $semesterRepository->findBy(
+                ['faculty' => $faculty],
+                ['id' => 'DESC']
+            );
+            $facultySemesterSessions = $sessionRepository->findByFacultyAfterToday(
+                $faculty, 
+                [
+                    'isValid' => true,
+                    'semester' => $semester
+                ],
+                null,
+                false
+            );
+
+            $deleteMessage = deleteExcessSemester($facultySemesters, $semesterLimit, $semester, $faculty, $em);
+            updatePendingSessions($facultySemesterSessions, $semester, $em);
+
             $em->flush();
 
-            // mail
-
-            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !");
+            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . $deleteMessage ?? "");
             return $this->redirectToRoute('app_semester');
         }
 
         return $this->render('admin/semester.html.twig', [
             'semesters' => $semesterRepository->findBy(
-                ['faculty' => $this->getUser()->getFaculty()],
+                ['faculty' => $faculty],
                 ['id' => 'DESC']),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'semesterLimit' => $semesterLimit
         ]);
     }
-     /**
+    /**
      * @Route("/semester/{id<\d+>}/delete", name="app_semester_delete", methods={"POST"})
      */
-    public function semesterDelete(Request $request, Semester $semester, EntityManagerInterface $em): Response
+    public function semesterDelete(
+        Request $request, 
+        Semester $semester, 
+        EntityManagerInterface $em
+        ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 

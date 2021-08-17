@@ -11,11 +11,14 @@ use App\Entity\AdminCode;
 use App\Entity\Classroom;
 use App\Repository\UserRepository;
 use App\Repository\FacultyRepository;
+use App\Traits\getRoles;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
+    use getRoles;
+
     public function load(ObjectManager $manager)
     {
         for ($i = 0; $i < 5; $i++) {
@@ -49,7 +52,12 @@ class AppFixtures extends Fixture
             $user->setFirstName('Admin');
             $user->setLastName($i);
             $user->setEmail('admin'. $i .'@iut-tarbes.fr');
-            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_SECRETARY","ROLE_ADMIN"]);
+            $user->setRoles([
+                $this->getRoles()[0],
+                $this->getRoles()[1],
+                $this->getRoles()[2],
+                $this->getRoles()[3],
+            ]);
             $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
             $user->setYear(4);
             $user->setIsValid(2);
@@ -63,7 +71,11 @@ class AppFixtures extends Fixture
             $user->setFirstName('Secretary');
             $user->setLastName($i);
             $user->setEmail('secretary'. $i .'@iut-tarbes.fr');
-            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR","ROLE_SECRETARY"]);
+            $user->setRoles([
+                $this->getRoles()[0],
+                $this->getRoles()[1],
+                $this->getRoles()[2],
+            ]);
             $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
             $user->setYear(4);
             $user->setIsValid(2);
@@ -77,7 +89,10 @@ class AppFixtures extends Fixture
             $user->setFirstName('Tutor');
             $user->setLastName($i);
             $user->setEmail('tutor'. $i .'@iut-tarbes.fr');
-            $user->setRoles(["ROLE_STUDENT","ROLE_TUTOR"]);
+            $user->setRoles([
+                $this->getRoles()[0],
+                $this->getRoles()[1],
+            ]);
             $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
             $user->setYear(1);
             $user->setIsValid(2);
@@ -92,7 +107,7 @@ class AppFixtures extends Fixture
                 $user->setFirstName('User' . $j);
                 $user->setLastName('Fac' . $i);
                 $user->setEmail('user'. $j . $i .'@iut-tarbes.fr');
-                $user->setRoles(["ROLE_STUDENT"]);
+                $user->setRoles([$this->getRoles()[0]]);
                 $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
                 $user->setYear(1);
                 $user->setIsValid(2);

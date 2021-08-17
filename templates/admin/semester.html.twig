@@ -19,12 +19,13 @@
                             {{ form_row(form.endYear, {'label':'Année de fin', 'attr': {'class':'hoveredItems'}}) }} 
                             {{ form_row(form.yearOrder, {'label':'Semestre', 'attr': {'class':'hoveredItems'}}) }} 
                         </div>
-                        <p>Après avoir créé un nouveau semestre :</p>
+                        <p>IMPORTANT - Après avoir créé un nouveau semestre :</p>
                         <ul>
-                            <li>Le compteur d'heures de cours validées sera bloqué pour le semestre actuel (vous en aurez toujours accès si vous ne l'avez pas suprimmé ) ;</li>
-                            <li>Toutes les nouvelles heures de cours validées seront attribuées au nouveau semestre ;</li>
-                            <li>Les étudiants ne pourront plus accéder aux cours proposés durant le semestre actuel ;</li>
-                            <li>Les étudiants seront prévenus par mail ;</li>
+                            <li>Le compteur d'heures de cours validées sera bloqué pour le semestre actuel (vous en aurez toujours accès si vous ne l'avez pas suprimmé) ;</li>
+                            <li>Toutes les nouvelles heures de cours validées seront attribuées dans le nouveau semestre ;</li>
+                            {# <li>Les étudiants ne pourront plus accéder aux cours proposés durant le semestre actuel ;</li> #}
+                            {# <li>Les étudiants seront prévenus par mail ;</li> #}
+                            <li>S'il y a déjà {{ semesterLimit }} semestres sauvegardés, le plus ancien sera suprimmé afin de faire de la place pour le nouveau.</li>
                         </ul>
                         <button type="submit" class="form--btn form--btn__register hoveredItems">Ajouter</button>
                     {{ form_end(form) }}
@@ -40,7 +41,7 @@
                         
                         <div class="content manage">
                             {% if loop.index0 == 0 %}
-                                <button title="Semestre actuelle, supression impossible" disabled class="disabled hoveredItems refuse">
+                                <button title="Supression impossible" disabled class="disabled hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                             {% else %}

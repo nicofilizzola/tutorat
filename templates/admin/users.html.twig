@@ -15,18 +15,12 @@
 
         <div class="content--container">
             {% if users is empty == false %}
-
-                {# Requires roles variable from getRoles trait #}
-                {% set roleKey0 = roles[0] %}
-                {% set roleKey1 = roles[1] %}
-                {% set roleKey2 = roles[2] %}
-                {% set roleKey3 = roles[3] %}
-                {% set roleViewLabels = {
-                    roleKey0: "Étudiant",
-                    roleKey1: "Étudiant tuteur",
-                    roleKey2: "Secrétaire",
-                    roleKey3: "Administrateur",
-                } %}
+                {% set roleViewLabels = [
+                    "Étudiant",
+                    "Étudiant tuteur",
+                    "Secrétaire",
+                    "Administrateur",
+                ] %}
 
                 <div class="userContent--container userContent--container__filter">
                     <div class="filter content tutorHours">
@@ -165,8 +159,8 @@
                         </div>
                         
                         <div class="content role">
-                            {% set userRole = user.roles[user.roles | length - 2] %} {# -1 for length index and -1 for ROLE_USER which always goes last #}
-                            {# <span>{{ roleViewLabels[userRole] }}</span>  #}
+                            {% set userRoleIndex = user.roles | length - 1 %}
+                            <span>{{ roleViewLabels[userRoleIndex] }}</span> 
                         </div>
                         
                         <div class="content statut">
@@ -215,7 +209,7 @@
                                 </button>
                             {% endif %}
                             
-                            {% if (userRole == roles[3]) and (adminCount == 1) and (app.user == user) %}
+                            {% if (userRoleIndex == 3) and (adminCount == 1) and (app.user == user) %}
                                 <button title="Supression bloquée" disabled class="hoveredItems refuse disabled">
                                     <span>🗑️</span>
                                 </button>

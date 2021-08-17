@@ -77,8 +77,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findFacultyTutors(Faculty $faculty){
         $tutors = [];
         $tutorRole = $this->getRoles()[1];
-        foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array($tutorRole, $user->getRoles()) && array_search($tutorRole, $this->getRoles()) == count($this->getRoles()) - 1){
+        foreach ($this->findBy(array_merge(
+            ['faculty' => $faculty], 
+            $this->validAndVerifiedCriteria
+        )) as $user){
+            if (in_array($tutorRole, $user->getRoles()) && array_search($tutorRole, $user->getRoles()) == count($user->getRoles()) - 1){
                 array_push($tutors, $user);
             }
         }

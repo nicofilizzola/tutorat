@@ -12,7 +12,7 @@
         <div class="smooth--container" data-lg-smooth>
             <div class="welcome--container">
             
-                {% if roles[3] not in app.user.roles %}
+                {% if roles.3 not in app.user.roles %}
                     <div class="leftSide">
                         <div class="home--container">
                             <div class="welcome">
@@ -29,7 +29,7 @@
                                 <div class="buttons--container">
                                     <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
                                     {# <span><b>ou</b></span> #}
-                                    {% if (roles[1] in app.user.roles) and (app.user.isValid == 2) %}
+                                    {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
                                         <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
                                     {% else %}
                                         <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                {% elseif (roles[3] in app.user.roles) and (app.user.isValid == 2) %}
+                {% elseif (roles.3 in app.user.roles) and (app.user.isValid == 2) %}
                     
                     <div class="leftSide">
                         <div class="home--container">
@@ -94,8 +94,8 @@
                                         </div>
                                         <div class="lineGap"></div>
                                         <div class="infos">
-                                            {% set userRole = user.roles[user.roles | length - 2] %}
-                                            <span>{{ roleViewLabels[userRole] }} - {{ user.year }}e année</span>
+                                            {% set userRoleIndex = user.roles | length - 1 %}
+                                            <span>{{ roleViewLabels[userRoleIndex] }} - {{ user.year }}e année</span>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -144,7 +144,7 @@
             
 
             {# if a student wants to become a tutor #}
-            {% if roles[1] not in app.user.roles %}
+            {% if roles.1 not in app.user.roles %}
                 <div class="flash--container">
                     <div class="text--container">
                         <span>Tu dois être un tuteur pour pouvoir proposer un cours.</span>

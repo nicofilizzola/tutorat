@@ -5,6 +5,12 @@ const domCache = {
    filterButton: document.querySelector('.filterButton'),
    filterButtonArrow: document.querySelector('.filterButton svg'),
    filterContent: document.querySelector('.filter--content'),
+   
+   // Filtres button
+   subjectFilter: document.querySelectorAll('.subject--container input'),
+   semesterFilter: document.querySelectorAll('.semester--container input'),
+   timeFormatFilter: document.querySelectorAll('.timeFormat--container input'),
+   environnementFilter: document.querySelectorAll('.environnement--container input'),
 
    // Cartes de cours
    cards: document.querySelectorAll('.card--container .inscription'),
@@ -12,6 +18,12 @@ const domCache = {
    hoveredCardsBackground: document.querySelectorAll('.card--hovered .background'),
    hoveredCardsText: document.querySelectorAll('.card--hovered .texte span'),
 }
+
+// console.log(domCache.subjectFilter,domCache.semesterFilter,domCache.timeFormatFilter,domCache.environnementFilter)
+
+domCache.subjectFilter.forEach(e => {
+  console.log(e.dataset.filter) 
+})
 
 let state = {
    isFilterPanelOpen: false

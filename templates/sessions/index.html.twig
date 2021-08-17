@@ -24,7 +24,7 @@
                         <div class="list">
                             {% for tutor in tutors %}
                                 <label for="{{ tutor.id }}" class="hoveredItems">
-                                    <input name="{{ tutor.id }}" id="{{ tutor.id }}" type="checkbox" hidden>
+                                    <input name="{{ tutor.id }}" id="{{ tutor.id }}" data-filter="{{ tutor.id }}" type="checkbox" hidden>
                                     <div>
                                         <span>{{ tutor.firstname }} {{ tutor.lastname }}</span>
                                     </div>
@@ -37,7 +37,7 @@
                         <div class="list">
                             {% for subject in subjects %}
                                 <label for="{{ subject.id }}_{{subject.title }}" class="hoveredItems">
-                                    <input name="{{ subject.id }}_{{subject.title }}" id="{{ subject.id }}_{{subject.title }}" type="checkbox" hidden>
+                                    <input name="{{ subject.id }}_{{ subject.title }}" id="{{ subject.id }}_{{ subject.title }}" data-filter="{{ subject.title }}" type="checkbox" hidden>
                                     <div>
                                         <span>{{ subject.title }}</span>
                                     </div>
@@ -49,42 +49,42 @@
                         <span>Semestres<span>
                         <div class="list">
                             <label for="semester_1" class="hoveredItems">
-                                <input name="semester_1" id="semester_1" type="checkbox" hidden>
+                                <input name="semester_1" id="semester_1" type="checkbox" data-filter="semester_1" hidden>
                                 <div>
                                     <span>Semestre 1</span>
                                 </div>
                             </label>
 
                             <label for="semester_2" class="hoveredItems">
-                                <input name="semester_2" id="semester_2" type="checkbox" hidden>
+                                <input name="semester_2" id="semester_2" type="checkbox" data-filter="semester_2" hidden>
                                 <div>
                                     <span>Semestre 2</span>
                                 </div>
                             </label>
 
                             <label for="semester_3" class="hoveredItems">
-                                <input name="semester_3" id="semester_3" type="checkbox" hidden>
+                                <input name="semester_3" id="semester_3" type="checkbox" data-filter="semester_3" hidden>
                                 <div>
                                     <span>Semestre 3</span>
                                 </div>
                             </label>
 
                             <label for="semester_4" class="hoveredItems">
-                                <input name="semester_4" id="semester_4" type="checkbox" hidden>
+                                <input name="semester_4" id="semester_4" type="checkbox" data-filter="semester_4" hidden>
                                 <div>
                                     <span>Semestre 4</span>
                                 </div>
                             </label>
 
                             <label for="semester_5" class="hoveredItems">
-                                <input name="semester_5" id="semester_5" type="checkbox" hidden>
+                                <input name="semester_5" id="semester_5" type="checkbox" data-filter="semester_5" hidden>
                                 <div>
                                     <span>Semestre 5</span>
                                 </div>
                             </label>
 
                             <label for="semester_6" class="hoveredItems">
-                                <input name="semester_6" id="semester_6" type="checkbox" hidden>
+                                <input name="semester_6" id="semester_6" type="checkbox" data-filter="semester_6" hidden>
                                 <div>
                                     <span>Semestre 6</span>
                                 </div>
@@ -95,21 +95,21 @@
                         <span>Format<span>
                         <div class="list">
                             <label for="timeFormat_1" class="hoveredItems">
-                                <input name="timeFormat_1" id="timeFormat_1" type="checkbox" hidden>
+                                <input name="timeFormat_1" id="timeFormat_1" type="checkbox" data-filter="1" hidden>
                                 <div>
                                     <span>30min</span>
                                 </div>
                             </label>
 
                             <label for="timeFormat_2" class="hoveredItems">
-                                <input name="timeFormat_2" id="timeFormat_2" type="checkbox" hidden>
+                                <input name="timeFormat_2" id="timeFormat_2" type="checkbox" data-filter="2" hidden>
                                 <div>
                                     <span>45min</span>
                                 </div>
                             </label>
 
                             <label for="timeFormat_3" class="hoveredItems">
-                                <input name="timeFormat_3" id="timeFormat_3" type="checkbox" hidden>
+                                <input name="timeFormat_3" id="timeFormat_3" type="checkbox" data-filter="3" hidden>
                                 <div>
                                     <span>1h</span>
                                 </div>
@@ -120,13 +120,13 @@
                         <span>Environnement<span>
                         <div class="list">
                             <label for="presentiel" class="hoveredItems">
-                                <input name="presentiel" id="presentiel" type="checkbox" hidden>
+                                <input name="presentiel" id="presentiel" type="checkbox" data-filter="1" hidden>
                                 <div>
                                     <span>Présentiel</span>
                                 </div>
                             </label>
                             <label for="distanciel" class="hoveredItems">
-                                <input name="distanciel" id="distanciel" type="checkbox" hidden>
+                                <input name="distanciel" id="distanciel" type="checkbox" data-filter="2" hidden>
                                 <div>
                                     <span>Distanciel</span>
                                 </div>
@@ -138,7 +138,7 @@
 
             <div class="session--container">
                 {% for session in sessions %}
-                    <div class="card--container">
+                    <div class="card--container" data-tutor="{{ session.tutor.id }}" data-subject="{{ session.subject.title }}" data-semester="{{ session.semester }}" data-timeFormat="{{ session.timeFormat }}" data-environnement="{{ session.faceToFace }}">
                         <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
                             <div class="card--hovered">
                                 <div class="text">

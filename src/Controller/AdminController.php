@@ -278,7 +278,6 @@ class AdminController extends AbstractController
     public function semester(
         Request $request, 
         EntityManagerInterface $em, 
-        UserRepository $userRepository,
         SemesterRepository $semesterRepository,
         SessionRepository $sessionRepository
         ): Response
@@ -305,43 +304,45 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('app_semester');
             }
 
-            function updatePendingSessions($facultySessions, $semester, $em){
-                if (!empty($facultySessions)){
-                    foreach($facultySessions as $session){
+            function updatePendingSessions($sessions, $semester, $em){
+                if (!empty($sessions)){
+                    foreach($sessions as $session){
                         $session->setSemester($semester);
                         $em->persist($session);
                     }
                 }
             }
-            function deleteExcessSemester($facultySemesters, $semesterLimit, $semester, $faculty, $em){
-                if (count($facultySemesters) >= $semesterLimit){
-                    $em->remove($facultySemesters[count($facultySemesters) - 1]);
-                    $deleteMessage =  " Également, le semestre " . $facultySemesters[count($facultySemesters) - 1] . " a été supprimé";
+            function deleteExcessSemester($semesters, $semesterLimit, $semester, $faculty, $em){
+                $deleteMessage = null;
+                if (count($semesters) >= $semesterLimit){
+                    $em->remove($semesters[count($semesters) - 1]);
+                    $deleteMessage =  " Également, le semestre " . $semesters[count($semesters) - 1] . " a été supprimé";
                 }
                 $semester->setFaculty($faculty);
                 $em->persist($semester);
+
+                return $deleteMessage;
             }
-            $deleteMessage = null;
             $facultySemesters = $semesterRepository->findBy(
                 ['faculty' => $faculty],
                 ['id' => 'DESC']
             );
-            $facultySessions = $sessionRepository->findByFacultyAfterToday(
+            $facultySemesterSessions = $sessionRepository->findByFacultyAfterToday(
                 $faculty, 
                 [
                     'isValid' => true,
+                    'semester' => $semester
                 ],
                 null,
                 false
             );
 
-            deleteExcessSemester($facultySemesters, $semesterLimit, $semester, $faculty, $em);
-            updatePendingSessions($facultySessions, $semester, $em);
+            $deleteMessage = deleteExcessSemester($facultySemesters, $semesterLimit, $semester, $faculty, $em);
+            updatePendingSessions($facultySemesterSessions, $semester, $em);
 
             $em->flush();
 
-            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . 
-            $deleteMessage ?? "");
+            $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . $deleteMessage ?? "");
             return $this->redirectToRoute('app_semester');
         }
 

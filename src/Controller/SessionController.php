@@ -55,18 +55,25 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $faculty = $this->getUser()->getFaculty();
+
         return $this->render('sessions/index.html.twig', [
            'sessions' => $sessionRepository->findByFacultyAfterToday(
-                $this->getUser()->getFaculty(),
+                $faculty,
                [
                    'isValid' => true,
-                   'semester' => $semesterRepository->findCurrentFacultySemester($this->getUser()->getFaculty())
+                   'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
                 ], 
                 null,
                 false
             ),
-           'subjects' => $subjectRepository->findBy(['faculty' => $this->getUser()->getFaculty()]),
-           'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),
+           'subjects' => $subjectRepository->findBy(['faculty' => $faculty]),
+           'tutors' => $userRepository->findFacultyTutors($faculty),
+           'tutorSessions' => $this->isTutor() ? 
+                $sessionRepository->findByFaculty($faculty, [
+                    'tutor' => $this->getUser()
+                ]) : 
+                null
         ]);
     }
     /**

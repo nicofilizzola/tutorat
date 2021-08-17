@@ -73,13 +73,13 @@
                                 {% endif %}
                             {% else %}
                                 <span>Cours validé</span>
-                                <span>Étudiants inscrits :</span>
+                                <span>Liste d'appel :</span>
                                 <ul>            
                                     {% for student in session.students %}
-                                        <li>{{ student }} :
+                                        <li>{{ student }} ({{ student.email }}) :
                                         {% for participant in session.participants %}
                                             {% if student.id == participant.studentId %}
-                                                {{ participant["present"] == true ? "Présent" : "Absent" }}   
+                                                {{ participant.present == true ? "Présent" : "Absent" }}   
                                             {% endif %}
                                         {% endfor %}
                                         </li>

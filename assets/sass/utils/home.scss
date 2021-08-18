@@ -41,6 +41,10 @@
    max-width: 1000px;
    // height: 500px;
    margin-bottom: 50px;
+
+   .infos {
+      margin-top: 15px;
+   }
 }
 
 .welcome {
@@ -108,7 +112,7 @@
    justify-content: space-between;
    align-items: flex-start;
    flex-wrap: wrap;
-   margin: 50px 0;
+   margin: 25px 0;
    width: 90vw;
    max-width: 1000px;
 }
@@ -125,13 +129,18 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       width: 100%;
       cursor: pointer;
 
       a {
         font-weight: bold;
         color: $primaryRed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
       }
 
       svg {

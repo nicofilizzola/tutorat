@@ -77,6 +77,20 @@ let state = {
 }
 
 domCache.filterButton.addEventListener('click', () => {
+   filterPanel()
+})
+
+document.addEventListener('keyup', (event) => {
+	if(event.key === "Escape"){
+		state.isFilterPanelOpen = false
+      domCache.filterButtonArrow.style.transform = "rotate(0deg)"
+      domCache.filterContent.style.opacity = 0
+      domCache.filterContent.style.top = "65px"
+      domCache.filterContent.style.pointerEvents = "none"
+	}
+})
+
+function filterPanel() {
    if (!state.isFilterPanelOpen) {
       state.isFilterPanelOpen = true
       domCache.filterButtonArrow.style.transform = "rotate(180deg)"
@@ -90,5 +104,4 @@ domCache.filterButton.addEventListener('click', () => {
       domCache.filterContent.style.top = "65px"
       domCache.filterContent.style.pointerEvents = "none"
    }
-
-})
+}

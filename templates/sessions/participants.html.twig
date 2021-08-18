@@ -8,21 +8,6 @@
 {% endblock %}
 
 {% block body %}
-	<form 
-		action="{{ path("app_sessions_participants", { 'id': session.id }) }}"
-		method="POST">
-		{% for student in session.students %}
-			<p>{{ student }}</p>
-			<label for="present-{{ student.id }}">Présent</label>
-			<input 
-				type="radio" 
-				name="{{ student.id }}" 
-				value="present"
-				id="present-{{ student.id }}">
-		{% endfor %}
-		<button type="submit">Envoyer</button>
-	</form>
-
    <span id="navSessionTitle" hidden>{{ session.title }}</span>
 
    <div class="smooth--container" data-lg-smooth>
@@ -36,20 +21,20 @@
 							<div class="radio--container">
 								<div class="radio present">
 									<input type="radio" id="present-{{ student.id }}" name="{{ student.id }}" value="present">
-									<label for="present-{{ student.id }}" class="">
-										<span class="">✔️</span>
+									<label for="present-{{ student.id }}">
+										<span>✔️</span>
 									</label>
 								</div>
 								<div class="radio absent">
 									<input type="radio" id="absent-{{ student.id }}" name="{{ student.id }}" value="absent">
-									<label for="absent-{{ student.id }}" class="">
-										<span class="">❌</span>
+									<label for="absent-{{ student.id }}">
+										<span>❌</span>
 									</label>
 								</div>
 							</div>
 						</div>
 					{% endfor %}
-					<button type="submit" class="btn hoveredItems">Envoyer</button>
+					<button type="submit" class="btn btn__mediumEffect hoveredItems">Envoyer</button>
 				</form>
 			</div>
 		</div>

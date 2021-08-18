@@ -15,7 +15,7 @@
    align-items: flex-start;
    width: 90vw;
    max-width: 1600px;
-   margin-top: 50px;
+   margin-top: 25px;
 }
 
 // Filtre
@@ -176,4 +176,28 @@
    justify-content: space-between;
    align-items: baseline;
    width: 100%;
+}
+
+.search--container {
+   width: 90vw;
+   max-width: 1600px;
+
+   .search--content {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      input {
+         padding: 15px 10px;
+         width: 100%;
+         
+         @media only screen and (max-width: 600px) {
+            padding: 25px 20px;
+         }
+      }
+   }
+
 }

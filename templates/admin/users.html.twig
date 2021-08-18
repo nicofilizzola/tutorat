@@ -137,22 +137,36 @@
 
                 {% for user in users %}
                     {% if (roles.1 in user.roles) and (user.roles | length == 2) %}
+                        {% set isTutor = true %}
+                    {% else %}
+                        {% set isTutor = false %}
+                    {% endif %}
+
+                    {% if isTutor == true %}
                         <form 
-                            action="path('app_sessions_log')"
+                            action="{{ path('app_sessions_log') }}"
                             method="POST"
                             hidden="hidden"
-                            id="js-sessions-log-tutor">
+                            id="js-sessions-log-tutor-{{ user.id }}">
                             <input 
                                 type="hidden" 
                                 name="tutor" 
                                 value="{{ user.id }}">
                         </form>
-
-                    {% else %}
                     {% endif %}
 
                     {% if user.isValid == 2 %}
-                        <div class="userContent--container" data-statut="valide">
+                        {% if isTutor == true %}
+                            <div 
+                                class="userContent--container" 
+                                data-statut="valide" 
+                                onclick="document.querySelector('#js-sessions-log-tutor-{{ user.id }}').submit();"}>
+                        {% else %}
+                            <div 
+                                class="userContent--container" 
+                                data-statut="valide">
+                        {% endif %}
+                        
                     {% elseif user.isValid == 3 %}
                         <div class="userContent--container" data-statut="refuse">
                     {% else %}

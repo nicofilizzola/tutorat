@@ -60,13 +60,13 @@ class AdminController extends AbstractController
                 'faculty' => $faculty
             ]);
         $requestedTutor = $request->request->get('tutor');
-        $currentTutor = is_null($requestedTutor) ? 
+        $currentTutor = $requestedTutor == "all" ? 
             "all" : 
             $userRepository->findOneBy([
                 'id' => $requestedTutor,
                 'faculty' => $faculty
-            ]);
-
+            ]
+        );
         $sessionCriteria = [
             'isValid' => true,
             'semester' => $currentSemester,

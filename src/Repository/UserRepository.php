@@ -90,7 +90,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findFacultyTutorEmails($faculty){
         $tutorEmails = [];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array($this->getRoles[1], $user->getRoles())){
+            if (in_array($this->getRoles()[1], $user->getRoles())){
                 array_push($tutorEmails, $user->getEmail());
             }
         }
@@ -100,7 +100,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findFacultyAdminEmails($faculty){
         $adminEmails = [];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array($this->getRoles[3], $user->getRoles())){
+            if (in_array($this->getRoles()[3], $user->getRoles())){
                 array_push($adminEmails, $user->getEmail());
             }
         }

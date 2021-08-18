@@ -154,6 +154,36 @@
                             data-mail="{{ user.email }}" 
                             data-role="{{ roleViewLabels[userRoleIndex] }}"
                             data-statut="{{ user.isValid }}">
+                        {% set isTutor = true %}
+                    {% else %}
+                        {% set isTutor = false %}
+                    {% endif %}
+
+                    {% if isTutor == true %}
+                        <form 
+                            action="{{ path('app_sessions_log') }}"
+                            method="POST"
+                            hidden="hidden"
+                            id="js-sessions-log-tutor-{{ user.id }}">
+                            <input 
+                                type="hidden" 
+                                name="tutor" 
+                                value="{{ user.id }}">
+                        </form>
+                    {% endif %}
+
+                    {% if user.isValid == 2 %}
+                        {% if isTutor == true %}
+                            <div 
+                                class="userContent--container" 
+                                data-statut="valide" 
+                                onclick="document.querySelector('#js-sessions-log-tutor-{{ user.id }}').submit();"}>
+                        {% else %}
+                            <div 
+                                class="userContent--container" 
+                                data-statut="valide">
+                        {% endif %}
+                        
                     {% elseif user.isValid == 3 %}
                         {% set userRoleIndex = user.roles | length - 1 %}
                         <div class="userContent--container userContent--container__user" 

@@ -59,14 +59,26 @@ class AdminController extends AbstractController
                 'id' => $requestedSemester,
                 'faculty' => $faculty
             ]);
+        $requestedTutor = $request->request->get('tutor');
+        $currentTutor = is_null($requestedTutor) ? 
+            "all" : 
+            $userRepository->findOneBy([
+                'id' => $requestedTutor,
+                'faculty' => $faculty
+            ]);
+
+        $sessionCriteria = [
+            'isValid' => true,
+            'semester' => $currentSemester,
+        ];
+        if ($currentTutor !== "all"){
+            $sessionCriteria['tutor'] = $currentTutor;
+        }
 
         return $this->render('admin/sessions-log.html.twig', [
             'sessions' => $sessionRepository->findByFaculty(
                 $faculty,
-                [
-                    'isValid' => true,
-                    'semester' => $currentSemester
-                ], 
+                $sessionCriteria, 
                 false
             ),
             'semesters' => $semesterRepository->findBy(
@@ -74,7 +86,8 @@ class AdminController extends AbstractController
                 ['id' => 'DESC']
             ),
             'currentSemester' => $currentSemester,
-            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty())
+            'tutors' => $userRepository->findFacultyTutors($this->getUser()->getFaculty()),
+            'currentTutor' => $currentTutor
         ]);
     }
 

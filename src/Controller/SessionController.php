@@ -269,7 +269,7 @@ class SessionController extends AbstractController
             );
         }
 
-        if (strtotime("today") < $session->getDateTime()->getTimestamp()){
+        if (strtotime("now") < $session->getDateTime()->getTimestamp()){
             $this->addFlash(
                 "danger", 
                 "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"

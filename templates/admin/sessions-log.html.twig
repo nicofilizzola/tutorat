@@ -17,9 +17,9 @@
                         <form 
                             action="{{ path('app_sessions_log') }}" 
                             method="POST" 
-                            id="js-semester">
+                            id="js-filters">
                             <span>Semestre</span>
-                            <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-semester').submit();">
+                            <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
                                 {% for semester in semesters %}
                                     {% if semester == currentSemester %}
                                         <option value="{{ semester.id }}" selected="selected">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
@@ -28,14 +28,23 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                        </form>
-                        <form action="" method="GET" id="js-tutor">
                             <span>Tuteur</span>
-                            <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-tutor').submit();">
-                                <option value="">Tous</option>
+                            <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
+                                {% if currentTutor == 'all' %}
+                                    <option value="all" selected="selected">Tous</option>
+                                {% else %}
+                                    <option value="all">Tous</option>
+                                {% endif %}
                                 {% for tutor in tutors %}
-                                    <option value="{{ tutor.id }}">{{ tutor }}</option>
+                                    {% if tutor == currentTutor %}
+                                        <option value="{{ tutor.id }}" selected="selected">{{ tutor }}</option>
+                                    {% else %}
+                                        <option value="{{ tutor.id }}">{{ tutor }}</option>
+                                    {% endif %}
                                 {% endfor %}
+                                {# {% for tutor in tutors %}
+                                    <option value="{{ tutor.id }}">{{ tutor }}</option>
+                                {% endfor %} #}
                             </select>
                         </form>
                     </div>

@@ -13,41 +13,42 @@
         <div class="container">
             <div class="form--container">
                 <div class="form--content">
-                    <div class="collapse collapse_2">
-                        <form 
-                            action="{{ path('app_sessions_log') }}" 
-                            method="POST" 
-                            id="js-filters">
-                            <span>Semestre</span>
-                            <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
-                                {% for semester in semesters %}
-                                    {% if semester == currentSemester %}
-                                        <option value="{{ semester.id }}" selected="selected">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                    <form action="{{ path('app_sessions_log') }}" method="POST" id="js-filters">
+                        <div class="collapse collapse_2">
+                            <div>
+                                <span>Semestre</span>
+                                <select name="semester" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
+                                    {% for semester in semesters %}
+                                        {% if semester == currentSemester %}
+                                            <option value="{{ semester.id }}" selected="selected">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                                        {% else %}
+                                            <option value="{{ semester.id }}">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <span>Tuteur</span>
+                                <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
+                                    {% if currentTutor == 'all' %}
+                                        <option value="all" selected="selected">Tous</option>
                                     {% else %}
-                                        <option value="{{ semester.id }}">{{ semester }} {{ loop.index0 == 0 ? "(Semestre actuel)" : ""}}</option>
+                                        <option value="all">Tous</option>
                                     {% endif %}
-                                {% endfor %}
-                            </select>
-                            <span>Tuteur</span>
-                            <select name="tutor" class="hoveredItems" onchange="document.querySelector('#js-filters').submit();">
-                                {% if currentTutor == 'all' %}
-                                    <option value="all" selected="selected">Tous</option>
-                                {% else %}
-                                    <option value="all">Tous</option>
-                                {% endif %}
-                                {% for tutor in tutors %}
-                                    {% if tutor == currentTutor %}
-                                        <option value="{{ tutor.id }}" selected="selected">{{ tutor }}</option>
-                                    {% else %}
+                                    {% for tutor in tutors %}
+                                        {% if tutor == currentTutor %}
+                                            <option value="{{ tutor.id }}" selected="selected">{{ tutor }}</option>
+                                        {% else %}
+                                            <option value="{{ tutor.id }}">{{ tutor }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {# {% for tutor in tutors %}
                                         <option value="{{ tutor.id }}">{{ tutor }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                                {# {% for tutor in tutors %}
-                                    <option value="{{ tutor.id }}">{{ tutor }}</option>
-                                {% endfor %} #}
-                            </select>
-                        </form>
-                    </div>
+                                    {% endfor %} #}
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 

@@ -52,8 +52,6 @@ function sortByFirstname(isDesc) {
    })
 
    sortedUsersList.sort(function (a, b) {
-      // console.log(a.dataset.firstname.charAt(0), b.dataset.firstname.charAt(0))
-      console.log(a.dataset.firstname, b.dataset.firstname, a.dataset.firstname.charAt(0).localeCompare(b.dataset.firstname.charAt(0), {sensitivity: "base"}))
       return a.dataset.firstname.charAt(0).localeCompare(b.dataset.firstname.charAt(0), {ignorePunctuation: true})
    })
 
@@ -64,7 +62,6 @@ function sortByFirstname(isDesc) {
    }
 
    sortedUsersList.forEach(user => {
-      // console.log(user.dataset.firstname)
       domCache.usersListContainer.appendChild(user)
    })
 }

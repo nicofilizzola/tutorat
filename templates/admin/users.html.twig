@@ -138,59 +138,40 @@
                 </div>
 
                 {% for user in users %}
-                    {# {% if (roles.1 in user.roles) and (user.roles | length == 2) %}
-                        <form action="path('app_sessions_log')" method="POST" hidden="hidden" id="js-sessions-log-tutor">
-                            <input type="hidden" name="tutor" value="{{ user.id }}">
-                        </form>
-                    {% endif %} #}
-
-                    {% set userRoleIndex = user.roles | length - 1 %}
-                    <div class="userContent--container userContent--container__user" 
-                        data-tutorHours="{{ tutorHours[loop.index0] | default("N/A") }}" 
-                        data-firstName="{{ user.firstName }}" 
-                        data-lastName="{{ user.lastName }}" 
-                        data-mail="{{ user.email }}" 
-                        data-role="{{ roleViewLabels[userRoleIndex] }}"
-                        data-statut="{{ user.isValid }}">
-
-                    {# {% if user.isValid == 2 %}
+                    {% if (roles.1 in user.roles) and (user.roles | length == 2) %}
                         {% set isTutor = true %}
                     {% else %}
                         {% set isTutor = false %}
-                    {% endif %} #}
+                    {% endif %}
 
-                    {# {% if isTutor == true %}
+                    {% if isTutor == true %}
                         <form action="{{ path('app_sessions_log') }}" method="POST" hidden="hidden" id="js-sessions-log-tutor-{{ user.id }}">
                             <input type="hidden" name="tutor" value="{{ user.id }}">
                         </form>
-                    {% endif %} #}
+                    {% endif %}
 
-                    {# {% if user.isValid == 2 %}
+                    {% set userRoleIndex = user.roles | length - 1 %}
+
+                    {# {% if user.isValid == 2 %} #}
                         {% if isTutor == true %}
-                            <div class="userContent--container" data-statut="valide" onclick="document.querySelector('#js-sessions-log-tutor-{{ user.id }}').submit();"}>
+                            <div class="userContent--container userContent--container__user tutor hoveredItems" 
+                                data-tutorHours="{{ tutorHours[loop.index0] | default("N/A") }}" 
+                                data-firstName="{{ user.firstName }}" 
+                                data-lastName="{{ user.lastName }}" 
+                                data-mail="{{ user.email }}" 
+                                data-role="{{ roleViewLabels[userRoleIndex] }}"
+                                data-statut="{{ user.isValid }}"
+                                onclick="document.querySelector('#js-sessions-log-tutor-{{ user.id }}').submit();">
                         {% else %}
-                            <div class="userContent--container" data-statut="valide">
-                        {% endif %} #}
-                        
-                    {# {% if user.isValid == 3 %}
-                        {% set userRoleIndex = user.roles | length - 1 %}
-                        <div class="userContent--container userContent--container__user" 
-                            data-tutorHours="{{ tutorHours[loop.index0] | default("N/A") }}" 
-                            data-firstName="{{ user.firstName }}" 
-                            data-lastName="{{ user.lastName }}" 
-                            data-mail="{{ user.email }}" 
-                            data-role="{{ roleViewLabels[userRoleIndex] }}"
-                            data-statut="{{ user.isValid }}">
-                    {% else %}
-                        {% set userRoleIndex = user.roles | length - 1 %}
-                        <div class="userContent--container userContent--container__user" 
-                            data-tutorHours="{{ tutorHours[loop.index0] | default("N/A") }}" 
-                            data-firstName="{{ user.firstName }}" 
-                            data-lastName="{{ user.lastName }}" 
-                            data-mail="{{ user.email }}" 
-                            data-role="{{ roleViewLabels[userRoleIndex] }}"
-                            data-statut="{{ user.isValid }}">
-                    {% endif %} #}
+                            <div class="userContent--container userContent--container__user" 
+                                data-tutorHours="{{ tutorHours[loop.index0] | default("N/A") }}" 
+                                data-firstName="{{ user.firstName }}" 
+                                data-lastName="{{ user.lastName }}" 
+                                data-mail="{{ user.email }}" 
+                                data-role="{{ roleViewLabels[userRoleIndex] }}"
+                                data-statut="{{ user.isValid }}">
+                        {% endif %}
+                    {# {% endif %} #}                    
                         
                         <div class="content tutorHours">
                             <span>{{ tutorHours[loop.index0] | default("N/A") }}</span>

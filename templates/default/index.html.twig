@@ -8,6 +8,12 @@
 {% endblock %}
 
 {% block body %}
+    {% set roleViewLabels = [
+        "Étudiant",
+        "Étudiant tuteur",
+        "Secrétaire",
+        "Administrateur",
+    ] %}
     <div class="smooth--container" data-lg-smooth>
         <div class="welcome--container">
             {% if app.user %}

@@ -167,7 +167,7 @@
                                     <div class="text">
                                         <span class="title">{{ session.title }}</span>
                                         <br>
-                                        <span class="subject">{{ session.subject.title }}</span>
+                                        <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
                                     </div>
                                     <div class="text">
                                         <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
@@ -235,7 +235,7 @@
                                         <div class="text">
                                             <span class="title">{{ session.title }}</span>
                                             <br>
-                                            <span class="subject">{{ session.subject.title }}</span>
+                                            <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
                                         </div>
                                         <div class="text">
                                             <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>

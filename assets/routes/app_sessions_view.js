@@ -2,10 +2,6 @@ import "../sass/utils/sessions_view.scss";
 
 import checkUserDevice from "../functions/checkUserDevice.js";
 
-// import { gsap } from 'gsap'
-
-// const domCache = {
-// }
 let maxNavCustomPathLength
 checkUserDevice()?maxNavCustomPathLength = 10:maxNavCustomPathLength = 15
 
@@ -27,4 +23,3 @@ setTimeout(() => {
 
    navSessionTitle.remove()
 }, 1)
-

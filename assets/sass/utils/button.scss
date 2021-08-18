@@ -1,0 +1,48 @@
+@import 'var';
+
+.btn {
+   padding: 20px 30px;
+   outline: none;
+   border: none;
+   cursor: pointer;
+   background-color: rgba($primaryRed, .5);
+   color: #fff;
+   font-weight: bold;
+   font-size: 1.2em;
+   border-radius: 2px;
+   overflow: hidden;
+   position: relative;
+
+   &:before {
+      content: "";
+      width: 24px;
+      height: 24px;
+      background: $primaryRed;
+      border-radius: 50%;
+      position: absolute;
+      transition: 400ms;
+      z-index: -1;
+
+      top: calc(50% - 12px);
+      left: calc(50% - 12px);
+      transform: scale(0);
+   }
+
+   &:hover:before {
+      transform: scale(30);
+   }
+
+
+   &__tinyEffect:hover:before {
+      transform: scale(10);
+   }
+
+   &__mediumEffect:hover:before {
+      transform: scale(14);
+   }
+
+   &__tiny {
+      padding: 15px 20px;
+      font-size: .8em;
+   }
+}

@@ -65,7 +65,7 @@
                                     <span>Pas d'étudiants inscrits</span>
                                 {% else %}
                                     <span>Étudiants inscrits :</span>
-                                    <ul>
+                                    <ul class="notError">
                                         {% for student in session.students %}
                                             <li>{{ student }}</li>
                                         {% endfor %}
@@ -74,12 +74,12 @@
                             {% else %}
                                 <span>Cours validé</span>
                                 <span>Liste d'appel :</span>
-                                <ul>            
+                                <ul class="notError">            
                                     {% for student in session.students %}
                                         <li>{{ student }} ({{ student.email }}) :
                                         {% for participant in session.participants %}
                                             {% if student.id == participant.studentId %}
-                                                {{ participant.present == true ? "Présent" : "Absent" }}   
+                                                {{ participant.present == true ? "✔️" : "❌" }}   
                                             {% endif %}
                                         {% endfor %}
                                         </li>

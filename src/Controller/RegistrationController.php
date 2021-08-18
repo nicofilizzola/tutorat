@@ -9,6 +9,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Repository\AdminCodeRepository;
+use App\Traits\getRoles;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -23,6 +24,7 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class RegistrationController extends AbstractController
 {
     use adminValidationEmail;
+    use getRoles;
 
     private $emailVerifier;
 
@@ -51,14 +53,6 @@ class RegistrationController extends AbstractController
                     $user->setYear(4);
                 }
             }
-            function manageRoles(User $user, $form){
-                require('../Requires/Roles.php');
-                $userRoles = [];
-                for ($i = 0; $i <= $form->get('role')->getData() - 1; $i++){
-                    array_push($userRoles, $roles[$i]);
-                }
-                $user->setRoles($userRoles);
-            }
             function manageIsValid($user, $form){
                 if ($form->get('role')->getData() > 1){
                     $user->setIsValid(1); // 1 == pending    
@@ -69,7 +63,6 @@ class RegistrationController extends AbstractController
 
             managePassword($user, $form, $passwordEncoder);
             manageAdminYear($user, $form);
-            manageRoles($user, $form);
             manageIsValid($user, $form);
             $user->updateTimestamp();
         }
@@ -85,6 +78,12 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             manageFormData($user, $form, $passwordEncoder);
+            $userRoles = [];
+            for ($i = 0; $i <= $form->get('role')->getData() - 1; $i++){
+                array_push($userRoles, $this->getRoles()[$i]);
+            }
+            $user->setRoles($userRoles);
+
             if ($form->get('role')->getData() >= 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
                 $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
                 $this->redirectToRoute('app_register');

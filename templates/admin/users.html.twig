@@ -138,6 +138,21 @@
                 </div>
 
                 {% for user in users %}
+                    {% if (roles.1 in user.roles) and (user.roles | length == 2) %}
+                        <form 
+                            action="path('app_sessions_log')"
+                            method="POST"
+                            hidden="hidden"
+                            id="js-sessions-log-tutor">
+                            <input 
+                                type="hidden" 
+                                name="tutor" 
+                                value="{{ user.id }}">
+                        </form>
+
+                    {% else %}
+                    {% endif %}
+
                     {% if user.isValid == 2 %}
                         <div class="userContent--container" data-statut="valide">
                     {% elseif user.isValid == 3 %}
@@ -149,13 +164,15 @@
                         <div class="content tutorHours">
                             <span>{{ tutorHours[loop.index0] | default("N/A") }}</span>
                         </div>
+
+                        
                         <div class="content firstname">
                             <span>{{ user.firstName | upper }}</span>
                         </div>
                         <div class="content lastname">
                             <span>{{ user.lastName | capitalize }}</span>
                         </div>
-                        
+
                         <div class="content mail">
                             <span>{{ user.email | lower }}</span>
                         </div>

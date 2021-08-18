@@ -85,29 +85,29 @@ class AppFixtures extends Fixture
 
             $manager->persist($user);
 
-            $user = new User();
-            $user->setFirstName('Tutor');
-            $user->setLastName($i);
-            $user->setEmail('tutor'. $i .'@iut-tarbes.fr');
-            $user->setRoles([
-                $this->getRoles()[0],
-                $this->getRoles()[1],
-            ]);
-            $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
-            $user->setYear(1);
-            $user->setIsValid(2);
-            $user->setIsVerified(1);
-            $user->updateTimestamp();
-            $user->setFaculty($faculty);
-
-            $manager->persist($user);
-
             for ($j = 0; $j < 5; $j++) {
                 $user = new User();
                 $user->setFirstName('User' . $j);
                 $user->setLastName('Fac' . $i);
                 $user->setEmail('user'. $j . $i .'@iut-tarbes.fr');
                 $user->setRoles([$this->getRoles()[0]]);
+                $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
+                $user->setYear(1);
+                $user->setIsValid(2);
+                $user->setIsVerified(1);
+                $user->updateTimestamp();
+                $user->setFaculty($faculty);
+
+                $manager->persist($user);
+
+                $user = new User();
+                $user->setFirstName('Tutor' . $j);
+                $user->setLastName($i);
+                $user->setEmail('tutor'. $j . $i .'@iut-tarbes.fr');
+                $user->setRoles([
+                    $this->getRoles()[0],
+                    $this->getRoles()[1],
+                ]);
                 $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
                 $user->setYear(1);
                 $user->setIsValid(2);

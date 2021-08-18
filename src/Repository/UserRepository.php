@@ -115,4 +115,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             }
         }
     }
+
+    public function findSessionJoinedStudentEmails($session) {
+        $emails = [];
+        foreach ($session->getStudents() as $student){
+                array_push($emails, $student->getEmail());
+        }
+        // dd($emails);
+        return $emails;
+    }
 }

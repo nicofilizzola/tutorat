@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\Mailer;
 
 class SessionController extends AbstractController
 {
@@ -200,17 +201,43 @@ class SessionController extends AbstractController
     /**
      * @Route("/sessions/{id<\d+>}/delete", name="app_sessions_delete", methods={"POST"})
      */
-    public function delete(Request $request, EntityManagerInterface $em, Session $session): Response
+    public function delete(
+        Request $request, 
+        EntityManagerInterface $em, 
+        MailerInterface $mailer, 
+        Session $session,
+        UserRepository $userRepository
+    ): Response
     {
         if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions');
         }
 
+        function sendEmailToJoinedStudents(
+            UserRepository $userRepository, 
+            Session $session, 
+            MailerInterface $mailer
+        ){
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+                ->to(...$userRepository->findSessionJoinedStudentEmails($session))
+                ->subject('Cours de tutorat annulé')
+                ->htmlTemplate('email/deleted-session.html.twig')
+                ->context([
+                    'session' => $session,
+                ]);
+            $mailer->send($email);
+        }
+
+        sendEmailToJoinedStudents(
+            $userRepository, 
+            $session, 
+            $mailer
+        );
+        
         $em->remove($session);
         $em->flush();
-
-        // mail
 
         $this->addFlash('success', 'Le cours a bien été suprimmé !');
         return $this->redirectToRoute('app_sessions');
@@ -218,18 +245,49 @@ class SessionController extends AbstractController
     /**
      * @Route("/sessions/{id<\d+>}/participants", name="app_sessions_participants", methods={"GET", "POST"})
      */
-    public function manageParticipants(Session $session, Request $request, UserRepository $userRepository, EntityManagerInterface $em): Response
+    public function manageParticipants(
+        Session $session, 
+        Request $request, 
+        EntityManagerInterface $em
+    ): Response
     {  
-        if (!$this->isTutor() && $session->getTutor() !== $this->getUser() || !empty($session->getParticipants())){
+        if (
+            !$this->isTutor() && $session->getTutor() !== $this->getUser() || 
+            !empty($session->getParticipants())
+        ){
             return $this->redirectToRoute('app_home');
         }
+
+        if (empty($session->getStudents())){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }
+
+        if (strtotime("today") < $session->getDateTime()->getTimestamp()){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }        
 
         if ($request->isMethod('post')){
             $participants = [];
             foreach($session->getStudents() as $student){
                 array_push($participants, [
                     'studentId' => $student->getId(),
-                    'present' => $request->request->get($student->getId()) ? true : false
+                    'present' => $request->request->get($student->getId()) ? 
+                        true : 
+                        false
                 ]);
             }
             $session->setParticipants($participants);
@@ -237,13 +295,19 @@ class SessionController extends AbstractController
             $em->persist($session);
             $em->flush();
 
-            $this->addFlash('success', "La liste d'appel a été transmise et le cours a bien été validé !");
+            $this->addFlash(
+                'success', 
+                "La liste d'appel a été transmise et le cours a bien été validé !"
+            );
             return $this->redirectToRoute('app_sessions');
 
         }
 
-        return $this->render('sessions/participants.html.twig', [
-            'session' => $session
-        ]);
+        return $this->render(
+            'sessions/participants.html.twig', 
+            [
+                'session' => $session
+            ]
+        );
     }
 }

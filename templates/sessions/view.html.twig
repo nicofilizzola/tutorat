@@ -84,7 +84,7 @@
                         </form>
 
                     {% elseif (sessionViewMode == 2) or (sessionViewMode == 4) %}
-                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Suprimmer le cours</button>
+                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Annuler le cours</button>
                         <form 
                             method="POST" 
                             hidden="hidden" 

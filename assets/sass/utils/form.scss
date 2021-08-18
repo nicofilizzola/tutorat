@@ -177,41 +177,7 @@
    border-radius: 2px;
 }
 
-.form--btn {
-   padding: 15px;
-   outline: none;
-   border: none;
-   cursor: pointer;
-   background-color: rgba($primaryRed, .5);
-   color: #fff;
-   font-weight: bold;
-   font-size: 1.2em;
-   border-radius: 2px;
-   overflow: hidden;
-   position: relative;
-
-   &:before {
-      content: "";
-      width: 24px;
-      height: 24px;
-      background: $primaryRed;
-      border-radius: 50%;
-      position: absolute;
-      transition: 400ms;
-      z-index: -1;
-
-      top: calc(50% - 12px);
-      left: calc(50% - 12px);
-      transform: scale(0);
-   }
-
-   &:hover:before {
-      transform: scale(30);
-   }
-}
-
-
-ul {
+ul:not(.notError) {
    display: flex;
    flex-direction: row;
    position: relative;

@@ -3,7 +3,8 @@
 {% block title %}Hello SessionController!{% endblock %}
 
 {% block stylesheets %}
-	{{ encore_entry_link_tags('app_sessions') }}
+	{{ encore_entry_link_tags('app_sessions_participants') }}
+	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 
 {% block body %}
@@ -21,6 +22,38 @@
 		{% endfor %}
 		<button type="submit">Envoyer</button>
 	</form>
+
+   <span id="navSessionTitle" hidden>{{ session.title }}</span>
+
+   <div class="smooth--container" data-lg-smooth>
+      <div class="container">
+      	<div class="participants--container">
+				<form action="{{ path("app_sessions_participants", { 'id': session.id }) }}" method="POST">
+					{% for student in session.students %}
+						<div class="participant--content">
+							<span class="name">{{ student }}</span>
+
+							<div class="radio--container">
+								<div class="radio present">
+									<input type="radio" id="present-{{ student.id }}" name="{{ student.id }}" value="present">
+									<label for="present-{{ student.id }}" class="">
+										<span class="">✔️</span>
+									</label>
+								</div>
+								<div class="radio absent">
+									<input type="radio" id="absent-{{ student.id }}" name="{{ student.id }}" value="absent">
+									<label for="absent-{{ student.id }}" class="">
+										<span class="">❌</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+					<button type="submit" class="btn hoveredItems">Envoyer</button>
+				</form>
+			</div>
+		</div>
+	</div>
 
 	{# MODAL: ARE YOU SURE? #}
 

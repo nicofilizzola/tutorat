@@ -103,7 +103,7 @@ class RegistrationController extends AbstractController
             );
             
             // admin email
-            $this->sendAdminsEmailForPendingUser($mailer, $userRepository);
+            $this->sendAdminsEmailForPendingUser($mailer, $userRepository, $user);
 
             return $this->redirectToRoute('app_register_after', ['id' => $user->getId()]);
         }

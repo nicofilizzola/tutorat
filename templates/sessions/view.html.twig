@@ -74,11 +74,11 @@
                         {% endif %}
 
                     {% elseif sessionViewMode == 1 %}
-                        <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-leave-session-{{ currentSession.id }}').submit();">Se désinscrire</button>
+                        <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-leave-{{ currentSession.id }}').submit();">Se désinscrire</button>
                         <form 
                             method="POST" 
                             hidden="hidden" 
-                            action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}"
+                            action="{{ path("app_sessions_leave", {"id": currentSession.id}) }}"
                             id="js-session-leave-{{ currentSession.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('leave-session' ~ currentSession.id) }}"/>
                         </form>

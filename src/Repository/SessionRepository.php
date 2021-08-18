@@ -50,7 +50,7 @@ class SessionRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByStudent(User $user){
+    public function findByStudentAwaiting(User $user){
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
@@ -66,7 +66,10 @@ class SessionRepository extends ServiceEntityRepository
 
         $sessions = [];
         foreach ($sessionIds as $sessionId){
-            array_push($sessions, $this->findOneBy(['id' => $sessionId]));
+            $session = $this->findOneBy(['id' => $sessionId]);
+            if (empty($session->getParticipants())){
+                array_push($sessions, $session);
+            }
         }
         
         return $sessions;

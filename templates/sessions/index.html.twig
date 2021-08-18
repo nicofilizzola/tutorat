@@ -204,7 +204,7 @@
                 {% endfor %}
 
                 {% if tutorSessions is null == false %}
-                    <span>Mes cours validés</span>
+                    <span>Mes cours</span>
                     {% for session in tutorSessions %}
                         <div class="card--container" data-tutor="{{ session.tutor.id }}" data-subject="{{ session.subject.title }}" data-semester="{{ session.semester }}" data-timeFormat="{{ session.timeFormat }}" data-environnement="{{ session.faceToFace }}">
                             <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
@@ -239,7 +239,7 @@
                                         </div>
                                         <div class="text">
                                             <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
-                                            <br>
+                                            <br/>
                                             {% set duration = "30min" %}
                                             {% if session.timeFormat == 2 %}
                                                 {% set duration = "45min" %}
@@ -247,6 +247,12 @@
                                                 {% set duration = "1h" %}
                                             {% endif %}
                                             <span>Durée : <b>{{ duration }}</b></span>
+                                            <br/>
+                                            {% if session.isValid == true %}
+                                                <span>{{ session.participants is empty ? 'En attente' : 'Validé' }}</span>
+                                            {% else %}
+                                                <span>Attribution de salle de cours en attente</span>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     {# <div class="card--participants">

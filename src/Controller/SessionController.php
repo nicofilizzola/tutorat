@@ -34,6 +34,8 @@ class SessionController extends AbstractController
             $isJoinable = false;
         } else if ($this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             $isJoinable = false;
+        } else if (count($session->getStudents()) == $session->getStudentLimit()){
+            $isJoinable = false;
         }
 
         return !$isJoinable ? false : true;
@@ -208,6 +210,8 @@ class SessionController extends AbstractController
         $em->remove($session);
         $em->flush();
 
+        // mail
+
         $this->addFlash('success', 'Le cours a bien été suprimmé !');
         return $this->redirectToRoute('app_sessions');
     }
@@ -222,10 +226,10 @@ class SessionController extends AbstractController
 
         if ($request->isMethod('post')){
             $participants = [];
-            foreach($request->request as $key => $present){
+            foreach($session->getStudents() as $student){
                 array_push($participants, [
-                    'studentId' => $userRepository->findOneBy(['id' => $key])->getId(),
-                    'present' => $present
+                    'studentId' => $student->getId(),
+                    'present' => $request->request->get($student->getId()) ? true : false
                 ]);
             }
             $session->setParticipants($participants);

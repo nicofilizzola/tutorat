@@ -110,7 +110,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findFacultySecretaryEmail($faculty){
         $secretaryRole = $this->getRoles()[2];
         foreach ($this->findBy(array_merge(['faculty' => $faculty], $this->validAndVerifiedCriteria)) as $user){
-            if (in_array($secretaryRole, $user->getRoles()) && array_search($secretaryRole, $this->getRoles()) == count($this->getRoles()) - 1){
+            if (in_array($secretaryRole, $user->getRoles()) && array_search($secretaryRole, $user->getRoles()) == count($user->getRoles()) - 1){
                 return $user->getEmail();
             }
         }

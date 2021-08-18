@@ -94,7 +94,6 @@
                         </form>
 
                         {% if (currentSession.students is empty) or (currentSession.participants is empty == false) %}
-                            <button class="form--button hoveredItems" disabled>Faire l'appel (disabled)</button>
                         {% else %}
                             <a href="{{ path("app_sessions_participants", {"id": currentSession.id}) }}">
                                 <button class="form--button hoveredItems">Faire l'appel</button>

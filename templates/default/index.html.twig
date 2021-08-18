@@ -20,9 +20,9 @@
                             </div>
 
                             {% if sessions | length == 0 %}
-                                <span>Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
+                                <span class="infos">Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
                             {% else %}
-                                <span>Tu es inscrit.e à <span><b>{{ sessions | length}}</b></span> cours ! Tu peux voir la liste à côté 👀</span>                             
+                                <span class="infos">Tu es inscrit.e à <span><b>{{ sessions | length}}</b></span> cours ! Tu peux voir la liste à côté 👀</span>                             
                             {% endif %}
                             <div class="buttons">
                                 <div class="buttons--container">
@@ -45,14 +45,16 @@
                             {% for session in sessions %}
                                 <div class="studentCourse">
                                     <div class="link hoveredItems">
-                                        <a href="{{ path('app_sessions_view', {"id": session.id}) }}"><span>{{ session.dateTime | date('d/m/Y') }} - {{ session.dateTime | date('h') }}:{{ session.dateTime | date('i') }}</span></a>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                            <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                                <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                            </g>
-                                        </svg>
+                                        <a href="{{ path('app_sessions_view', {"id": session.id}) }}">
+                                            <span>{{ session.dateTime | date('d/m/Y') }} - {{ session.dateTime | date('h') }}:{{ session.dateTime | date('i') }}</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                                <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                    <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                    <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                    <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                </g>
+                                            </svg>
+                                        </a>
                                     </div>
                                     <div class="lineGap"></div>
                                     <div class="infos">
@@ -72,23 +74,25 @@
                                     </div>
 
                                     {% if users | length == 0 %}
-                                        <span>Pas de demandes en attente.</span>
+                                        <span class="infos">Pas de demandes en attente.</span>
                                     {% else %}
-                                        <span>Voici les dernières demandes reçues :</span>
+                                        <span class="infos">Voici les dernières demandes reçues :</span>
                                     {% endif %}
 
                                     <div class="requests--container">
                                         {% for user in users %}
                                             <div class="request">
                                                 <div class="link hoveredItems">
-                                                    <a href="{{ path('app_users') }}"><span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span></a>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                                        <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                                            <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                            <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                            <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                        </g>
-                                                    </svg>
+                                                    <a href="{{ path('app_users') }}">
+                                                        <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                                            <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                                <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                                <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                                <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                            </g>
+                                                        </svg>
+                                                    </a>
                                                 </div>
                                                 <div class="lineGap"></div>
                                                 <div class="infos">

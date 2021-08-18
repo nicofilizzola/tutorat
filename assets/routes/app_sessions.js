@@ -1,29 +1,76 @@
 import "../sass/utils/sessions.scss";
 
+var distance = require('jaro-winkler');
+
 const domCache = {
    // Filtres
    filterButton: document.querySelector('.filterButton'),
    filterButtonArrow: document.querySelector('.filterButton svg'),
    filterContent: document.querySelector('.filter--content'),
    
-   // Filtres button
-   subjectFilter: document.querySelectorAll('.subject--container input'),
-   semesterFilter: document.querySelectorAll('.semester--container input'),
-   timeFormatFilter: document.querySelectorAll('.timeFormat--container input'),
-   environnementFilter: document.querySelectorAll('.environnement--container input'),
+   // Filtre buttons
+   filterInputs: document.querySelectorAll('input[type=checkbox]'),
 
    // Cartes de cours
+   cardContainers: document.querySelectorAll('.card--container'),
    cards: document.querySelectorAll('.card--container .inscription'),
    hoveredCards: document.querySelectorAll('.card--hovered'),
    hoveredCardsBackground: document.querySelectorAll('.card--hovered .background'),
    hoveredCardsText: document.querySelectorAll('.card--hovered .texte span'),
 }
 
-// console.log(domCache.subjectFilter,domCache.semesterFilter,domCache.timeFormatFilter,domCache.environnementFilter)
+const tempFilters = []
 
-domCache.subjectFilter.forEach(e => {
-  console.log(e.dataset.filter) 
+domCache.filterInputs.forEach(filter => {
+   filter.checked = false
 })
+
+domCache.filterInputs.forEach(filter => {
+   filter.addEventListener('change', () => {
+      let checkFilter = false
+      const tempFiltersLength = tempFilters.length
+      for (let i = 0; i < tempFiltersLength; i++) {
+         if (tempFilters[i] === filter) {
+            tempFilters.splice(i, 1)
+            checkFilter = true
+         }
+      }
+      if (!checkFilter) {
+         tempFilters.push(filter)
+      }
+
+      globalFilter(tempFilters)
+      console.log(tempFilters)
+   })
+})
+
+function globalFilter(filters) {
+   domCache.cardContainers.forEach(card => {
+      if (filters.length == 0) {
+         card.hidden = false
+         card.style.display = ''
+      } else {
+         let check = false
+         filters.forEach(filter => {
+            if (!check) {
+               if (card.classList.contains(filter.dataset.filter)) {
+                  check = true
+               } else {
+                  check = false
+               }
+            }
+         })
+   
+         if (check) {
+            card.hidden = false
+            card.style.display = ''
+         } else {
+            card.hidden = true
+            card.style.display = 'none'
+         }
+      }
+   })
+}
 
 let state = {
    isFilterPanelOpen: false

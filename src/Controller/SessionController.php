@@ -85,13 +85,33 @@ class SessionController extends AbstractController
     public function view(SessionRepository $sessionRepository, Session $session): Response
     {
         if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
-            $this->addFlash('danger', 'Une erreur est survenue.');
-            return $this->redirectToRoute('app_sessions');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('sessions/view.html.twig', [
            'sessions' => $sessionRepository->findThreeBySessionSubject($session),
            'currentSession' => $session,
+           'roles' => $this->getRoles()
+        ]);
+    }
+    /**
+     * @Route("user/{id<\d+>}/sessions", name="app_user_sessions", methods={"GET"})
+     */
+    public function userSessions(SessionRepository $sessionRepository, SemesterRepository $semesterRepository, User $user): Response
+    {
+        if (!$this->getUser() || $this->getUser()!== $user){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $faculty = $user->getFaculty();
+
+        return $this->render('sessions/userSessions.html.twig', [
+            'tutorSessions' => $this->isTutor() ? 
+                $sessionRepository->findBy([
+                    'tutor' => $user,
+                    'semester' => $semesterRepository->findCurrentFacultySemester($faculty),
+                ]) : null,
+            'joinedSessions' => $sessionRepository->findByJoinedSessions($semesterRepository, $user),
            'roles' => $this->getRoles()
         ]);
     }

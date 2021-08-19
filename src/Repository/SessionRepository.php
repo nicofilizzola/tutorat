@@ -140,4 +140,17 @@ class SessionRepository extends ServiceEntityRepository
 
         return $sessions;
     }
+
+    public function findByJoinedSessions(SemesterRepository $semesterRepository, $user){
+        $semesterSessions = $this->findBy([
+            'semester' => $semesterRepository->findCurrentFacultySemester($user->getFaculty())
+        ]);
+        $joinedSessions = [];
+        foreach ($semesterSessions as $session){
+            if (in_array($user, $session->getStudents()->toArray())){
+                array_push($joinedSessions, $session);
+            }
+        }
+        return $joinedSessions;
+    }
 }

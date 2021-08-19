@@ -14,6 +14,14 @@
         "Secrétaire",
         "Administrateur",
     ] %}
+    {% set semesters = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+    ] %}
     <div class="smooth--container" data-lg-smooth>
         <div class="welcome--container">
             {% if app.user %}
@@ -64,7 +72,8 @@
                                     </div>
                                     <div class="lineGap"></div>
                                     <div class="infos">
-                                        <span>{{ session.subject.title }} - Semestre {{ session.subject.semester }} - {{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
+                                        {% set semestreIndex = session.subject.semester | length - 1 %}
+                                        <span>{{ session.subject.title }} - Semestre {{ semesters[semestreIndex] }} - {{ (session.faceToFace == 1) ? "Présentiel" : "Distanciel" }}</span>
                                     </div>
                                 </div>
                             {% endfor %}

@@ -149,13 +149,13 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_users');
     }
     /**
-     * @Route("/user/{id<\d+>}/cancel", name="app_user_cancel", methods="POST")
+     * @Route("/user/{id<\d+>}/refuse", name="app_user_refuse", methods="POST")
      */
-    public function cancel(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function refuse(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        if ($this->isCsrfTokenValid('cancel-user' . $user->getId(), $request->request->get('token'))) {
+        if ($this->isCsrfTokenValid('refuse-user' . $user->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }

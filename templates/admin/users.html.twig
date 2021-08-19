@@ -205,21 +205,25 @@
                         
                         <div class="content manage">
                             {% if user.isValid == 1 %}
+
+                                {% include "components/forms/_usersAction.html.twig" with {
+                                    'action': 'validate',
+                                    'title': "Valider cette demande",
+                                    'icon': '✔️'
+                                } %}
+
+                                {% include "components/forms/_usersAction.html.twig" with {
+                                    'action': 'refuse',
+                                    'title': "Refuser cette demande",
+                                    'icon': '❌'
+                                } %}
+
                                 <button 
-                                    title="Valider l'utilisateur." 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems validate">
-                                    <span>✔️</span>
+                                    title="Action bloquée" 
+                                    disabled="disabled"
+                                    class="hoveredItems disabled">
+                                    <span>&darr;</span>
                                 </button>
-                                <button 
-                                    title="Refuser l'utilisateur." 
-                                    onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
-                                    class="hoveredItems refuse">
-                                    <span>❌</span>
-                                </button>
-                                
-                                {% include "components/forms/_usersAction.html.twig" with {'action': 'validate'} %}
-                                {% include "components/forms/_usersAction.html.twig" with {'action': 'cancel'} %}
 
                             {% else %}
                                 <button 
@@ -236,34 +240,35 @@
                                 </button>
 
                                 {% if userRoleIndex ==  1 %}
-                                    <button 
-                                        title="Révoquer les droits de tuteur" 
-                                        onclick="event.stopPropagation(); document.querySelector('#js-user-demote-form-{{ user.id }}').submit()" 
-                                        class="hoveredItems">
-                                        <span>&darr;</span>
-                                    </button>
-                                    {% include "components/forms/_usersAction.html.twig" with {'action': 'demote'} %}
+                                    {% include "components/forms/_usersAction.html.twig" with {
+                                        'action': 'demote',
+                                        'title': "Revoquer les droits de tuteur",
+                                        'icon': '🔽'
+                                    } %}
 
                                 {% else %}
                                     <button 
                                         title="Action bloquée" 
                                         disabled="disabled"
                                         class="hoveredItems disabled">
-                                        <span>&darr;</span>
+                                        <span>🔽</span>
                                     </button>
                                 {% endif %}
                             {% endif %}
                             
                             {% if (userRoleIndex == 3) and (adminCount == 1) or (app.user == user) %}
-                                <button title="Supression bloquée" disabled class="hoveredItems refuse disabled">
+                                <button 
+                                    title="Supression bloquée" 
+                                    disabled="disabled" 
+                                    class="hoveredItems refuse disabled">
                                     <span>🗑️</span>
                                 </button>
                             {% else %}
-                                <button title="Suprimmer l'utilisateur" onclick="event.stopPropagation(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
-                                    <span>🗑️</span>
-                                </button>
-                                {% include "components/forms/_usersAction.html.twig" with {'action': 'delete'} %}
-
+                                {% include "components/forms/_usersAction.html.twig" with {
+                                    'action': 'delete',
+                                    'title': "Suprimmer l'utilisateur",
+                                    'icon': '🗑️'
+                                } %}
                             {% endif %}
                         </div>
                     </div>

@@ -1,3 +1,10 @@
+<button 
+    title="{{ title }}" 
+    onclick="event.stopPropagation(); document.querySelector('#js-user-{{ action }}-form-{{ user.id }}').submit()" 
+    class="hoveredItems {{ action }}">
+    <span>{{ icon }}</span>
+</button>
+
 <form 
     id="js-user-{{ action }}-form-{{ user.id }}"
     display="none" 

@@ -6,6 +6,7 @@ const domCache = {
    validateFormButtons: document.querySelectorAll('.validate'),
    refuseFormButtons: document.querySelectorAll('.refuse'),
    deleteFormButtons: document.querySelectorAll('.delete'),
+   downgradeFormButtons: document.querySelectorAll('.downgrade'),
    filterButtons: document.querySelectorAll('button[data-active]'),
 
    usersListContainer: document.querySelector('.content--container'),
@@ -165,39 +166,53 @@ function sortByStatut(isDesc) {
    })
 }
 
-const getCard = (button) => {
-   return button.parentNode.parentNode
+const getCard = (button, i) => {
+   if (i == 1)
+      return button.parentNode
+   else
+      return button.parentNode.parentNode
 }
 
 domCache.validateFormButtons.forEach(button => {
    button.addEventListener('mouseenter', () => {
-      getCard(button).style.backgroundColor = 'rgba(22, 198, 12, .5)'
+      getCard(button, 2).style.backgroundColor = 'rgba(22, 198, 12, .5)'
    })
 
    button.addEventListener('mouseleave', () => {
-      getCard(button).style.backgroundColor = ''
+      getCard(button, 2).style.backgroundColor = ''
    })
 })
 
 domCache.refuseFormButtons.forEach(button => {
    button.addEventListener('mouseenter', () => {
-      getCard(button).style.backgroundColor = 'rgba(255, 58, 57, .5)'
+      getCard(button, 2).style.backgroundColor = 'rgba(255, 58, 57, .5)'
    })
 
    button.addEventListener('mouseleave', () => {
-      getCard(button).style.backgroundColor = ''
+      getCard(button, 2).style.backgroundColor = ''
    })
 })
 
 domCache.deleteFormButtons.forEach(button => {
    button.addEventListener('mouseenter', () => {
-      getCard(button).style.backgroundColor = 'rgba(226, 226, 226, .5)'
+      getCard(button, 2).style.backgroundColor = 'rgba(226, 226, 226, .5)'
    })
    
    button.addEventListener('mouseleave', () => {
-      getCard(button).style.backgroundColor = ''
+      getCard(button, 2).style.backgroundColor = ''
    })
 })
+
+domCache.downgradeFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button, 1).children[0].style.color = 'rgb(255, 58, 57)'
+   })
+   
+   button.addEventListener('mouseleave', () => {
+      getCard(button, 1).children[0].style.color = ''
+   })
+})
+
 
 switchUserSortList('down', 'statut')
 

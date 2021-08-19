@@ -190,7 +190,15 @@
                         
                         <div class="content role">
                             {# {% set userRoleIndex = user.roles | length - 1 %} #}
-                            <span>{{ roleViewLabels[userRoleIndex] }}</span> 
+                            <span>{{ roleViewLabels[userRoleIndex] }}</span>
+
+                            {% if userRoleIndex ==  1 %}
+                                {% include "components/forms/_usersAction.html.twig" with {
+                                    'action': 'demote',
+                                    'title': "Revoquer les droits de tuteur",
+                                    'icon': '🔽'
+                                } %}
+                            {% endif %}
                         </div>
                         
                         <div class="content statut">
@@ -238,29 +246,10 @@
                                     class="refuse hoveredItems lineHoverEffectrefuse disabled">
                                     <span>❌</span>
                                 </button>
-
-                                {% if userRoleIndex ==  1 %}
-                                    {% include "components/forms/_usersAction.html.twig" with {
-                                        'action': 'demote',
-                                        'title': "Revoquer les droits de tuteur",
-                                        'icon': '🔽'
-                                    } %}
-
-                                {% else %}
-                                    <button 
-                                        title="Action bloquée" 
-                                        disabled="disabled"
-                                        class="hoveredItems disabled">
-                                        <span>🔽</span>
-                                    </button>
-                                {% endif %}
                             {% endif %}
                             
                             {% if (userRoleIndex == 3) and (adminCount == 1) or (app.user == user) %}
-                                <button 
-                                    title="Supression bloquée" 
-                                    disabled="disabled" 
-                                    class="hoveredItems refuse disabled">
+                                <button title="Supression bloquée" disabled class="hoveredItems delete disabled">
                                     <span>🗑️</span>
                                 </button>
                             {% else %}

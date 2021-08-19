@@ -49,7 +49,11 @@
                                     <span>🗑️</span>
                                 </button>
                             {% endif %}
-                            <form id="js-semester-delete-form-{{ semester.id }}" display="none" hiddenaction="{{ path('app_semester_delete', {"id": semester.id}) }}" method="POST">
+                            <form 
+                                id="js-semester-delete-form-{{ semester.id }}" 
+                                hidden="hidden" 
+                                action="{{ path('app_semester_delete', {"id": semester.id}) }}" 
+                                method="POST">
                                 <input type="hidden" name="token" value="{{ csrf_token('delete-semester' ~ semester.id) }}"/>
                             </form> 
                         </div>

@@ -208,12 +208,19 @@
                         
                         <div class="content manage">
                             {% if user.isValid == 1 %}
-                                <button title="Valider l'utilisateur." onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" class="hoveredItems validate">
+                                <button 
+                                    title="Valider l'utilisateur." 
+                                    onclick="event.preventDefault(); document.querySelector('#js-user-validate-form-{{ user.id }}').submit()" 
+                                    class="hoveredItems validate">
                                     <span>✔️</span>
                                 </button>
-                                <button title="Refuser l'utilisateur." onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" class="hoveredItems refuse">
+                                <button 
+                                    title="Refuser l'utilisateur." 
+                                    onclick="event.preventDefault(); document.querySelector('#js-user-cancel-form-{{ user.id }}').submit()" 
+                                    class="hoveredItems refuse">
                                     <span>❌</span>
                                 </button>
+
                                 <form 
                                     id="js-user-validate-form-{{ user.id }}"
                                     display="none" 
@@ -234,15 +241,46 @@
                                 </form>
 
                             {% else %}
-                                <button title="Impossible de changer le statut de l'utilisateur." disabled class="validate hoveredItems lineHoverEffectvalidate disabled">
+                                <button 
+                                    title="Action bloquée" 
+                                    disabled="disabled" 
+                                    class="validate hoveredItems lineHoverEffectvalidate disabled">
                                     <span>✔️</span>
                                 </button>
-                                <button title="Impossible de changer le statut de l'utilisateur." disabled class="refuse hoveredItems lineHoverEffectrefuse disabled">
+                                <button 
+                                    title="Action bloquée" 
+                                    disabled ="disabled"
+                                    class="refuse hoveredItems lineHoverEffectrefuse disabled">
                                     <span>❌</span>
                                 </button>
+
+                                {% if userRoleIndex ==  1 %}
+                                    <button 
+                                        title="Révoquer les droits de tuteur" 
+                                        onclick="event.stopPropagation(); document.querySelector('#js-user-demote-form-{{ user.id }}').submit()" 
+                                        class="hoveredItems">
+                                        <span>&darr;</span>
+                                    </button>
+                                    <form 
+                                        id="js-user-demote-form-{{ user.id }}"
+                                        display="none" 
+                                        hidden="hidden"
+                                        action="{{ path('app_user_demote', {"id": user.id}) }}" 
+                                        method="POST">
+                                        <input type="hidden" name="token" value="{{ csrf_token('demote-user' ~ user.id) }}"/>
+                                        {# <input type="hidden" name="_method" value="PUT"/> #}
+                                    </form>
+                                {% else %}
+                                    <button 
+                                        title="Action bloquée" 
+                                        disabled="disabled"
+                                        class="hoveredItems disabled">
+                                        <span>&darr;</span>
+                                    </button>
+                                {% endif %}
                             {% endif %}
                             
-                            {% if (userRoleIndex == 3) and (adminCount == 1) and (app.user == user) %}
+                            {% if (userRoleIndex == 3) and (adminCount == 1) or (app.user == user) %}
                                 <button title="Supression bloquée" disabled class="hoveredItems refuse disabled">
                                     <span>🗑️</span>
                                 </button>

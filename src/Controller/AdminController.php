@@ -171,43 +171,65 @@ class AdminController extends AbstractController
     /**
      * @Route("/user/{id<\d+>}/delete", name="app_user_delete", methods="POST")
      */
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function delete(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager
+    ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token')) ||
+        if (
+            !$this->isCsrfTokenValid(
+                'delete-user' . $user->getId(), 
+                $request->request->get('token')
+            ) ||
             $user == $this->getUser()
             // missing validation if adminCount == 1
         ) {
-            $this->addFlash('danger', "Une erreur est survenue.");
+            $this->addFlash(
+                'danger', 
+                "Une erreur est survenue."
+            );
             return $this->redirectToRoute('app_users');
         }
 
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
+        $this->addFlash(
+            "success", 
+            "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !"
+        );
         return $this->redirectToRoute('app_users');
     }
     /**
      * @Route("/user/{id<\d+>}/demote", name="app_user_demote", methods="POST")
      */
-    public function demote(Request $request, User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    public function demote(
+        Request $request, 
+        User $user, 
+        EntityManagerInterface $entityManager
+    ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token')) ||
-            $user == $this->getUser()
-            // missing validation if adminCount == 1
-        ) {
+        if (!$this->isCsrfTokenValid(
+            'demote-user' . $user->getId(), 
+            $request->request->get('token')
+        )) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
 
-        $entityManager->remove($user);
+        $user->setRoles([$this->getRoles()[0]]);
+        $entityManager->persist($user);
         $entityManager->flush();
 
-        $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
+        $this->addFlash(
+            "success", 
+            "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été révoqué de ses droits de tuteur !"
+        );
         return $this->redirectToRoute('app_users');
     }
 

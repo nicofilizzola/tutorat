@@ -1,0 +1,9 @@
+<form 
+    id="js-user-{{ action }}-form-{{ user.id }}"
+    display="none" 
+    hidden="hidden"
+    action="{{ path('app_user_' ~ action, {"id": user.id}) }}" 
+    method="POST">
+    <input type="hidden" name="token" value="{{ csrf_token(action ~ "-user" ~ user.id) }}"/>
+    {# <input type="hidden" name="_method" value="PUT"/> #}
+</form>

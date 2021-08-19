@@ -220,25 +220,9 @@
                                     class="hoveredItems refuse">
                                     <span>❌</span>
                                 </button>
-
-                                <form 
-                                    id="js-user-validate-form-{{ user.id }}"
-                                    display="none" 
-                                    hidden
-                                    action="{{ path('app_user_validate', {"id": user.id}) }}" 
-                                    method="POST">
-                                    <input type="hidden" name="token" value="{{ csrf_token('validate-user' ~ user.id) }}"/>
-                                    {# <input type="hidden" name="_method" value="PUT"/> #}
-                                </form>
-                                <form 
-                                    id="js-user-cancel-form-{{ user.id }}"
-                                    display="none" 
-                                    hidden
-                                    action="{{ path('app_user_cancel', {"id": user.id}) }}" 
-                                    method="POST">
-                                    <input type="hidden" name="token" value="{{ csrf_token('cancel-user' ~ user.id) }}"/>
-                                    {# <input type="hidden" name="_method" value="PUT"/> #}
-                                </form>
+                                
+                                {% include "components/forms/_usersAction.html.twig" with {'action': 'validate'} %}
+                                {% include "components/forms/_usersAction.html.twig" with {'action': 'cancel'} %}
 
                             {% else %}
                                 <button 
@@ -261,15 +245,8 @@
                                         class="hoveredItems">
                                         <span>&darr;</span>
                                     </button>
-                                    <form 
-                                        id="js-user-demote-form-{{ user.id }}"
-                                        display="none" 
-                                        hidden="hidden"
-                                        action="{{ path('app_user_demote', {"id": user.id}) }}" 
-                                        method="POST">
-                                        <input type="hidden" name="token" value="{{ csrf_token('demote-user' ~ user.id) }}"/>
-                                        {# <input type="hidden" name="_method" value="PUT"/> #}
-                                    </form>
+                                    {% include "components/forms/_usersAction.html.twig" with {'action': 'demote'} %}
+
                                 {% else %}
                                     <button 
                                         title="Action bloquée" 
@@ -288,15 +265,8 @@
                                 <button title="Suprimmer l'utilisateur" onclick="event.stopPropagation(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
-                                <form 
-                                    id="js-user-delete-form-{{ user.id }}"
-                                    display="none" 
-                                    hidden
-                                    action="{{ path('app_user_delete', {"id": user.id}) }}" 
-                                    method="POST">
-                                    <input type="hidden" name="token" value="{{ csrf_token('delete-user' ~ user.id) }}"/>
-                                    {# <input type="hidden" name="_method" value="PUT"/> #}
-                                </form>
+                                {% include "components/forms/_usersAction.html.twig" with {'action': 'delete'} %}
+
                             {% endif %}
                         </div>
                     </div>

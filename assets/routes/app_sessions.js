@@ -1,7 +1,5 @@
 import "../sass/utils/sessions.scss";
 
-var distance = require('jaro-winkler');
-
 const domCache = {
    // Filtres
    filterButton: document.querySelector('.filterButton'),

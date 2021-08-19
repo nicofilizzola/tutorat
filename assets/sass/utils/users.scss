@@ -6,6 +6,7 @@
    justify-content: center;
    align-items: center;
    width: 100vw;
+   margin-top: 125px;
 }
 
 .content--container, .subjects--container, .classrooms--container, .semesters--container {
@@ -54,11 +55,11 @@
    background-color: rgba(#e2e2e2, 0.05);
    transition: background-color .5s ease-in-out;
    
-   &[data-statut="valide"] {
+   &[data-statut="2"] {
       background-color: rgba($primaryGreen, 0.05);
    }
    
-   &[data-statut="refuse"] {
+   &[data-statut="3"] {
       background-color: rgba($primaryRed, 0.05);
    }
 
@@ -200,4 +201,8 @@
       }
    }
 
+}
+
+.tutor {
+   cursor: pointer;
 }

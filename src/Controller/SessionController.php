@@ -112,6 +112,7 @@ class SessionController extends AbstractController
                     'semester' => $semesterRepository->findCurrentFacultySemester($faculty),
                 ]) : null,
             'joinedSessions' => $sessionRepository->findByJoinedSessions($semesterRepository, $user),
+            'user' => $user,
            'roles' => $this->getRoles()
         ]);
     }

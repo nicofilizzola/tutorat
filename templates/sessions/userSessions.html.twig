@@ -9,12 +9,28 @@
 
 {% block body %}
 
-   <div>
+    <div>
         <div>
-
+            <h2>Mes cours</h2>
+                {% set noTutorSessions = tutorSessions is null == true %}
+                {% set noJoinedSessions = joinedSessions is empty == true %}
+                {% if (noTutorSessions == true) and (noJoinedSessions == true) %}
+                    <p>Rien à voir par ici...</p>
+                {% else %}
+                    {% if noTutorSessions == false %}
+                        <p>En tant que tuteur</p>
+                        {% for session in tutorSessions %}
+                            <p>{{ session.id }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {% if noJoinedSessions == false %}
+                        {% for session in joinedSessions %}
+                            <p>En tant qu'étudiant</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
             {% include "components/_footer.html.twig" %}
         </div>
     </div>
-
 
 {% endblock %}

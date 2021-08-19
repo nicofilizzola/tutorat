@@ -189,6 +189,27 @@ class AdminController extends AbstractController
         $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
         return $this->redirectToRoute('app_users');
     }
+    /**
+     * @Route("/user/{id<\d+>}/demote", name="app_user_demote", methods="POST")
+     */
+    public function demote(Request $request, User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
+
+        if (!$this->isCsrfTokenValid('delete-user' . $user->getId(), $request->request->get('token')) ||
+            $user == $this->getUser()
+            // missing validation if adminCount == 1
+        ) {
+            $this->addFlash('danger', "Une erreur est survenue.");
+            return $this->redirectToRoute('app_users');
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !");
+        return $this->redirectToRoute('app_users');
+    }
 
 
     /**

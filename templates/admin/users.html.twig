@@ -247,7 +247,7 @@
                                     <span>🗑️</span>
                                 </button>
                             {% else %}
-                                <button title="Suprimmer l'utilisateur" onclick="event.preventDefault(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
+                                <button title="Suprimmer l'utilisateur" onclick="event.stopPropagation(); document.querySelector('#js-user-delete-form-{{ user.id }}').submit()" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                                 <form 

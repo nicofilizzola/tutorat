@@ -15,6 +15,7 @@
             "Secrétaire",
             "Administrateur",
         ] %}
+
         <div class="smooth--container" data-lg-smooth>
             <div class="welcome--container">
                 {% if app.user %}
@@ -26,24 +27,25 @@
                                     <span><b>Heureux de te revoir !</b></span>
                                 </div>
 
-                            {% if sessions | length == 0 %}
-                                <span class="infos">Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
-                            {% else %}
-                                <span class="infos">Tu es inscrit.e à <span><b>{{ sessions | length}}</b></span> cours ! Tu peux voir la liste à côté 👀</span>                             
-                            {% endif %}
-                            <div class="buttons">
-                                <div class="buttons--container">
-                                    <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
-                                    <a href="{{ path('app_ownSessions') }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a>
-                                    {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
-                                        <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
-                                    {% else %}
-                                        <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
-                                    {% endif %}
-                                    <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+                                {% if sessions | length == 0 %}
+                                    <span class="infos">Tu n'as pas de cours prévu. N'hésites pas en chercher <a href="{{ path('app_sessions') }}" class="hoveredItems lineHoverEffect"><span>ici</span></a> !</span>
+                                {% else %}
+                                    <span class="infos">Tu es inscrit.e à <span><b>{{ sessions | length}}</b></span> cours ! Tu peux voir la liste à côté 👀</span>                             
+                                {% endif %}
+
+                                <div class="buttons">
+                                    <div class="buttons--container">
+                                        <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
+                                        <a href="{{ path('app_ownSessions') }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a>
+                                        {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
+                                            <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
+                                        {% else %}
+                                            <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
+                                        {% endif %}
+                                        <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+                                    </div>
                                 </div>
-                            </div>
-                            
+                            </div>                        
                         </div>
 
                         <div class="rightSide">

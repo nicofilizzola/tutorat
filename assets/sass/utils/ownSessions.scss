@@ -1,0 +1,51 @@
+@import '~@splidejs/splide/dist/css/splide.min.css';
+@import 'var';
+
+.splide__list {
+   li {
+      max-width: 450px !important;
+      width: 100vw !important;
+      // margin: 0 100px;
+      list-style: none;
+   }
+}
+
+.splide {
+   max-width: 100vw;
+   // width: 900px;
+   // cursor: grab;
+   visibility: visible;
+}
+
+.splide__arrow {
+   border-radius: 2px;
+   background-color: rgba($darkerRed, .5);
+   opacity: 1;
+   
+   &:hover {
+      opacity: 1;
+   }
+
+   svg {
+      
+      path {
+         fill: #fff;
+      }
+   }
+}
+
+.splide__pagination {
+   bottom: -25px;
+
+   &__page.is-active {
+      background-color: rgba($primaryRed, .75);
+   }
+}
+
+.inscription {
+   height: 200px;
+}
+
+.card--container {
+   margin: auto;
+}

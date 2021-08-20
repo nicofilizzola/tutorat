@@ -19,6 +19,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@splidejs/splide": "^2.4.21",
         "@waaark/luge": "*",
         "gsap": "^3.7.1",
         "jaro-winkler": "^0.2.8"

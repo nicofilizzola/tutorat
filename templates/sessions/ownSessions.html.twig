@@ -17,14 +17,14 @@
             {% set noTutorSessions = tutorSessions is null == true %}
             {% set noJoinedSessions = joinedSessions is empty == true %}
             
-            <h1>Mes cours</h1>
+            <h1 class="course--title">Mes cours</h1>
 
             {% if (noTutorSessions == true) and (noJoinedSessions == true) %}
                 <p>Rien à voir par ici...</p>
             {% else %}
                 {% if noJoinedSessions == false %}
                     <div class="studentCourses">
-                        <span>En tant qu'étudiant</span>
+                        <span class="role--title">En tant qu'étudiant</span>
                         <div class="session--container">
                             {% if joinedSessions is empty %}
                                 <p>Rien à voir par ici...</p>
@@ -96,7 +96,7 @@
 
                 {% if noTutorSessions == false %}
                     <div class="tutorCourses">
-                        <span>En tant que tuteur</span>
+                        <span class="role--title">En tant que tuteur</span>
                         <div class="session--container">
                             {% if tutorSessions is empty %}
                                 <p>Rien à voir par ici...</p>

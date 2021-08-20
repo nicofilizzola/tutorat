@@ -99,7 +99,7 @@ class SessionController extends AbstractController
      */
     public function userSessions(SessionRepository $sessionRepository, SemesterRepository $semesterRepository): Response
     {
-        if (!$this->getUser() || $this->getUser()){
+        if (!$this->getUser()){
             return $this->redirectToRoute('app_home');
         }
 

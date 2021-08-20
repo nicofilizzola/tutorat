@@ -26,7 +26,7 @@ Encore
     .addEntry('app_register_after', './assets/routes/app_register_after.js')
     .addEntry('app_login', './assets/routes/app_login.js')
     .addEntry('app_sessions', './assets/routes/app_sessions.js')
-    .addEntry('app_users_sessions', './assets/routes/app_users_sessions.js')
+    .addEntry('app_ownSessions', './assets/routes/app_ownSessions.js')
     .addEntry('app_sessions_view', './assets/routes/app_sessions_view.js')
     .addEntry('app_sessions_create', './assets/routes/app_sessions_create.js')
     .addEntry('app_users', './assets/routes/app_users.js')

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Entity\Faculty;
+use App\Traits\emailRegex;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
+    use emailRegex;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -51,7 +54,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Adresse email universitaire',
                 'constraints' => [
                     new Regex([
-                        'pattern' => "/^[a-zA-Z]+[.][a-zA-Z]+@iut-tarbes.fr$/i",
+                        'pattern' => $this->getEmailRegex(),
                         "message" => "L'adresse email renseignée est invalide."
                     ]),
                     new NotBlank([

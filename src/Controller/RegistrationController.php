@@ -105,7 +105,9 @@ class RegistrationController extends AbstractController
             // admin email
             $this->sendAdminsEmailForPendingUser($mailer, $userRepository, $user);
 
-            return $this->redirectToRoute('app_register_after', ['id' => $user->getId()]);
+            return $this->render('registration/after.html.twig', [
+                'user' => $user,
+            ]);
         }
 
         return $this->render('registration/register.html.twig', ['registrationForm' => $form->createView()]);
@@ -131,15 +133,5 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
         return $this->redirectToRoute('app_register');
-    }
-
-    /**
-     * @Route("/register/{id<\d+>}/after", name="app_register_after", methods="GET")
-     */
-    public function after(User $user): Response
-    {
-        return $this->render('registration/after.html.twig', [
-            'user' => $user
-        ]);
     }
 }

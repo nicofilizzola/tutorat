@@ -37,6 +37,7 @@ Encore
     .addEntry('app_sessions_participants', './assets/routes/app_sessions_participants.js')
     .addEntry('app_classroom', './assets/routes/app_classroom.js')
     .addEntry('app_semester', './assets/routes/app_semester.js')
+    .addEntry('app_contact', './assets/routes/app_contact.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

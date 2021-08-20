@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+    
+    <form 
+        action="{{ path('app_contact') }}"
+        method="POST"
+        >
+        {% if app.user == false %}    
+            <label for="contact-form-email">Adresse email de l'IUT</label>
+            <input 
+                id="contact-form-email" 
+                name="email" 
+                type="email" 
+                placeholder="Ex : pierre.blanc@iut-tarbes.fr" 
+                required="required"/>  
+            <label for="contact-form-faculty">Département d'enseignement</label>
+            <select name="faculty" id="contact-form-faculty">
+                {% for faculty in faculties %}
+                    <option value="{{ faculty.id }}">{{ faculty.name }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <input 
+                type="hidden"
+                name="email" 
+                value="{{ app.user.email }}" 
+                required="required"/>  
+            <input 
+                type="hidden"
+                name="faculty" 
+                value="{{ app.user.faculty.id }}" 
+                required="required"/>  
+        {% endif %}  
+        <label for="contact-form-subject">Objet</label>
+        <input 
+            id="contact-form-subject" 
+            name="subject" 
+            type="text" 
+            placeholder="Ex : Problème d'inscription" 
+            required="required"/>    
+        <label for="contact-form-message">Message</label>
+        <textarea 
+            id="contact-form-message" 
+            name="message" 
+            placeholder="Ton message ici"
+            required="required"></textarea>
+
+        <button type="submit">Envoyer</button>
+
+        <input type="hidden" name="token" value="{{ csrf_token('contact') }}"/>
+    </form>
+
+{% endblock %}

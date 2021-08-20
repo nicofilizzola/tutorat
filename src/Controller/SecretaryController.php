@@ -25,7 +25,14 @@ class SecretaryController extends AbstractController
     use getRoles;
 
     private function isSecretary(){
-        if (!in_array($this->getRoles()[2], $this->getUser()->getRoles()) || $this->getUser()->getIsValid() !== 2 || !$this->getUser()->isVerified()){
+        $userRoles = $this->getUser()->getRoles();
+        if (
+            !$this->getUser() ||
+            !in_array($this->getRoles()[2], $userRoles) || 
+            in_array($this->getRoles()[3], $userRoles) || 
+            $this->getUser()->getIsValid() !== 2 || 
+            !$this->getUser()->isVerified()
+        ){
             return false;
         }
         return true;
@@ -36,8 +43,8 @@ class SecretaryController extends AbstractController
      */
     public function sessionsPending(SessionRepository $sessionRepository, ClassroomRepository $classroomRepository, SemesterRepository $semesterRepository): Response
     {
-        if (!$this->getUser() || !$this->isSecretary()){
-            return $this->redirectToRoute('app_login');
+        if (!$this->isSecretary()){
+            return $this->redirectToRoute('app_home');
         }
 
         $faculty = $this->getUser()->getFaculty();
@@ -59,6 +66,10 @@ class SecretaryController extends AbstractController
      */
     public function validateSession(Session $session, ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
+        if (!$this->isSecretary()){
+            return $this->redirectToRoute('app_home');
+        }
+
         $selectedClassroom = $request->request->get('classroom-for-' . $session->getId());
         if (is_null($selectedClassroom) || !$this->isCsrfTokenValid('session-validate' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
@@ -93,6 +104,10 @@ class SecretaryController extends AbstractController
      */
     public function refuseSession(Session $session, ClassroomRepository $classroomRepository, Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
+        if (!$this->isSecretary()){
+            return $this->redirectToRoute('app_home');
+        }
+
         if (!$this->isCsrfTokenValid('session-refuse' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions_pending');

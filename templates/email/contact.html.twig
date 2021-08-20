@@ -1,0 +1,11 @@
+<h1>Vous avez un nouveau message</h1>
+
+<h4>De : {{ data.email }}</h4>
+<h4>Le : {{ data.date }}</h4>
+<h2>Objet : {{ data.subject }}</h2>
+<p>{{ data.message }}</p>
+
+<p>Pour répondre, veuillez ajouter les autres administrateurs du département en CC dans votre mail afin de leur informer que ce message a été traité :</p>
+{% for email in adminEmails %}
+    <span>{{ loop.index0 == 0 ? '' : ', ' }}{{ email }}</span>
+{% endfor %}

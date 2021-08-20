@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\Traits\adminValidationEmail;
+use App\Controller\Traits\isVerifiedUser;
 use App\Entity\Session;
 use App\Repository\FacultyRepository;
 use App\Repository\SessionRepository;
@@ -26,19 +27,20 @@ class DefaultController extends AbstractController
     use adminValidationEmail;
     use getRoles;
     use emailRegex;
+    use isVerifiedUser;
+
+    private function isOnlyStudent(){
+        return !$this->isVerifiedUser() || in_array($this->getRoles()[1], $this->getUser()->getRoles()) ? false : true;
+    }
 
     /**
      * @Route("/", name="app_home")
      */
     public function index(SessionRepository $sessionRepository, UserRepository $userRepository): Response
     {
-        if (!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
-
         return $this->render('default/index.html.twig', [
-            'sessions' => $sessionRepository->findByStudentAwaiting($this->getUser()),
-            'users' => in_array($this->getRoles()[3], $this->getUser()->getRoles()) ? 
+            'sessions' => $this->isVerifiedUser() ? $sessionRepository->findByStudentAwaiting($this->getUser()) : null,
+            'users' => $this->getUser() && in_array($this->getRoles()[3], $this->getUser()->getRoles()) ? 
                 $userRepository->findBy([
                     'isValid' => 1, 
                     'isVerified' => true
@@ -53,7 +55,7 @@ class DefaultController extends AbstractController
      */
     public function becomeTutor(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
-        if (!$this->getUser() || in_array($this->getRoles()[1], $this->getUser()->getRoles())){
+        if (!$this->isOnlyStudent()){
             return $this->redirectToRoute('app_home');
         }
 

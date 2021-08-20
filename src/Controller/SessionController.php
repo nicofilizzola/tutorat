@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\isVerifiedUser;
 use App\Entity\Session;
 use App\Entity\User;
 use App\Form\SessionType;
@@ -26,6 +27,7 @@ use Symfony\Component\Mailer\Mailer;
 class SessionController extends AbstractController
 {
     use getRoles;
+    use isVerifiedUser;
 
     private function sessionIsJoinable(Session $session){
         $isJoinable = true;
@@ -42,7 +44,7 @@ class SessionController extends AbstractController
         return !$isJoinable ? false : true;
     }
     private function isTutor(){
-        if (!$this->getUser() || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2 || !in_array($this->getRoles()[1], $this->getUser()->getRoles())){
+        if (!$this->isVerifiedUser() || $this->getUser()->getIsValid() !== 2 || !in_array($this->getRoles()[1], $this->getUser()->getRoles())){
             return false;
         }
         return true;
@@ -54,7 +56,7 @@ class SessionController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, SubjectRepository $subjectRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isVerified()){
+        if (!$this->isVerifiedUser()){
             return $this->redirectToRoute('app_login');
         }
 
@@ -84,7 +86,7 @@ class SessionController extends AbstractController
      */
     public function view(SessionRepository $sessionRepository, Session $session): Response
     {
-        if (!$this->getUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
+        if (!$this->isVerifiedUser() || $this->getUser()->getFaculty() !== $session->getSubject()->getFaculty()){
             return $this->redirectToRoute('app_home');
         }
 
@@ -99,7 +101,7 @@ class SessionController extends AbstractController
      */
     public function userSessions(SessionRepository $sessionRepository, SemesterRepository $semesterRepository): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isVerified()){
+        if (!$this->isVerifiedUser()){
             return $this->redirectToRoute('app_home');
         }
 
@@ -123,6 +125,10 @@ class SessionController extends AbstractController
      */
     public function join(EntityManagerInterface $em, Session $session, Request $request): Response
     {
+        if (!$this->isVerifiedUser()){
+            return $this->redirectToRoute('app_home');
+        }
+
         if (!$this->sessionIsJoinable($session) || !$this->isCsrfTokenValid('join-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
@@ -140,6 +146,10 @@ class SessionController extends AbstractController
      */
     public function leave(EntityManagerInterface $em, Session $session, Request $request): Response
     {
+        if (!$this->isVerifiedUser()){
+            return $this->redirectToRoute('app_home');
+        }
+
         if (!$this->isCsrfTokenValid('leave-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions_view', ['id' => $session->getId()]);
@@ -230,6 +240,10 @@ class SessionController extends AbstractController
         UserRepository $userRepository
     ): Response
     {
+        if (!$this->isTutor()){
+            return $this->redirectToRoute('app_login');
+        }
+
         if (!$this->isCsrfTokenValid('delete-session' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions');
@@ -279,27 +293,29 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        // if (empty($session->getStudents())){
-        //     $this->addFlash(
-        //         "danger", 
-        //         "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
-        //     );
-        //     return $this->redirectToRoute(
-        //         'app_sessions_view', 
-        //         ['id' => $session->getId()]
-        //     );
-        // }
+        // for testing: comment from here
+        if (empty($session->getStudents())){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }
 
-        // if (strtotime("today") < $session->getDateTime()->getTimestamp()){
-        //     $this->addFlash(
-        //         "danger", 
-        //         "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
-        //     );
-        //     return $this->redirectToRoute(
-        //         'app_sessions_view', 
-        //         ['id' => $session->getId()]
-        //     );
-        // }        
+        if (strtotime("today") < $session->getDateTime()->getTimestamp()){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }        
+        // to here
 
         if ($request->isMethod('post')){
             $participants = [];

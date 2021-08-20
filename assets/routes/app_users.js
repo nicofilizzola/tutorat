@@ -6,7 +6,7 @@ const domCache = {
    validateFormButtons: document.querySelectorAll('.validate'),
    refuseFormButtons: document.querySelectorAll('.refuse'),
    deleteFormButtons: document.querySelectorAll('.delete'),
-   downgradeFormButtons: document.querySelectorAll('.downgrade'),
+   downgradeFormButtons: document.querySelectorAll('.demote'),
    filterButtons: document.querySelectorAll('button[data-active]'),
 
    usersListContainer: document.querySelector('.content--container'),
@@ -16,7 +16,6 @@ const domCache = {
 }
 
 const sortedUsersList = []
-
 
 domCache.usersList.forEach(user => {
    sortedUsersList.push(user)
@@ -166,54 +165,6 @@ function sortByStatut(isDesc) {
    })
 }
 
-const getCard = (button, i) => {
-   if (i == 1)
-      return button.parentNode
-   else
-      return button.parentNode.parentNode
-}
-
-domCache.validateFormButtons.forEach(button => {
-   button.addEventListener('mouseenter', () => {
-      getCard(button, 2).style.backgroundColor = 'rgba(22, 198, 12, .5)'
-   })
-
-   button.addEventListener('mouseleave', () => {
-      getCard(button, 2).style.backgroundColor = ''
-   })
-})
-
-domCache.refuseFormButtons.forEach(button => {
-   button.addEventListener('mouseenter', () => {
-      getCard(button, 2).style.backgroundColor = 'rgba(255, 58, 57, .5)'
-   })
-
-   button.addEventListener('mouseleave', () => {
-      getCard(button, 2).style.backgroundColor = ''
-   })
-})
-
-domCache.deleteFormButtons.forEach(button => {
-   button.addEventListener('mouseenter', () => {
-      getCard(button, 2).style.backgroundColor = 'rgba(226, 226, 226, .5)'
-   })
-   
-   button.addEventListener('mouseleave', () => {
-      getCard(button, 2).style.backgroundColor = ''
-   })
-})
-
-domCache.downgradeFormButtons.forEach(button => {
-   button.addEventListener('mouseenter', () => {
-      getCard(button, 1).children[0].style.color = 'rgb(255, 58, 57)'
-   })
-   
-   button.addEventListener('mouseleave', () => {
-      getCard(button, 1).children[0].style.color = ''
-   })
-})
-
-
 switchUserSortList('down', 'statut')
 
 function switchMarker(id) {
@@ -311,7 +262,7 @@ domCache.searchBar.addEventListener('keyup', () => {
          const lastname = distance(search, user.dataset.lastname, {caseSensitive: false})
          const mail = distance(search, user.dataset.mail, {caseSensitive: false})
 
-         if (firstname > .6 || lastname > .6 || mail > .75) {
+         if (firstname > .65 || lastname > .65 || mail > .75) {
             user.hidden = false
             user.style.display = 'flex'
          } else {
@@ -322,5 +273,52 @@ domCache.searchBar.addEventListener('keyup', () => {
          user.hidden = false
          user.style.display = 'flex'
       }
+   })
+})
+
+const getCard = (button, i) => {
+   if (i == 1)
+      return button.parentNode
+   else
+      return button.parentNode.parentNode
+}
+
+domCache.validateFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button, 2).style.backgroundColor = 'rgba(22, 198, 12, .5)'
+   })
+
+   button.addEventListener('mouseleave', () => {
+      getCard(button, 2).style.backgroundColor = ''
+   })
+})
+
+domCache.refuseFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button, 2).style.backgroundColor = 'rgba(255, 58, 57, .5)'
+   })
+
+   button.addEventListener('mouseleave', () => {
+      getCard(button, 2).style.backgroundColor = ''
+   })
+})
+
+domCache.deleteFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button, 2).style.backgroundColor = 'rgba(226, 226, 226, .5)'
+   })
+   
+   button.addEventListener('mouseleave', () => {
+      getCard(button, 2).style.backgroundColor = ''
+   })
+})
+
+domCache.downgradeFormButtons.forEach(button => {
+   button.addEventListener('mouseenter', () => {
+      getCard(button, 1).children[0].style.color = 'rgb(255, 58, 57)'
+   })
+   
+   button.addEventListener('mouseleave', () => {
+      getCard(button, 1).children[0].style.color = ''
    })
 })

@@ -8,164 +8,165 @@
 {% endblock %}
 
 {% block body %}
-	<span id="sessionsLength" hidden>{{ joinedSessions | length }}</span>
+	<span id="studentSessionsLength" hidden>{{ joinedSessions | length }}</span>
+	<span id="tutorSessionsLength" hidden>{{ tutorSessions | length }}</span>
 
     <div class="smoothContainer" data-lg-smooth>
         <div class="container">
-            <div class="session--container">
-                <div id="splide" class="splide">
-                    <div class="splide__track">
-                        <ul class="splide__list">
-                            {% for session in joinedSessions %}
-                                <li class="splide__slide" style="width: 450px">
-                                    <div class="card--container tutor_{{ session.tutor.id }} subject_{{ session.subject.id }} semester_{{ session.subject.semester }} timeFormat_{{ session.timeFormat }} environnement_{{ session.faceToFace }}" data-tutor="tutor_{{ session.tutor.id }}" data-subject="subject_{{ session.subject.id }}" data-semester="semester_{{ session.subject.semester }}" data-timeFormat="timeFormat_{{ session.timeFormat }}" data-environnement="environnement_{{ session.faceToFace }}">
-                                        <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
-                                            <div class="card--hovered">
-                                                <div class="text">
-                                                    <div>
-                                                        <span>E</span>
-                                                        <span>N</span>
-                                                        <span> </span>
-                                                        <span>S</span>
-                                                        <span>A</span>
-                                                        <span>V</span>
-                                                        <span>O</span>
-                                                        <span>I</span>
-                                                        <span>R</span>
-                                                        <span> </span>
-                                                        <span>P</span>
-                                                        <span>L</span>
-                                                        <span>U</span>
-                                                        <span>S</span>
-                                                    </div>
-                                                </div>
-                                                <div class="background">
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="card--content">
-                                                    <div class="text">
-                                                        <span class="title">{{ session.title }}</span>
-                                                        <br>
-                                                        <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
-                                                    </div>
-                                                    <div class="text">
-                                                        <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
-                                                        <br>
-                                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
-                                                        <br>
-                                                        {% set duration = "30min" %}
-                                                        {% if session.timeFormat == 2 %}
-                                                            {% set duration = "45min" %}
-                                                        {% elseif session.timeFormat == 3 %}
-                                                            {% set duration = "1h" %}
-                                                        {% endif %}
-                                                        <span>Durée : <b>{{ duration }}</b></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </button>
-                                        <form id="js-session-view-{{ session.id }}" action="{{ path('app_sessions_view', {"id": session.id}) }}" method="GET"display="none">
-                                        </form>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
+            {% set noTutorSessions = tutorSessions is null == true %}
+            {% set noJoinedSessions = joinedSessions is empty == true %}
+            
             <h1>Mes cours</h1>
-            <div class="session--container">
-                {% if joinedSessions is empty %}
-                    <p>Rien à voir par ici...</p>
-                {% else %}
-                    {% for session in joinedSessions %}
-                        <div class="card--container tutor_{{ session.tutor.id }} subject_{{ session.subject.id }} semester_{{ session.subject.semester }} timeFormat_{{ session.timeFormat }} environnement_{{ session.faceToFace }}" data-tutor="tutor_{{ session.tutor.id }}" data-subject="subject_{{ session.subject.id }}" data-semester="semester_{{ session.subject.semester }}" data-timeFormat="timeFormat_{{ session.timeFormat }}" data-environnement="environnement_{{ session.faceToFace }}">
-                            <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
-                                <div class="card--hovered">
-                                    <div class="text">
-                                        <div>
-                                            <span>E</span>
-                                            <span>N</span>
-                                            <span> </span>
-                                            <span>S</span>
-                                            <span>A</span>
-                                            <span>V</span>
-                                            <span>O</span>
-                                            <span>I</span>
-                                            <span>R</span>
-                                            <span> </span>
-                                            <span>P</span>
-                                            <span>L</span>
-                                            <span>U</span>
-                                            <span>S</span>
-                                        </div>
-                                    </div>
-                                    <div class="background">
+
+            {% if (noTutorSessions == true) and (noJoinedSessions == true) %}
+                <p>Rien à voir par ici...</p>
+            {% else %}
+                {% if noJoinedSessions == false %}
+                    <div class="studentCourses">
+                        <span>En tant qu'étudiant</span>
+                        <div class="session--container">
+                            {% if joinedSessions is empty %}
+                                <p>Rien à voir par ici...</p>
+                            {% else %}
+                                <div id="splide" class="splide splide__1">
+                                    <div class="splide__track">
+                                        <ul class="splide__list">
+                                            {% for session in joinedSessions %}
+                                                <li class="splide__slide" style="width: 450px">
+                                                    <div class="card--container tutor_{{ session.tutor.id }} subject_{{ session.subject.id }} semester_{{ session.subject.semester }} timeFormat_{{ session.timeFormat }} environnement_{{ session.faceToFace }}" data-tutor="tutor_{{ session.tutor.id }}" data-subject="subject_{{ session.subject.id }}" data-semester="semester_{{ session.subject.semester }}" data-timeFormat="timeFormat_{{ session.timeFormat }}" data-environnement="environnement_{{ session.faceToFace }}">
+                                                        <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
+                                                            <div class="card--hovered">
+                                                                <div class="text">
+                                                                    <div>
+                                                                        <span>E</span>
+                                                                        <span>N</span>
+                                                                        <span> </span>
+                                                                        <span>S</span>
+                                                                        <span>A</span>
+                                                                        <span>V</span>
+                                                                        <span>O</span>
+                                                                        <span>I</span>
+                                                                        <span>R</span>
+                                                                        <span> </span>
+                                                                        <span>P</span>
+                                                                        <span>L</span>
+                                                                        <span>U</span>
+                                                                        <span>S</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="background">
+                                                                </div>
+                                                            </div>
+                                                            <div class="card">
+                                                                <div class="card--content">
+                                                                    <div class="text">
+                                                                        <span class="title">{{ session.title }}</span>
+                                                                        <br>
+                                                                        <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
+                                                                    </div>
+                                                                    <div class="text">
+                                                                        <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
+                                                                        <br>
+                                                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
+                                                                        <br>
+                                                                        {% set duration = "30min" %}
+                                                                        {% if session.timeFormat == 2 %}
+                                                                            {% set duration = "45min" %}
+                                                                        {% elseif session.timeFormat == 3 %}
+                                                                            {% set duration = "1h" %}
+                                                                        {% endif %}
+                                                                        <span>Durée : <b>{{ duration }}</b></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                        <form id="js-session-view-{{ session.id }}" action="{{ path('app_sessions_view', {"id": session.id}) }}" method="GET"display="none">
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="card">
-                                    <div class="card--content">
-                                        <div class="text">
-                                            <span class="title">{{ session.title }}</span>
-                                            <br>
-                                            <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
-                                        </div>
-                                        <div class="text">
-                                            <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
-                                            <br>
-                                            <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
-                                            <br>
-                                            {% set duration = "30min" %}
-                                            {% if session.timeFormat == 2 %}
-                                                {% set duration = "45min" %}
-                                            {% elseif session.timeFormat == 3 %}
-                                                {% set duration = "1h" %}
-                                            {% endif %}
-                                            <span>Durée : <b>{{ duration }}</b></span>
-                                        </div>
-                                    </div>
-                                    <div class="card--participants">
-                                        {% set participantsLength = session.students | length %}
-                                        {% if participantsLength == 0 %}
-                                            {% set participantsMessage = "NOUVEAU" %}
-                                        {% else %}
-                                            {% set participantsMessage = participantsLength ~ "/" ~ session.studentLimit ~ " participant.es" %}
-                                        {% endif %}
-                                        <span>{{ participantsMessage }}</span>
+                            {% endif %}
+                        </div>    
+                    </div>
+                {% endif %}
+
+                {% if noTutorSessions == false %}
+                    <div class="tutorCourses">
+                        <span>En tant que tuteur</span>
+                        <div class="session--container">
+                            {% if tutorSessions is empty %}
+                                <p>Rien à voir par ici...</p>
+                            {% else %}
+                                <div id="splide" class="splide splide__2">
+                                    <div class="splide__track">
+                                        <ul class="splide__list">
+                                            {% for session in tutorSessions %}
+                                                <li class="splide__slide" style="width: 450px">
+                                                    <div class="card--container tutor_{{ session.tutor.id }} subject_{{ session.subject.id }} semester_{{ session.subject.semester }} timeFormat_{{ session.timeFormat }} environnement_{{ session.faceToFace }}" data-tutor="tutor_{{ session.tutor.id }}" data-subject="subject_{{ session.subject.id }}" data-semester="semester_{{ session.subject.semester }}" data-timeFormat="timeFormat_{{ session.timeFormat }}" data-environnement="environnement_{{ session.faceToFace }}">
+                                                        <button class="inscription hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-view-{{ session.id }}').submit();">
+                                                            <div class="card--hovered">
+                                                                <div class="text">
+                                                                    <div>
+                                                                        <span>E</span>
+                                                                        <span>N</span>
+                                                                        <span> </span>
+                                                                        <span>S</span>
+                                                                        <span>A</span>
+                                                                        <span>V</span>
+                                                                        <span>O</span>
+                                                                        <span>I</span>
+                                                                        <span>R</span>
+                                                                        <span> </span>
+                                                                        <span>P</span>
+                                                                        <span>L</span>
+                                                                        <span>U</span>
+                                                                        <span>S</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="background">
+                                                                </div>
+                                                            </div>
+                                                            <div class="card">
+                                                                <div class="card--content">
+                                                                    <div class="text">
+                                                                        <span class="title">{{ session.title }}</span>
+                                                                        <br>
+                                                                        <span class="subject">{{ session.subject.title }} - S{{ session.subject.semester }}</span>
+                                                                    </div>
+                                                                    <div class="text">
+                                                                        <span>Par </span><span class="name">{{ session.tutor.firstName | capitalize ~ " " ~ session.tutor.lastName | capitalize }}</span>
+                                                                        <br>
+                                                                        <span>Le <b>{{ session.datetime | date('d/m/Y') }}</b> à <b>{{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</b> en <b>{{ (session.faceToFace == 1) ? "présentiel" : "distanciel" }}</b></span>
+                                                                        <br>
+                                                                        {% set duration = "30min" %}
+                                                                        {% if session.timeFormat == 2 %}
+                                                                            {% set duration = "45min" %}
+                                                                        {% elseif session.timeFormat == 3 %}
+                                                                            {% set duration = "1h" %}
+                                                                        {% endif %}
+                                                                        <span>Durée : <b>{{ duration }}</b></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                        <form id="js-session-view-{{ session.id }}" action="{{ path('app_sessions_view', {"id": session.id}) }}" method="GET"display="none">
+                                                        </form>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
                                     </div>
                                 </div>
-                            </button>
-                            <form 
-                                id="js-session-view-{{ session.id }}"
-                                action="{{ path('app_sessions_view', {"id": session.id}) }}" 
-                                method="GET"
-                                display="none">
-                            </form>
-                        </div>
-                    {% endfor %}
+                            {% endif %}
+                        </div>    
+                    </div>
                 {% endif %}
-            </div>
+            {% endif %}
 
-
-                {% set noTutorSessions = tutorSessions is null == true %}
-                {% set noJoinedSessions = joinedSessions is empty == true %}
-                {% if (noTutorSessions == true) and (noJoinedSessions == true) %}
-                    <p>Rien à voir par ici...</p>
-                {% else %}
-                    {% if noTutorSessions == false %}
-                        <p>En tant que tuteur</p>
-                        {% for session in tutorSessions %}
-                            <p>{{ session.id }}</p>
-                        {% endfor %}
-                    {% endif %}
-                    {% if noJoinedSessions == false %}
-                        {% for session in joinedSessions %}
-                            <p>En tant qu'étudiant</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
             {% include "components/_footer.html.twig" %}
         </div>
     </div>

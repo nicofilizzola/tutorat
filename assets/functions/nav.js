@@ -13,7 +13,8 @@ const nav = () => {
       'subject':'modules',
       'classroom':'salles',
       'login':'connexion',
-      'register':'inscription'
+      'register':'inscription',
+      'ownSessions':'mes cours'
    }
 
    const cutPath = domCache.navPath.innerHTML.split('/')

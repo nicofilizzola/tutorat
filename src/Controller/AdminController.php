@@ -47,7 +47,7 @@ class AdminController extends AbstractController
         SessionRepository $sessionRepository, 
         SemesterRepository $semesterRepository, 
         UserRepository $userRepository
-        ): Response
+    ): Response
     {  
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 

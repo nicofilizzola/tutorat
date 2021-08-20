@@ -3,57 +3,60 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block stylesheets %}
+	{{ encore_entry_link_tags('app_contact') }}
+	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 
 {% block body %}
-    
-    <form 
-        action="{{ path('app_contact') }}"
-        method="POST"
-        >
-        {% if app.user == false %}    
-            <label for="contact-form-email">Adresse email de l'IUT</label>
-            <input 
-                id="contact-form-email" 
-                name="email" 
-                type="email" 
-                placeholder="Ex : pierre.blanc@iut-tarbes.fr" 
-                required="required"/>  
-            <label for="contact-form-faculty">Département d'enseignement</label>
-            <select name="faculty" id="contact-form-faculty">
-                {% for faculty in faculties %}
-                    <option value="{{ faculty.id }}">{{ faculty.name }}</option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <input 
-                type="hidden"
-                name="email" 
-                value="{{ app.user.email }}" 
-                required="required"/>  
-            <input 
-                type="hidden"
-                name="faculty" 
-                value="{{ app.user.faculty.id }}" 
-                required="required"/>  
-        {% endif %}  
-        <label for="contact-form-subject">Objet</label>
-        <input 
-            id="contact-form-subject" 
-            name="subject" 
-            type="text" 
-            placeholder="Ex : Problème d'inscription" 
-            required="required"/>    
-        <label for="contact-form-message">Message</label>
-        <textarea 
-            id="contact-form-message" 
-            name="message" 
-            placeholder="Ton message ici"
-            required="required"></textarea>
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--container">
+                <div class="form--role">
+                    <span>Prendre contact</span>
+                </div>
+                <div class="form--content">
+                    <form action="{{ path('app_contact') }}" method="POST">
 
-        <button type="submit">Envoyer</button>
+                        {% if app.user == false %}
+                            <div class="collapse collapse_2">
+                                <div>
+                                    <label for="contact-form-email">Adresse email de l'IUT</label>
+                                    <input id="contact-form-email" name="email" type="email" placeholder="Ex : pierre.blanc@iut-tarbes.fr" required="required"/>  
+                                </div>
+                                <div>
+                                    <label for="contact-form-faculty">Département d'enseignement</label>
+                                    <select name="faculty" id="contact-form-faculty">
+                                        {% for faculty in faculties %}
+                                            <option value="{{ faculty.id }}">{{ faculty.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
 
-        <input type="hidden" name="token" value="{{ csrf_token('contact') }}"/>
-    </form>
+
+                        {% else %}
+                            <input type="hidden" name="email" value="{{ app.user.email }}" required="required"/>  
+                            <input type="hidden" name="faculty" value="{{ app.user.faculty.id }}" required="required"/>  
+                        {% endif %}
+
+                        <div>
+                            <label for="contact-form-subject">Objet</label>
+                            <input id="contact-form-subject" name="subject" type="text" placeholder="Ex : Problème d'inscription" required="required"/>    
+                        </div>
+
+                        <div>
+                            <label for="contact-form-message">Message</label>
+                            <textarea id="contact-form-message" name="message" rows="8" placeholder="Ton message ici"required="required"></textarea>
+                        </div>
+
+
+                        <button type="submit" class="btn">Envoyer</button>
+
+                        <input type="hidden" name="token" value="{{ csrf_token('contact') }}"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

@@ -72,9 +72,9 @@
                             {% if session.participants is empty %}
                                 <span>Statut : Cours non validé</span>
                                 {% if session.students is empty %}
-                                    <span>Pas d'étudiants inscrits</span>
+                                    <span>Pas d'étudiant.es inscrit.es</span>
                                 {% else %}
-                                    <span>Étudiants inscrits :</span>
+                                    <span>Étudiant.es inscrit.es :</span>
                                     <ul class="notError">
                                         {% for student in session.students %}
                                             <li>{{ student }}</li>

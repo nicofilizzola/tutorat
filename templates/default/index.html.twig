@@ -33,7 +33,7 @@
                             <div class="buttons">
                                 <div class="buttons--container">
                                     <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
-                                    <a href="{{ path('app_user_sessions', {'id': app.user.id}) }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a>
+                                    <a href="{{ path('app_users_sessions', {'id': app.user.id}) }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a>
                                     {# <span><b>ou</b></span> #}
                                     {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
                                         <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>

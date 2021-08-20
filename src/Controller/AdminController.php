@@ -59,7 +59,7 @@ class AdminController extends AbstractController
                 'id' => $requestedSemester,
                 'faculty' => $faculty
             ]);
-        $requestedTutor = $request->request->get('tutor');
+        $requestedTutor = $request->request->get('tutor') ?? "all";
         $currentTutor = $requestedTutor == "all" ? 
             "all" : 
             $userRepository->findOneBy([

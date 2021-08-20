@@ -95,7 +95,7 @@ class SessionController extends AbstractController
         ]);
     }
     /**
-     * @Route("user/{id<\d+>}/sessions", name="app_user_sessions", methods={"GET"})
+     * @Route("users/{id<\d+>}/sessions", name="app_users_sessions", methods={"GET"})
      */
     public function userSessions(SessionRepository $sessionRepository, SemesterRepository $semesterRepository, User $user): Response
     {
@@ -113,7 +113,7 @@ class SessionController extends AbstractController
                 ]) : null,
             'joinedSessions' => $sessionRepository->findByJoinedSessions($semesterRepository, $user),
             'user' => $user,
-           'roles' => $this->getRoles()
+            'roles' => $this->getRoles()
         ]);
     }
 

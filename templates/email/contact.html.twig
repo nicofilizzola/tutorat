@@ -1,11 +1,22 @@
-<h1>Vous avez un nouveau message</h1>
+<div class="container">
+    <div class="title">
+        <h1>Tutorat</h1>
+        <span>Vous avez un nouveau message</span>
+    </div>
 
-<h4>De : {{ data.email }}</h4>
-<h4>Le : {{ data.date }}</h4>
-<h2>Objet : {{ data.subject }}</h2>
-<p>{{ data.message }}</p>
+    <div class="content">
+        <span>De : <b>{{ data.email }}</b></span>
+        <span>Le : <b>{{ data.date }}</b></span>
+        <span>Objet : <b>{{ data.subject }}</b></span>
+        <span>{{ data.message }}</span>
+    </div>
 
-<p>Pour répondre, veuillez ajouter les autres administrateurs du département en CC dans votre mail afin de leur informer que ce message a été traité :</p>
-{% for email in adminEmails %}
-    <span>{{ loop.index0 == 0 ? '' : ', ' }}{{ email }}</span>
-{% endfor %}
+    <div class="link">
+        <span>Pour répondre, veuillez ajouter les autres administrateurs du département en CC dans votre mail afin de leur informer que ce message a été traité :</span>
+        {% for email in adminEmails %}
+            <span>{{ loop.index0 == 0 ? '' : ', ' }}{{ email }}</span>
+        {% endfor %}
+    </div>
+</div>
+
+{% include "email/_globalStyle.html.twig" %}

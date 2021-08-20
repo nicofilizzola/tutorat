@@ -1,9 +1,27 @@
-<h1>Vous avez un nouveau compte à valider</h1>
-<p>Quelqu'un à effectué une demande pour obtenir les droits de tuteur, secrétaire ou admnistrateur.</p>
-<p>Vous pouvez :</p>
-<ul>
-    <li>Valider la demande</li>
-    <li>Annuler la demande</li>
-    <li>Suprimmer l'utilisateur</li>
-</ul> 
-<p><a href="{{ link }}">Faites votre choix ici</a> ou allez directement dans votre espace d'administrateur.</p>
+<div class="container">
+    <div class="title">
+        <h1>Tutorat</h1>
+        <span>Validation de compte</span>
+    </div>
+
+    <div class="request">
+        <span>Quelqu'un à effectué une demande pour obtenir les droits de tuteur, secrétaire ou admnistrateur.</span>
+        <span>Vous pouvez :</span>
+    </div>
+
+    <div class="content">
+        <ul>
+            <li>Valider la demande</li>
+            <li>Annuler la demande</li>
+            <li>Suprimmer l'utilisateur</li>
+        </ul> 
+
+        <span>Cliquez sur le bouton ci-dessous pour gérer cette demande ou allez directement dans votre espace d'administrateur.</span>
+    </div>
+
+    <div class="link">
+        <a href="{{ link }}"><button class="btn btn__mediumEffect">Gérer cette demande</button></a>
+    </div>
+</div>
+
+{% include "email/_globalStyle.html.twig" %}

@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -30,6 +29,7 @@
                         <form method="post" id="login_form">
                             {% if error %}
                                 {% set errorMessage = error.messageKey|trans(error.messageData, 'security') == "Invalid credentials." ? "Identifiants invalides." : error.messageKey|trans(error.messageData, 'security') %}
+                                {% set errorMessage = error.messageKey|trans(error.messageData, 'security') == "Invalid CSRF token." ? "Une erreur est survenue..." : error.messageKey|trans(error.messageData, 'security') %}
                                 <div class="alert alert-danger">{{ errorMessage }}</div>
                             {% endif %}
 

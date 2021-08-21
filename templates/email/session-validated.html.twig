@@ -1,10 +1,28 @@
-<h1>Une salle de cours t'a été attribuée pour le cours de tutorat</h1>
+<div class="container">
+   <div class="title">
+      <h1>Tutorat</h1>
+      <span>Demande de salle de cours</span>
+   </div>
 
-<p>Ta demande de salle pour effectuer un cours de tutorat a été validée. Voici les détails :</p>
+   <div class="request">
+      <span>Une salle de cours t'a été attribuée pour ton cours.</span>
+      <span>Voici les détails :</span>
+   </div>
 
-<h2>Salle de cours: {{ session.classroom.name }}</h2> 
-<h3>Le {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</h3>
-<h4>{{ session.title }}</h4>
-<h4>{{ session.subject }}</h4>
+   <div class="content">
+      <span>Titre : <b>{{ session.title }}</b></span>
+      <span>Module : <b>{{ session.subject }}</b></span>
+      <span>Date : <b>{{ session.dateTime | date('d/m/Y') }}</b> à <b>{{ session.dateTime | date('h') }}h{{ session.dateTime | date('i') }}</b></span>
+      <span>Département : <b>{{ session.tutor.faculty.name }}</b></span>
+      <span>Salle de cours : <b>{{ session.classroom.name }}</b></span>
 
-<p>Maintenant il faut que tu cherches le badge de la salle en question au secrétariat pendant les horaires d'ouverture.</p>
+         <span>Maintenant il faut que tu cherches le badge de la salle en question au secrétariat pendant les horaires d'ouverture.</span>
+   </div>
+
+   <div class="link">
+      {# LIEN DU COURS #}
+      <a href=""><button class="btn btn__mediumEffect">Accède à ton cours</button></a>
+   </div>
+</div>
+
+{% include "email/_globalStyle.html.twig" %}

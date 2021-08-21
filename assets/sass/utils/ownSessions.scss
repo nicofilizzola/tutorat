@@ -1,6 +1,14 @@
 @import '~@splidejs/splide/dist/css/splide.min.css';
 @import 'var';
 
+.course--title {
+   color: $primaryRed;
+}
+
+.role--title {
+   font-weight: bold;
+}
+
 .splide__list {
    li {
       max-width: 450px !important;

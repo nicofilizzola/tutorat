@@ -1,16 +1,19 @@
-<h1>Vérification de compte</h1>
+<div class="container">
+    <div class="title">
+        <h1>Tutorat</h1>
+        <span>Vérification de ton compte</span>
+    </div>
 
-<p>
-    Vérifie ton compte de Tutorat en cliquant sur le lien ci-dessous : <br><br>
-    <a href="{{ signedUrl }}">Vérifier mon compte</a>.
-    {# This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. #}
-    Ce lien ne marchera plus après une semaine.
-</p>
+    <div class="request">
+        <span>Vérifie ton compte de Tutorat en cliquant sur le lien ci-dessous : </span>
+        <a href="{{ signedUrl }}" class="lineHoverEffect"><span><b>Vérifier mon compte</b></span></a>
+        <span>Ce lien ne marchera plus après une semaine.</span>
+    </div>
 
-<p>
-    Si tu as créé un compte d'étudiant tuteur ou d'administrateur, tu n'auras accès qu'aux fonctionnalités de base jusqu'à ce que ton compte soit validé par ton département d'enseignement.
-</p>
+    <div class="content">
+        <span>Si tu as créé un compte d'étudiant tuteur ou d'administrateur, tu n'auras accès qu'aux fonctionnalités de base jusqu'à ce que ton compte soit validé par ton département d'enseignement.</span>
+        <span>À de suite !</span>
+    </div>
+</div>
 
-<p>
-    À de suite
-</p>
+{% include "email/_globalStyle.html.twig" %}

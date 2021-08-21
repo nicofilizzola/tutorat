@@ -197,11 +197,7 @@
                                     </div>
                                 </div>
                             </button>
-                            <form 
-                                id="js-session-view-{{ session.id }}"
-                                action="{{ path('app_sessions_view', {"id": session.id}) }}" 
-                                method="GET"
-                                display="none">
+                            <form id="js-session-view-{{ session.id }}" action="{{ path('app_sessions_view', {"id": session.id}) }}" method="GET" display="none">
                             </form>
                         </div>
                     {% endfor %}

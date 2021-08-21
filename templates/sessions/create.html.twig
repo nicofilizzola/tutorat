@@ -9,7 +9,6 @@
 	{{ encore_entry_link_tags('app') }}
 {% endblock %}
 
-
 {% block body %}
 	<div class="smooth--container" data-lg-smooth>
         <div class="container">
@@ -23,7 +22,7 @@
 
                     {{ form_row(form.title, {
                             "label": "Titre",
-                            'attr': {'class':'hoveredItems'}
+                            'attr': {'class':'hoveredItems', 'maxLength':'30'}
                         }) }}
 
                     {{ form_row(form.description, {

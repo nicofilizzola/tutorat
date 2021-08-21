@@ -9,24 +9,22 @@
 
 
 {% block body %}
-
     <span id="navSessionTitle" hidden>{{ currentSession.title }}</span>
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             {% if (app.user in currentSession.students) %}
-                {% set sessionViewMode = 1 %}
                 {# already joined #}
+                {% set sessionViewMode = 1 %}
             {% elseif (app.user == currentSession.tutor) %}
-                {% set sessionViewMode = 2 %}
                 {# tutor author #}
+                {% set sessionViewMode = 2 %}
             {% elseif ((roles.3 in app.user.roles) and (app.user.faculty == currentSession.subject.faculty))%}
-                {% set sessionViewMode = 4 %}
                 {# admin #}
+                {% set sessionViewMode = 4 %}
             {% else %}
-                {% set sessionViewMode = 3 %}
                 {# student joinable #}
+                {% set sessionViewMode = 3 %}
             {% endif %}
-            
             
             <div class="cours--container">
                 <div class="cours--content">
@@ -52,7 +50,12 @@
                         <span>Durée : <b>{{ duration }}</b></span>
 
                         {% if currentSession.faceToFace == 1 %}
-                            <span class="localisation">Salle {{ currentSession.classroom.name }} dans le département {{ currentSession.subject.faculty.name }}.</span>
+                            {% if currentSession.classroom != null %}
+                                <span class="localisation">Salle {{ currentSession.classroom.name }} dans le département {{ currentSession.subject.faculty.name }}.</span>
+                            {% else %}
+                                <span class="localisation">Pas de salle attribuée pour le moment.</span>
+                            {% endif %}
+                        
                         {% else %}
                             <span class="localisation">Lien de la visioconférence : <a href="{{ currentSession.link }}" target="_blank" class="link lineHoverEffect hoveredItems"><span>{{ currentSession.link }}</span></a></span>
                         {% endif %}

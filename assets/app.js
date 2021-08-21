@@ -8,7 +8,6 @@
 // any CSS you import will output into a single css file (app.css in this case)
 // import './styles/app.css';
 import './sass/main.scss';
-import './sass/utils/button.scss';
 
 // start the Stimulus application
 import './bootstrap';
@@ -30,7 +29,7 @@ const domCache = {
    menuBurgerCrossLine1: document.querySelector('.cross__1'),
    menuBurgerCrossLine2: document.querySelector('.cross__2'),
    menuContentContainer: document.querySelector('.menuContent--container'),
-}
+   menuContentLink: document.querySelectorAll('.menu--link'),}
 
 let state = {
    isMenuOpen: false,
@@ -43,6 +42,27 @@ let lowestElapsedTime = 0
 
 // Stylize nav path
 nav()
+
+// Split text menu
+domCache.menuContentLink.forEach(content => {
+   const contentText = content.children[0].children[0].innerHTML.split('')
+   
+   const fragment = document.createDocumentFragment()
+   
+   contentText.forEach(contentChar => {
+      const span = document.createElement('span')
+      span.innerHTML = contentChar
+      if (span.innerHTML == " ") {
+         span.style.marginLeft = '2px'
+      } else {
+         span.style.marginLeft = '.5px'
+      }
+      fragment.appendChild(span)
+   })
+   
+   content.children[0].children[0].remove()
+   content.children[0].appendChild(fragment)
+})
 
 // Success messages
 let flashMessageCross, flashContainerBackground = null
@@ -142,6 +162,17 @@ domCache.menuBurger.addEventListener('click', () => {
    }
 })
 
+// Menu content hovered
+domCache.menuContentLink.forEach(content => {
+   content.addEventListener('mouseenter', () => {
+      gsap.to(content.children[0].children, .25, { color: '#ff3a39', stagger: { each: .05, from: 'start'}, ease: 'Expo3.easeOut' })
+   }) 
+   content.addEventListener('mouseleave', () => {
+      gsap.to(content.children[0].children, .25, { color: '#fff', stagger: { each: .05, from: 'start'}, ease: 'Expo3.easeOut' })
+   }) 
+})
+
+
 window.addEventListener('keypress', (e) => {
    console.log(e)
 })
@@ -149,10 +180,6 @@ window.addEventListener('keypress', (e) => {
 window.addEventListener('resize', () => {
    luge.lifecycle.refresh()
 })
-
-// window.addEventListener('click', () => {
-//    luge.lifecycle.refresh()
-// })
 
 function raf() {
    lowestElapsedTime += 0.0006

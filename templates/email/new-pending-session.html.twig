@@ -1,15 +1,32 @@
-<h1>Nouvelle demande de salle de cours pour le tutorat</h1>
-<p>Un étudiant tuteur souhaite réaliser un cours en présentiel dans une salle du département. Voici les détails :</p>
+<div class="container">
+    <div class="title">
+        <h1>Tutorat</h1>
+        <span>Demande de salle de cours</span>
+    </div>
 
-<h2>Le {{ session.dateTime | date('d-m-Y') }} à {{ session.dateTime | date('h:i') }}</h2>
-<h3>Étudiant référent : {{ session.tutor }} ({{ session.tutor.email }})</h3>
-<h4>Pour {{ session.studentLimit + 1 }} étudiants</h4>
-<h4>{{ session.subject }}</h4>
+    <div class="request">
+        <span>Un étudiant tuteur souhaite réaliser un cours en présentiel dans une salle du département.</span>
+        <span>Voici les détails :</span>
+    </div>
 
-{% if session.comment is null == false %}
-    <h5>Commentaire :</h5>
-    <p>{{ session.comment }}</p>
-{% endif %}
+    <div class="content">
+        <span>Titre : <b>{{ session.title }}</b></span>
+        <span>Module : <b>{{ session.subject }}</b></span>
+        <span>Département : <b>{{ session.tutor.faculty.name }}</b></span>
+        <span>Étudiant référent : <b>{{ session.tutor }} ({{ session.tutor.email }})</b></span>
+        <span>Date : <b>{{ session.dateTime | date('d/m/Y') }}</b> à <b>{{ session.dateTime | date('h') }}h{{ session.dateTime | date('i') }}</b></span>
+        <span>Pour <b>{{ session.studentLimit + 1 }}</b> étudiants</span>
 
-<a href="{{ link }}">Gérer cette demande</a>
+        {% if session.comment is null == false %}
+            <span>Commentaire :</span>
+            <br>
+            <span><b>{{ session.comment }}</b></span>
+        {% endif %}
+    </div>
 
+    <div class="link">
+        <a href="{{ link }}"><button class="btn btn__mediumEffect">Gérer cette demande</button></a>
+    </div>
+</div>
+
+{% include "email/_globalStyle.html.twig" %}

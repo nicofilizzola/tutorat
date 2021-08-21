@@ -14,7 +14,8 @@ const nav = () => {
       'classroom':'salles',
       'login':'connexion',
       'register':'inscription',
-      'ownSessions':'mes cours'
+      'ownSessions':'mes cours',
+      'pending':'attribution'
    }
 
    const cutPath = domCache.navPath.innerHTML.split('/')

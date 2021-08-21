@@ -1,2 +1,13 @@
-<h1>Un cours de tutorat auquel tu étais inscrit(e) a été annulé</h1>
-<p>Malheureusement, le cours '{{ session.title }}' prévu pour le {{ session.datetime | date('d-m-Y') }} à {{ session.datetime | date('h:i') }} a été annulé.</p>
+<div class="container">
+   <div class="title">
+      <h1>Tutorat</h1>
+      <span>Vous avez un nouveau message</span>
+   </div>
+
+   <div class="content">
+      <span><b>Un cours de tutorat auquel tu étais inscrit(e) a été annulé</b></span>
+      <span>Malheureusement, le cours '{{ session.title }}' prévu pour le {{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }} a été annulé.</span>
+   </div>
+</div>
+
+{% include "email/_globalStyle.html.twig" %}

@@ -70,7 +70,8 @@
       }
 
       input,
-      select {
+      select,
+      textarea {
          padding: 15px 10px;
          
          @media only screen and (max-width: 600px) {
@@ -168,6 +169,10 @@
       label {
          margin-left: 5px;
       }
+   }
+
+   textarea {
+      resize: none;
    }
 }
 

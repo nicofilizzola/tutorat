@@ -165,10 +165,10 @@ domCache.menuBurger.addEventListener('click', () => {
 // Menu content hovered
 domCache.menuContentLink.forEach(content => {
    content.addEventListener('mouseenter', () => {
-      gsap.to(content.children[0].children, .25, { color: '#ff3a39', stagger: { each: .05, from: 'start'}, ease: 'Expo3.easeOut' })
+      gsap.to(content.children[0].children, .25, { color: '#ff3a39', stagger: { each: .03, from: 'start'}, ease: 'Expo3.easeOut' })
    }) 
    content.addEventListener('mouseleave', () => {
-      gsap.to(content.children[0].children, .25, { color: '#fff', stagger: { each: .05, from: 'start'}, ease: 'Expo3.easeOut' })
+      gsap.to(content.children[0].children, .25, { color: '#fff', stagger: { each: .03, from: 'start'}, ease: 'Expo3.easeOut' })
    }) 
 })
 

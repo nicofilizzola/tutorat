@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
@@ -67,10 +68,15 @@ class RegistrationFormType extends AbstractType
                 'choices' => [
                         'Étudiant' => 1,
                         'Étudiant tuteur' => 2,
-                        'Secrétaire' => 3,
                         'Administrateur' => 4
                 ],
                 'mapped' => false,
+                'constraints' => [
+                    new NotEqualTo([
+                        'value' => 3,
+                        'message' => "Valeur invalide"
+                    ])
+                ]
 
             ])
             ->add('adminCode', PasswordType::class, [

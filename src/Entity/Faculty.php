@@ -49,6 +49,11 @@ class Faculty
      */
     private $semesters;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -202,6 +207,18 @@ class Faculty
                 $semester->setFaculty(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

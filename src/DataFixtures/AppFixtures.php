@@ -25,6 +25,7 @@ class AppFixtures extends Fixture
             $faculty = new Faculty();
             $faculty->setName('Département ' . $i);
             $faculty->setShort('D' . $i);
+            $faculty->setCode('1234');
 
             $manager->persist($faculty);
 
@@ -126,10 +127,6 @@ class AppFixtures extends Fixture
 
             $manager->persist($semester);
         }
-
-        $adminCode = new AdminCode();
-        $adminCode->setCode('1234');
-        $manager->persist($adminCode);
 
         $manager->flush();
     }

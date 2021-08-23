@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SuperAdminController!{% endblock %}
+
+{% block body %}
+    <div style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    ">
+        {{ form_start(form) }}
+            {{ form_row(form) }}
+            <button type="submit">Start</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

@@ -5,26 +5,24 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Subject;
 use App\Entity\Semester;
+use App\Traits\getRoles;
 use App\Entity\Classroom;
 use App\Form\SubjectType;
 use App\Form\SemesterType;
 use App\Form\ClassroomType;
-use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
-use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\MailerInterface;
 
 class AdminController extends AbstractController
 {
@@ -131,7 +129,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/user/{id<\d+>}/validate", name="app_user_validate")
      */
-    public function validate(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function validate(Request $request, User $user, EntityManagerInterface $entityManager, MailerInterface  $mailer): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
@@ -145,13 +143,25 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        $isAdmin = in_array($this->getRoles()[3], $user->getRoles());
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+            ->to($user->getEmail())
+            ->subject($isAdmin ? "Tutoru : Demande d'admin validée" : "Tutoru : Demande de tuteur validée")
+            ->htmlTemplate($isAdmin ? 'email/admin-validated.html.twig' : 'email/tutor-validated.html.twig')
+            ->context([
+                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+        $mailer->send($email);
+
         $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été validé !");
         return $this->redirectToRoute('app_users');
     }
     /**
      * @Route("/user/{id<\d+>}/refuse", name="app_user_refuse", methods="POST")
      */
-    public function refuse(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function refuse(Request $request, User $user, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
@@ -165,6 +175,16 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+            ->to($user->getEmail())
+            ->subject('Tutoru : Demande refusée')
+            ->htmlTemplate('email/user-refused.html.twig')
+            ->context([
+                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+        $mailer->send($email);
+
         $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
         return $this->redirectToRoute('app_users');
     }
@@ -174,7 +194,8 @@ class AdminController extends AbstractController
     public function delete(
         Request $request, 
         User $user, 
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
@@ -197,6 +218,16 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+            ->to($user->getEmail())
+            ->subject('Tutoru : Compte suprimmé')
+            ->htmlTemplate('email/user-deleted.html.twig')
+            ->context([
+                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+        $mailer->send($email);
+
         $this->addFlash(
             "success", 
             "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été suprimmé !"
@@ -209,7 +240,8 @@ class AdminController extends AbstractController
     public function demote(
         Request $request, 
         User $user, 
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
@@ -225,6 +257,16 @@ class AdminController extends AbstractController
         $user->setRoles([$this->getRoles()[0]]);
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
+            ->to($user->getEmail())
+            ->subject('Tutoru : Droits de tuteur révoqués')
+            ->htmlTemplate('email/user-demoted.html.twig')
+            ->context([
+                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            ]);
+        $mailer->send($email);
 
         $this->addFlash(
             "success", 
@@ -300,7 +342,7 @@ class AdminController extends AbstractController
             $em->flush();
 
             $this->addFlash("success", "La salle de cours " . $classroom->getName() . " a bien été ajoutée !");
-            return $this->redirectToRoute('app_subject');
+            return $this->redirectToRoute('app_classroom');
         }
 
         return $this->render('admin/classrooms.html.twig', [

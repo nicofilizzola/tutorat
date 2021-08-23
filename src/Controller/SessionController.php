@@ -197,7 +197,7 @@ class SessionController extends AbstractController
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($secretaryMail)
-                    ->subject('Demande de salle de cours')
+                    ->subject('Tutoru : Nouvelle demande de salle')
                     ->htmlTemplate('email/new-pending-session.html.twig')
                     ->context([
                         'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -257,7 +257,7 @@ class SessionController extends AbstractController
             $email = (new TemplatedEmail())
                 ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                 ->to(...$userRepository->findSessionJoinedStudentEmails($session))
-                ->subject('Cours de tutorat annulé')
+                ->subject('Tutoru : Cours annulé')
                 ->htmlTemplate('email/deleted-session.html.twig')
                 ->context([
                     'session' => $session,

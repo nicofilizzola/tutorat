@@ -192,7 +192,7 @@
                             {# {% set userRoleIndex = user.roles | length - 1 %} #}
                             <span>{{ roleViewLabels[userRoleIndex] }}</span>
 
-                            {% if userRoleIndex ==  1 %}
+                            {% if (userRoleIndex ==  1) and (user.isValid == 2) %}
                                 {% include "components/forms/_usersAction.html.twig" with {
                                     'action': 'demote',
                                     'title': "Revoquer les droits de tuteur",
@@ -241,7 +241,7 @@
                                 </button>
                             {% endif %}
                             
-                            {% if (userRoleIndex == 3) and (adminCount == 1) or (app.user == user) %}
+                            {% if (userRoleIndex == 3) and (adminCount == 1) or (app.user == user) or (userRoleIndex == 2) %}
                                 <button title="Supression bloquée" disabled class="hoveredItems delete disabled">
                                     <span>🗑️</span>
                                 </button>

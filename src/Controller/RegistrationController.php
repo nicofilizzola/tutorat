@@ -2,22 +2,25 @@
 
 namespace App\Controller;
 
-use App\Controller\Traits\adminValidationEmail;
 use App\Entity\User;
+use App\Traits\getRoles;
+use App\Form\FacultyType;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
+use App\Repository\FacultyRepository;
 use App\Repository\AdminCodeRepository;
-use App\Traits\getRoles;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use App\Controller\Traits\adminValidationEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -36,13 +39,13 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, AdminCodeRepository $adminCodeRepository, UserRepository $userRepository, MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, FacultyRepository $facultyRepository, UserRepository $userRepository, MailerInterface $mailer): Response
     {
-        function manageFormData(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
-            function managePassword(User $user, $form, UserPasswordEncoderInterface $passwordEncoder){
+        function manageFormData(User $user, $form, UserPasswordHasherInterface $passwordHasher){
+            function managePassword(User $user, $form, UserPasswordHasherInterface $passwordHasher){
                 // encode the plain password
                 $user->setPassword(
-                    $passwordEncoder->encodePassword(
+                    $passwordHasher->hashPassword(
                         $user,
                         $form->get('plainPassword')->getData()
                     )
@@ -61,7 +64,7 @@ class RegistrationController extends AbstractController
                 }
             }
 
-            managePassword($user, $form, $passwordEncoder);
+            managePassword($user, $form, $passwordHasher);
             manageAdminYear($user, $form);
             manageIsValid($user, $form);
             $user->updateTimestamp();
@@ -77,14 +80,14 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            manageFormData($user, $form, $passwordEncoder);
+            manageFormData($user, $form, $passwordHasher);
             $userRoles = [];
             for ($i = 0; $i <= $form->get('role')->getData() - 1; $i++){
                 array_push($userRoles, $this->getRoles()[$i]);
             }
             $user->setRoles($userRoles);
 
-            if ($form->get('role')->getData() >= 3 && $form->get('adminCode')->getData() !== $adminCodeRepository->findOneBy([], ['id' => 'DESC'])){
+            if ($form->get('role')->getData() >= 3 && $form->get('adminCode')->getData() !== $facultyRepository->findOneBy(['id' => $form->get('faculty')->getData()])->getCode()){
                 $this->addFlash('danger', 'Votre requête est invalide. Veuillez réesayer');
                 $this->redirectToRoute('app_register');
             }
@@ -98,7 +101,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
                     ->to($user->getEmail())
-                    ->subject('Vérifiez votre adresse email')
+                    ->subject('Tutoru : Vérifiez votre adresse email')
                     ->htmlTemplate('email/verify_email.html.twig')
             );
             

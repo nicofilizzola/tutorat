@@ -33,7 +33,12 @@
                     <div class="form--content">
                         <form method="post" id="login_form">
                             {% if error %}
-                                {% set errorMessage = error.messageKey|trans(error.messageData, 'security') == "Invalid credentials." ? "Identifiants invalides." : error.messageKey|trans(error.messageData, 'security') %}
+                                {% set errorMessage = error.messageKey|trans(error.messageData, 'security') %}
+                                {% if errorMessage == "Invalid credentials." %}
+                                    {% set errorMessage = "Identifiants invalides." %}
+                                {% elseif errorMessage == "Invalid CSRF token." %}
+                                    {% set errorMessage = "Une erreur est survenue..." %}
+                                {% endif %}
                                 <div class="alert alert-danger">{{ errorMessage }}</div>
                             {% endif %}
 

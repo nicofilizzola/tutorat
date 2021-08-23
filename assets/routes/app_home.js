@@ -1,4 +1,6 @@
 import '../sass/utils/home.scss';
+import '../sass/utils/landingPage.scss';
+import '../sass/utils/button.scss';
 
 import { gsap } from 'gsap'
 

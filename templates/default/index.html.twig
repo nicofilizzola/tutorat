@@ -8,15 +8,14 @@
 {% endblock %}
 
 {% block body %}
-    {% if app.user %}
-        {% set roleViewLabels = [
-            "Étudiant",
-            "Étudiant tuteur",
-            "Secrétaire",
-            "Administrateur",
-        ] %}
-
-        <div class="smooth--container" data-lg-smooth>
+    <div class="smooth--container" data-lg-smooth>
+        {% if app.user %}
+            {% set roleViewLabels = [
+                "Étudiant",
+                "Étudiant tuteur",
+                "Secrétaire",
+                "Administrateur",
+            ] %}
             <div class="welcome--container">
                 {% if app.user %}
                     {% if roles.3 not in app.user.roles %}
@@ -145,14 +144,12 @@
                         </div>
                     </div>
                 {% endif %}
-            </div>
-
             {# {% include "components/_footer.html.twig" %} #}
-        </div>
-    {% else %}
-        {# Pense à séparer la landing page dans un component comme ça pour que ça fasse pas spaghetti avec tous les trucs dans un seul fichier  #}
-        {# 👇👇👇 #}
-        {# {% include 'components/_landingPage.html.twig' %} #}
-        <h1>Landing page</h1>
-    {% endif %}
+            </div>
+        {% else %}
+            {# Pense à séparer la landing page dans un component comme ça pour que ça fasse pas spaghetti avec tous les trucs dans un seul fichier  #}
+            {# 👇👇👇 #}
+            {% include 'components/_landingPage.html.twig' %}
+        {% endif %}
+    </div>
 {% endblock %}

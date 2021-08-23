@@ -84,19 +84,11 @@
    margin-bottom: 15px;
    margin-top: 25px;
 
-   button {
-      margin-bottom: 15px;
-   }
-
    &__row {
       flex-direction: row;
       align-items: center;
       flex-wrap: wrap;
    }
-
-   // @include phone-sm() {
-   //    align-items: center;
-   // }
 }
 
 .sessions--container {

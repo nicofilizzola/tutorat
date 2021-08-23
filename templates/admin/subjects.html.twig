@@ -19,7 +19,12 @@
                             {{ form_row(form.semester, {"label": "Semestre", 'attr': {'class':'hoveredItems'}}) }}
                             {{ form_row(form.short, {"label": "Abréviation", 'attr': {'class':'hoveredItems'}}) }}
                         </div>
-                        <button type="submit" class="btn hoveredItems">Ajouter</button>
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Ajouter",
+                            "type": "submit"
+                        } %}
                     {{ form_end(form) }}
                 </div>
             </div>

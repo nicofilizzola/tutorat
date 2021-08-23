@@ -36,22 +36,27 @@
          flex-direction: row;
          justify-content: space-around;
          align-items: center;
+         
+         @include tablet-sm() {
+            flex-direction: column;
+            justify-content: center;
+
+            .btn {
+               width: 90vw;
+            }
+         }
       }
    }
 }
 
 .background--picture {
-   img {
-      // background-image: url('./build/images/bg.jpg');
-      // background-repeat: no-repeat;
-      // background-size: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1920px;
-      height: 1080px;
-      object-fit: cover;
-      z-index: -1;
-      opacity: .8;
-   }
+   background-repeat: no-repeat;
+   background-size: cover;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: -1;
+   opacity: .8;
 }

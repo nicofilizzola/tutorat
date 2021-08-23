@@ -1,21 +1,40 @@
+{% set links = {
+	"accueil": "/",
+	"mes_cours": "/ownSessions",
+	"cours": "/sessions",
+	"create": "/sessions/create",
+	"en_attente": "/sessions/pending",
+	"logs": "/sessions/log",
+	"utilisateurs": "/users",
+	"modules": "/subject",
+	"salles": "/classroom",
+	"semestre": "/semester",
+	"contact": "/contact",
+	"inscription": "/register",
+	"connexion": "/login",
+	"deco": "/logout"
+} %}
+
 {% set menuContents = [
-	{title: "Accueil", link: "/", access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_SECRETARY", "ROLE_ADMIN"]},
-	{title: "Mes cours", link: "/ownSessions", access: ["ROLE_STUDENT", "ROLE_TUTOR"]},
-	{title: "Liste des cours", link: "/sessions", access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_SECRETARY", "ROLE_ADMIN"]},
+	{title: "Accueil", link: links.accueil, access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_SECRETARY", "ROLE_ADMIN"]},
+	{title: "Mes cours", link: links.mes_cours, access: ["ROLE_STUDENT", "ROLE_TUTOR"]},
+	{title: "Liste des cours", link: links.cours, access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_SECRETARY", "ROLE_ADMIN"]},
 
-	{title: "Proposer un cours", link: "/sessions_create", access: ["ROLE_TUTOR"]},
+	{title: "Proposer un cours", link: links.create, access: ["ROLE_TUTOR"]},
 
-	{title: "Cours en attente", link: "/sessions_pending", access: ["ROLE_SECRETARY"]},
+	{title: "Cours en attente", link: links.en_attente, access: ["ROLE_SECRETARY"]},
 
-	{title: "Logs", link: "/sessions_log", access: ["ROLE_ADMIN"]},
-	{title: "Gérer les utilisateurs", link: "/users", access: ["ROLE_ADMIN"]},
-	{title: "Gérer les modules", link: "/subject", access: ["ROLE_ADMIN"]},
-	{title: "Gérer les salles de cours", link: "/classroom", access: ["ROLE_ADMIN"]},
-	{title: "Gérer les semestres", link: "/semester", access: ["ROLE_ADMIN"]},
+	{title: "Logs", link: links.logs, access: ["ROLE_ADMIN"]},
+	{title: "Gérer les utilisateurs", link: links.utilisateurs, access: ["ROLE_ADMIN"]},
+	{title: "Gérer les modules", link: links.modules, access: ["ROLE_ADMIN"]},
+	{title: "Gérer les salles de cours", link: links.salles, access: ["ROLE_ADMIN"]},
+	{title: "Gérer les semestres", link: links.semestre, access: ["ROLE_ADMIN"]},
 
-	{title: "Contact", link: "/contact", access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN"]},
+	{title: "Contact", link: links.contact, access: ["ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN"]},
+
+	{title: "S'inscrire", link: links.inscription, access: [""]},
+	{title: "Se connecter", link: links.connexion, access: [""]},
 ] %}
-
 
 <div class="menuBurger hoveredItems">
 	<div>
@@ -52,7 +71,7 @@
 				{% endfor %}
 
 			{% else %}
-				<a class="menu--link hoveredItems" href="/register">
+				<a class="menu--link hoveredItems" href="{{ links.inscription }}">
 						<div class="spans">
 							<span>S'inscrire</span>
 						</div>
@@ -64,7 +83,7 @@
 							</g>
 						</svg>
 					</a>
-				<a class="menu--link hoveredItems" href="/login">
+				<a class="menu--link hoveredItems" href="{{ links.connexion }}">
 						<div class="spans">
 							<span>Se connecter</span>
 						</div>

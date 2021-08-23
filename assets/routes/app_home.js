@@ -4,6 +4,8 @@ import '../sass/utils/button.scss';
 
 import { gsap } from 'gsap'
 
+
+// if app.user
 let becomeTutorButton, cross, flashContainer, flashContainerBackground = null
 if (document.getElementById('becomeTutor')) {
    becomeTutorButton = document.getElementById('becomeTutor')
@@ -33,3 +35,10 @@ if (cross || flashContainerBackground) {
       }, 750);
    })
 }
+
+// Landing page
+
+const imageSrc = document.querySelector('.background--picture img').src
+const background = document.querySelector('.background--picture')
+
+background.style.backgroundImage = `url('${imageSrc}')`

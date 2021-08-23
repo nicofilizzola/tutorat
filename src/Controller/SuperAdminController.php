@@ -2,15 +2,14 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\emailData;
 use App\Entity\User;
 use App\Entity\Faculty;
 use App\Traits\getRoles;
 use App\Form\FacultyType;
 use App\Form\SuperAdminType;
 use App\Repository\UserRepository;
-use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SuperAdminController extends AbstractController
 {
+    use emailData;
     use getRoles;
 
     private function isSuperAdmin(){
@@ -123,32 +123,17 @@ class SuperAdminController extends AbstractController
             $em->persist($secretary);
             $em->flush();
 
-            // admin mail
-            $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($admin->getEmail(), $secretary->getEmail())
-            ->subject('Tutoru : Création de département')
-            ->htmlTemplate('email/admin-new-faculty.html.twig')
-            ->context([
+            $this->sendEmail($mailer, [$admin->getEmail()], 'Création de département', 'email/admin-new-faculty.html.twig', [
                 'faculty' => $faculty->getName(),
                 'mail' => $admin->getEmail(),
                 'password' => $adminPlainPwd,
                 'adminCode' => $faculty->getCode()
             ]);
-            $mailer->send($email);
-
-            // secretary mail
-            $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($admin->getEmail(), $secretary->getEmail())
-            ->subject('Tutoru : Création de département')
-            ->htmlTemplate('email/secretary-new-faculty.html.twig')
-            ->context([
+            $this->sendEmail($mailer, [$secretary->getEmail()], 'Création de département', 'email/secretary-new-faculty.html.twig', [
                 'faculty' => $faculty->getName(),
                 'mail' => $secretary->getEmail(),
                 'password' => $secretaryPlainPwd,
             ]);
-            $mailer->send($email);
 
             $this->addFlash('success', 'Faculty added');
             return $this->redirectToRoute('app_superadmin');

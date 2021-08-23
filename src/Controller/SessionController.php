@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\emailData;
 use App\Controller\Traits\isVerifiedUser;
 use App\Entity\Session;
 use App\Entity\User;
@@ -9,12 +10,10 @@ use App\Form\SessionType;
 use App\Form\DateFilterType;
 use App\Repository\SemesterRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +25,7 @@ use Symfony\Component\Mailer\Mailer;
 
 class SessionController extends AbstractController
 {
+    use emailData;
     use getRoles;
     use isVerifiedUser;
 
@@ -193,17 +193,16 @@ class SessionController extends AbstractController
             if ($session->getFaceToFace() == 1){
                 $session->setIsValid(false); // needs further secretary validation
 
-                $secretaryMail = $userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty());
-                $email = (new TemplatedEmail())
-                    ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-                    ->to($secretaryMail)
-                    ->subject('Tutoru : Nouvelle demande de salle')
-                    ->htmlTemplate('email/new-pending-session.html.twig')
-                    ->context([
+                $this->sendEmail(
+                    $mailer, 
+                    [$userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty())]
+                    , 'Salle attribuée', 
+                    'email/session-validated.html.twig', 
+                    [
                         'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                        'session' => $session
-                    ]);
-                $mailer->send($email);
+                        'session' => $session,
+                    ]
+                );
             } 
 
             if ($session->getFaceToFace() == 2){
@@ -249,26 +248,14 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_sessions');
         }
 
-        function sendEmailToJoinedStudents(
-            UserRepository $userRepository, 
-            Session $session, 
-            MailerInterface $mailer
-        ){
-            $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-                ->to(...$userRepository->findSessionJoinedStudentEmails($session))
-                ->subject('Tutoru : Cours annulé')
-                ->htmlTemplate('email/deleted-session.html.twig')
-                ->context([
-                    'session' => $session,
-                ]);
-            $mailer->send($email);
-        }
-
-        sendEmailToJoinedStudents(
-            $userRepository, 
-            $session, 
-            $mailer
+        $this->sendEmail(
+            $mailer, 
+            $userRepository->findSessionJoinedStudentEmails($session), 
+            'Cours annulé', 
+            'email/deleted-session.html.twig', 
+            [
+                'session' => $session,
+            ]
         );
         
         $em->remove($session);

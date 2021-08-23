@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\emailData;
 use App\Entity\User;
 use App\Entity\Subject;
 use App\Entity\Semester;
@@ -11,13 +12,11 @@ use App\Form\SubjectType;
 use App\Form\SemesterType;
 use App\Form\ClassroomType;
 use App\Repository\UserRepository;
-use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
+    use emailData;
     use getRoles;
 
     // Must be included as the FIRST instruction in EVERY AdminController route
@@ -145,15 +145,12 @@ class AdminController extends AbstractController
 
         $isAdmin = in_array($this->getRoles()[3], $user->getRoles());
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($user->getEmail())
-            ->subject($isAdmin ? "Tutoru : Demande d'admin validée" : "Tutoru : Demande de tuteur validée")
-            ->htmlTemplate($isAdmin ? 'email/admin-validated.html.twig' : 'email/tutor-validated.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]);
-        $mailer->send($email);
+        $this->sendEmail(
+            $mailer, 
+            [$user->getEmail()], 
+            $isAdmin ? "Demande d'admin validée" : "Demande de tuteur validée", 
+            $isAdmin ? 'email/admin-validated.html.twig' : 'email/tutor-validated.html.twig'
+        );
 
         $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été validé !");
         return $this->redirectToRoute('app_users');
@@ -175,15 +172,7 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($user->getEmail())
-            ->subject('Tutoru : Demande refusée')
-            ->htmlTemplate('email/user-refused.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]);
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$user->getEmail()], 'Demande refusée', 'email/user-refused.html.twig');
 
         $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
         return $this->redirectToRoute('app_users');
@@ -218,15 +207,7 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($user->getEmail())
-            ->subject('Tutoru : Compte suprimmé')
-            ->htmlTemplate('email/user-deleted.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]);
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$user->getEmail()], 'Compte suprimmé', 'email/user-deleted.html.twig');
 
         $this->addFlash(
             "success", 
@@ -258,15 +239,7 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($user->getEmail())
-            ->subject('Tutoru : Droits de tuteur révoqués')
-            ->htmlTemplate('email/user-demoted.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]);
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$user->getEmail()], 'Droits de tuteur révoqués', 'email/user-demoted.html.twig');
 
         $this->addFlash(
             "success", 

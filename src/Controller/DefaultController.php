@@ -4,16 +4,13 @@ namespace App\Controller;
 
 use App\Controller\Traits\adminValidationEmail;
 use App\Controller\Traits\isVerifiedUser;
-use App\Entity\Session;
 use App\Repository\FacultyRepository;
 use App\Repository\SessionRepository;
-use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use App\Traits\emailRegex;
 use App\Traits\getRoles;
-use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Controller\Traits\emailData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +21,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class DefaultController extends AbstractController
 {
+    use emailData;
     use adminValidationEmail;
     use getRoles;
     use emailRegex;
@@ -118,17 +116,11 @@ class DefaultController extends AbstractController
                 return $this->redirectToRoute('app_contact');
             }
 
-            $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to(...$adminEmails)
-            ->subject('Tutoru : Nouveau message')
-            ->htmlTemplate('email/contact.html.twig')
-            ->context([
+            $this->sendEmail($mailer, $adminEmails, 'Nouveau message', 'email/contact.html.twig', [
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'data' => $data,
                 'adminEmails' => $adminEmails
             ]);
-            $mailer->send($email);
 
             $this->addFlash('danger', "Ton message a bien été envoyé ! Tu recevras une réponse par mail dans environ une semaine.");
             return $this->redirectToRoute('app_contact');

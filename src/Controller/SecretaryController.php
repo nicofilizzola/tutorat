@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\emailData;
 use App\Entity\Session;
 use App\Form\SemesterType;
 use App\Repository\UserRepository;
@@ -12,7 +13,6 @@ use App\Repository\ClassroomRepository;
 use App\Repository\SemesterRepository;
 use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SecretaryController extends AbstractController
 {
+    use emailData;
     use getRoles;
 
     private function isSecretary(){
@@ -81,16 +82,10 @@ class SecretaryController extends AbstractController
         $em->persist($session);
         $em->flush();
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($session->getTutor()->getEmail())
-            ->subject('Tutoru : Salle attribuée')
-            ->htmlTemplate('email/session-validated.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'session' => $session,
-            ]);
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$session->getTutor->getEmail()], 'Salle attribuée', 'email/session-validated.html.twig', [
+            // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'session' => $session,
+        ]);
 
         $this->addFlash('success', "L'attribution de salle a bien été transmise !");
         return $this->redirectToRoute('app_sessions_pending', [
@@ -116,16 +111,10 @@ class SecretaryController extends AbstractController
         $em->remove($session);
         $em->flush();
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to($session->getTutor()->getEmail())
-            ->subject('Tutoru : Demande de salle refusée')
-            ->htmlTemplate('email/session-refused.html.twig')
-            ->context([
-                // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'session' => $session,
-            ]);
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$session->getTutor->getEmail()], 'Demande de salle refusée', 'email/session-refused.html.twig', [
+            // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'session' => $session,
+        ]);
 
         $this->addFlash('success', "La demande a été refusée et le cours a bien été suprimmé !");
         return $this->redirectToRoute('app_sessions_pending', [

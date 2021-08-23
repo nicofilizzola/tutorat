@@ -55,7 +55,7 @@ class SuperAdminController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Super admin account created');
-            $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('super_admin/start.html.twig', [

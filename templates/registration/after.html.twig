@@ -3,7 +3,7 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block body %}
-    <h2>Ça y est presque {{ user.firstName | capitalize }} ! On vient d'envoyer un mail de vérification à ton adresse mail ({{ user.email | lower }}).</h2>
-    <p><b>Je suis étudiant tuteur ou administrateur :</b> Avant d'avoir accès aux fonctionnalités d'étudiant tuteur ou d'administrateur, il faudra que ta demande soit d'abord validée par le responsable du département {{ user.faculty.short }}. Tu auras une réponse dans une semaine.</p>
+    <h2>Ça y est presque {{ user.firstName | capitalize }} ! On vient de t'envoyer un email de vérification à cette adresse ({{ user.email | lower }}).</h2>
+    <p><b>Je suis étudiant tuteur ou administrateur :</b> Avant d'avoir accès aux fonctionnalités d'étudiant tuteur ou d'administrateur, il faudra que ta demande soit d'abord validée par le responsable du département {{ user.faculty.short }}. Tu auras une réponse dans environ une semaine.</p>
     <p>Attention, tout étudiant essayant d'ouvrir un compte d'administrateur risque d'être banni de la plateforme de manière permanente.</p>
 {% endblock %}

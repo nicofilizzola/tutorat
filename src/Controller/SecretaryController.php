@@ -84,7 +84,7 @@ class SecretaryController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
             ->to($session->getTutor()->getEmail())
-            ->subject('Salle attribuée pour le tutorat')
+            ->subject('Tutoru : Salle attribuée')
             ->htmlTemplate('email/session-validated.html.twig')
             ->context([
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -119,7 +119,7 @@ class SecretaryController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
             ->to($session->getTutor()->getEmail())
-            ->subject('Demande de salle refusée')
+            ->subject('Tutoru : Demande de salle refusée')
             ->htmlTemplate('email/session-refused.html.twig')
             ->context([
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),

@@ -9,22 +9,17 @@ use App\Entity\Classroom;
 use App\Form\SubjectType;
 use App\Form\SemesterType;
 use App\Form\ClassroomType;
-use Doctrine\ORM\Mapping\Entity;
 use App\Repository\UserRepository;
-use Symfony\Component\Mime\Address;
 use App\Repository\SessionRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\SemesterRepository;
 use App\Repository\ClassroomRepository;
 use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\MailerInterface;
 
 class AdminController extends AbstractController
 {

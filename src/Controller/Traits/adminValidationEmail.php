@@ -14,7 +14,7 @@ trait adminValidationEmail{
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
             ->to(...$userRepository->findFacultyAdminEmails($user->getFaculty() ?? $this->getUser()->getFaculty()))
-            ->subject('Nouveau compte à valider')
+            ->subject('Tutoru : Nouveau compte à valider')
             ->htmlTemplate('email/new-pending-user.html.twig')
             ->context([
                 'link' => $this->generateUrl('app_users', [], UrlGeneratorInterface::ABSOLUTE_URL),

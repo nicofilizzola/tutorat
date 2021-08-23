@@ -121,7 +121,7 @@ class DefaultController extends AbstractController
             $email = (new TemplatedEmail())
             ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
             ->to(...$adminEmails)
-            ->subject('Contact: Nouveau message')
+            ->subject('Tutoru : Nouveau message')
             ->htmlTemplate('email/contact.html.twig')
             ->context([
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),

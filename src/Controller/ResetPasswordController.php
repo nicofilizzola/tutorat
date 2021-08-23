@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Traits\emailData;
 use App\Entity\User;
 use Symfony\Component\Mime\Address;
 use App\Form\ChangePasswordFormType;
@@ -24,6 +25,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
  */
 class ResetPasswordController extends AbstractController
 {
+    use emailData;
     use ResetPasswordControllerTrait;
 
     private $resetPasswordHelper;
@@ -124,7 +126,8 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_home');
+            $this->addFlash('success', 'Votre mot de passe a bien été réinitialisé');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -158,17 +161,9 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_check_email');
         }
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutoru.fr', 'Tutoru'))
-            ->to($user->getEmail())
-            ->subject('Your password reset request')
-            ->htmlTemplate('reset_password/email.html.twig')
-            ->context([
-                'resetToken' => $resetToken,
-            ])
-        ;
-
-        $mailer->send($email);
+        $this->sendEmail($mailer, [$user->getEmail()], 'Réinitialisation de mot de passe', 'reset_password/email.html.twig', [
+            'resetToken' => $resetToken,
+        ]);
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);

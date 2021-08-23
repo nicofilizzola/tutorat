@@ -40,6 +40,10 @@ Encore
     .addEntry('app_contact', './assets/routes/app_contact.js')
     .addEntry('app_superadmin', './assets/routes/app_superadmin.js')
     .addEntry('app_start', './assets/routes/app_start.js')
+    .addEntry('app_forgot_password_request', './assets/routes/app_forgot_password_request.js')
+    .addEntry('app_check_email', './assets/routes/app_check_email.js')
+    .addEntry('app_reset_password', './assets/routes/app_reset_password.js')
+    
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

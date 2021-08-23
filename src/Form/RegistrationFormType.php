@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -74,6 +75,10 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotEqualTo([
                         'value' => 3,
+                        'message' => "Valeur invalide"
+                    ]),
+                    new LessThan([
+                        'value' => 5,
                         'message' => "Valeur invalide"
                     ])
                 ]

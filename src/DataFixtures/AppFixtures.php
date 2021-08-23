@@ -21,6 +21,23 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $user = new User();
+        $user->setFirstName('Super');
+        $user->setLastName('Admin');
+        $user->setEmail('superadmin@iut-tarbes.fr');
+        $user->setRoles([
+            $this->getRoles()[0],
+            $this->getRoles()[1],
+            $this->getRoles()[2],
+            $this->getRoles()[3],
+            $this->getRoles()[4],
+        ]);
+        $user->setPassword('$2y$13$xNGMwdug4hU09AaUI1kRS.qKTt9oTpwY9iU5aKiasjvR55l7ltk6m');
+        $user->setYear(4);
+        $user->setIsValid(2);
+        $user->setIsVerified(1);
+        $user->updateTimestamp();
+
         for ($i = 0; $i < 5; $i++) {
             $faculty = new Faculty();
             $faculty->setName('Département ' . $i);

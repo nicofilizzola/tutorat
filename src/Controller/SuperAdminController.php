@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\Faculty;
 use App\Traits\getRoles;
 use App\Form\FacultyType;
+use App\Form\SuperAdminType;
+use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -20,7 +22,7 @@ class SuperAdminController extends AbstractController
 {
     use getRoles;
 
-    function isSuperAdmin(){
+    private function isSuperAdmin(){
         if (!$this->getUser() || !in_array($this->getRoles()[4], $this->getUser()->getRoles()) || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2){
             return false;
         }
@@ -28,17 +30,52 @@ class SuperAdminController extends AbstractController
     }
 
     /**
+     * @Route("/start", name="app_start")
+     */
+    public function start(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
+    { 
+        if (!empty($userRepository->findAll())){ return $this->redirectToRoute('app_home'); }
+
+        $user = new User;
+        $form = $this->createForm(SuperAdminType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $request->request->get('super_admin');
+            $user->setRoles($this->setRoles(4));
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $data['password']['first']
+                )
+            );
+            $user->updateTimestamp();
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Super admin account created');
+            $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('super_admin/start.html.twig', [
+            'form' => $form->createView()
+        ]);  
+    }
+
+    /**
      * @Route("/superadmin", name="app_superadmin")
      */
-    public function index(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
+    public function index(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer, UserRepository $userRepository): Response
     {
+
         if (!$this->isSuperAdmin()) { return $this->redirectToRoute('app_home'); }
 
         $faculty = new Faculty;
         $form = $this->createForm(FacultyType::class, $faculty);
         $form->handleRequest($request);
 
-        if ($request->isMethod('post')){
+        if ($form->isSubmitted() && $form->isValid()){
             $data = $request->request->get('faculty');
             $admin = new User;
             $secretary = new User;
@@ -46,21 +83,12 @@ class SuperAdminController extends AbstractController
             $em->persist($faculty);
             $em->flush();
 
-            $adminRoles = [];
-            $secretaryRoles = [];
-            for ($i = 0; $i <= 3; $i++){
-                $adminRoles[] = $this->getRoles()[$i];
-                if ($i < 3){
-                    $secretaryRoles[] = $this->getRoles()[$i];
-                }
-            }
-
             // setup admin user
             $admin->setFirstName($data['adminFirstName']);
             $admin->setLastName($data['adminLastName']);
             $admin->setEmail($data['adminEmail']);
             $admin->setFaculty($faculty);
-            $admin->setRoles($adminRoles);
+            $admin->setRoles($this->setRoles(3));
             $admin->setYear(4);
             $admin->updateTimestamp();
             $admin->setIsValid(2);
@@ -78,7 +106,7 @@ class SuperAdminController extends AbstractController
             $secretary->setLastName($faculty->getShort());
             $secretary->setEmail($data['secretaryEmail']);
             $secretary->setFaculty($faculty);
-            $secretary->setRoles($secretaryRoles);
+            $secretary->setRoles($this->setRoles(2));
             $secretary->setYear(4);
             $secretary->updateTimestamp();
             $secretary->setIsValid(2);

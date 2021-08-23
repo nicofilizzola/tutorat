@@ -94,7 +94,8 @@ class RegistrationFormType extends AbstractType
             ->add('faculty', EntityType::class, [
                 'label' => "Département d'enseignement",
                 'class' => Faculty::class,
-                'choice_label' => 'Name'
+                'choice_label' => 'Name',
+                'required' => true
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,

@@ -20,11 +20,20 @@ class SuperAdminController extends AbstractController
 {
     use getRoles;
 
+    function isSuperAdmin(){
+        if (!$this->getUser() || !in_array($this->getRoles()[4], $this->getUser()->getRoles()) || !$this->getUser()->isVerified() || $this->getUser()->getIsValid() !== 2){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @Route("/superadmin", name="app_superadmin")
      */
     public function index(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
     {
+        if (!$this->isSuperAdmin()) { return $this->redirectToRoute('app_home'); }
+
         $faculty = new Faculty;
         $form = $this->createForm(FacultyType::class, $faculty);
         $form->handleRequest($request);

@@ -1,8 +1,8 @@
 @import 'var';
 
 .btn {
-   padding: 20px 30px;
-   width: 200px;
+   padding: 30px;
+   width: 350px;
    height: 60px;
    outline: none;
    border: none;
@@ -14,6 +14,7 @@
    border-radius: 2px;
    overflow: hidden;
    position: relative;
+   margin-top: 15px;
 
    span {
       position: absolute;
@@ -21,6 +22,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 2;
+      width: 100%;
    }
 
    &:before {
@@ -43,16 +45,47 @@
    }
 
 
-   &__tinyEffect:hover:before {
-      transform: scale(10);
-   }
+   // &__tinyEffect:hover:before {
+   //    transform: scale(10);
+   // }
 
-   &__mediumEffect:hover:before {
-      transform: scale(14);
-   }
+   // &__mediumEffect:hover:before {
+   //    transform: scale(14);
+   // }
 
-   &__tiny {
-      padding: 15px 20px;
+   &__w_tiny {
+      // padding: 15px 20px;
+      width: calc(350px/2);
       font-size: .8em;
+
+      &:hover:before {
+         transform: scale(10);
+      }
+   }
+
+   &__w_default {
+      &:hover:before {
+         transform: scale(15);
+      }
+   }
+
+   &__w_100p {
+      width: 100%;
+   }
+
+   &__w_45p {
+      width: 45%;
+
+      &:hover:before {
+         transform: scale(10);
+      }
+   }
+
+   &__w_landing {
+      width: 250px;
+      
+      &:hover:before {
+         transform: scale(12);
+      }
    }
 }

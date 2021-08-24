@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block body %}
+
+    {% set links = {
+        "connexion": "/login"
+    } %}
+
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -64,9 +69,13 @@
                                 <input type="checkbox" id="_remember_me" name="_remember_me">
                                 <label for="_remember_me" class="hoveredItems notRequired">Se souvenir de moi </label>
                             </div>
-            
 
-                            <button class="btn btn__login hoveredItems" type="submit">Se connecter</button>
+                            {% include "components/_button.html.twig" with {
+                                "link": links.connexion,
+                                "class_modifier": "w_100p",
+                                "title": "Se connecter",
+                                "type": "submit"
+                            } %}
                             <a href="{{ path('app_forgot_password_request') }}">J'ai oublié mon mot de passe</a>
                         </form>
                     </div>

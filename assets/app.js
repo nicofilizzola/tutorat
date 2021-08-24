@@ -8,6 +8,7 @@
 // any CSS you import will output into a single css file (app.css in this case)
 // import './styles/app.css';
 import './sass/main.scss';
+import '@waaark/luge/dist/css/luge.css';
 
 // start the Stimulus application
 import './bootstrap';
@@ -172,10 +173,14 @@ domCache.menuContentLink.forEach(content => {
    }) 
 })
 
-
-window.addEventListener('keypress', (e) => {
-   console.log(e)
-})
+luge.settings(
+   {smooth: 
+      {inertia: 0.1}
+   },
+   // {preloader: 
+   //    {duration: 1000}
+   // }
+)
 
 window.addEventListener('resize', () => {
    luge.lifecycle.refresh()
@@ -202,5 +207,3 @@ function raf() {
 }
 
 raf()
-
-luge.settings({smooth: {inertia: 0.1}})

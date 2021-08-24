@@ -158,9 +158,25 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      font-size: 3.25em;
+      font-size: 2.5em;
       font-weight: bold;
       margin-bottom: 15px;
+
+      @include desktop-sm() {
+         font-size: 2em;
+      }
+   
+      @include tablet() {
+         font-size: 1.8em;
+      }
+
+      @include tablet-sm() {
+         font-size: 1.5em;
+      }
+
+      @include phone-sm() {
+         font-size: 1.2em;
+      }
 
       svg {
          margin-left: 10px;

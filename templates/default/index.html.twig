@@ -6,6 +6,24 @@
 {% endblock %}
 
 {% block body %}
+
+    {% set links = {
+        "accueil": "/",
+        "mes_cours": "/ownSessions",
+        "cours": "/sessions",
+        "create": "/sessions/create",
+        "en_attente": "/sessions/pending",
+        "logs": "/sessions/log",
+        "utilisateurs": "/users",
+        "modules": "/subject",
+        "salles": "/classroom",
+        "semestre": "/semester",
+        "contact": "/contact",
+        "inscription": "/register",
+        "connexion": "/login",
+        "deco": "/logout"
+    } %}
+
     <div class="smooth--container" data-lg-smooth>
         {% if app.user %}
             {% set roleViewLabels = [
@@ -32,14 +50,39 @@
 
                                 <div class="buttons">
                                     <div class="buttons--container">
-                                        <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a>
-                                        <a href="{{ path('app_ownSessions') }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a>
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.cours,
+                                            "class_modifier": "w_default",
+                                            "title": "Chercher un cours",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.mes_cours,
+                                            "class_modifier": "w_default",
+                                            "title": "Mes cours",
+                                            "type": ""
+                                        } %}
+                                        {# <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a> #}
+                                        {# <a href="{{ path('app_ownSessions') }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a> #}
                                         {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
-                                            <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a>
+                                            {% include "components/_button.html.twig" with {
+                                                "link": links.create,
+                                                "class_modifier": "w_default",
+                                                "title": "Proposer un cours",
+                                                "type": ""
+                                            } %}
+                                            {# <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a> #}
                                         {% else %}
-                                            <button class="btn btn__tinyEffect hoveredItems" id="becomeTutor">Proposer un cours</button>
+                                            <button class="btn btn__w_default hoveredItems" id="becomeTutor">Proposer un cours</button>
                                         {% endif %}
-                                        <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.deco,
+                                            "class_modifier": "w_tiny",
+                                            "title": "Se déconnecter",
+                                            "type": ""
+                                        } %}
+                                        {# <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a> #}
                                     </div>
                                 </div>
                             </div>                        
@@ -110,22 +153,76 @@
 
                                         <div class="buttons">
                                             <div class="buttons--container">
-                                                <a href="{{ path('app_sessions_log') }}"><button class="btn btn__tinyEffect hoveredItems">Logs admin</button></a>
-                                                <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Liste des cours</button></a>
-                                                <a href="{{ path('app_users') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les utilisateurs</button></a>
-                                                <a href="{{ path('app_subject') }}"><button class="btn btn__tinyEffect hoveredItems">Gérer les modules</button></a>
-                                                <a href="{{ path('app_classroom') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les salles de cours</button></a>
-                                                <a href="{{ path('app_semester') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les semestres</button></a>
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.logs,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Logs admin",
+                                                    "type": ""
+                                                } %}
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.cours,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Liste des cours",
+                                                    "type": ""
+                                                } %}
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.utilisateurs,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Gérer les utilisateurs",
+                                                    "type": ""
+                                                } %}
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.modules,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Gérer les modules",
+                                                    "type": ""
+                                                } %}
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.salles,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Gérer les salles de cours",
+                                                    "type": ""
+                                                } %}
+                                                {% include "components/_button.html.twig" with {
+                                                    "link": links.semestre,
+                                                    "class_modifier": "w_default",
+                                                    "title": "Gérer les semestres",
+                                                    "type": ""
+                                                } %}
+                                                {# <a href="{{ path('app_sessions_log') }}"><button class="btn btn__tinyEffect hoveredItems">Logs admin</button></a> #}
+                                                {# <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Liste des cours</button></a> #}
+                                                {# <a href="{{ path('app_users') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les utilisateurs</button></a> #}
+                                                {# <a href="{{ path('app_subject') }}"><button class="btn btn__tinyEffect hoveredItems">Gérer les modules</button></a> #}
+                                                {# <a href="{{ path('app_classroom') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les salles de cours</button></a> #}
+                                                {# <a href="{{ path('app_semester') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les semestres</button></a> #}
                                             </div>
-                                            <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a>
+                                            {% include "components/_button.html.twig" with {
+                                                "link": links.deco,
+                                                "class_modifier": "w_tiny",
+                                                "title": "Se déconnecter",
+                                                "type": ""
+                                            } %}
+                                            {# <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a> #}
                                         </div>
                             </div>
                         </div>
                     {% endif %}
                 {% else %}
                     <div class="buttons--container">
-                        <a href="{{ path('app_register') }}"><button class="btn btn__tinyEffect hoveredItems">S'inscrire</button></a>
-                        <a href="{{ path('app_login') }}"><button class="btn btn__tinyEffect hoveredItems">Se connecter</button></a>
+                        {% include "components/_button.html.twig" with {
+                            "link": links.inscription,
+                            "class_modifier": "w_default",
+                            "title": "S'inscrire",
+                            "type": ""
+                        } %}
+                        {% include "components/_button.html.twig" with {
+                            "link": links.connexion,
+                            "class_modifier": "w_default",
+                            "title": "Se connecter",
+                            "type": ""
+                        } %}
+                        {# <a href="{{ path('app_register') }}"><button class="btn btn__tinyEffect hoveredItems">S'inscrire</button></a>
+                        <a href="{{ path('app_login') }}"><button class="btn btn__tinyEffect hoveredItems">Se connecter</button></a> #}
                     </div>
                 {% endif %}
 

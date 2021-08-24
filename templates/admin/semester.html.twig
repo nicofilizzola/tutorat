@@ -25,7 +25,13 @@
                             {# <li>Les étudiants seront prévenus par mail ;</li> #}
                             <li>S'il y a déjà {{ semesterLimit }} semestres sauvegardés, le plus ancien sera suprimmé afin de faire de la place pour le nouveau</li>
                         </ul>
-                        <button type="submit" class="btn hoveredItems">Ajouter</button>
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Ajouter",
+                            "type": "submit"
+                        } %}
+                        {# <button type="submit" class="btn hoveredItems">Ajouter</button> #}
                     {{ form_end(form) }}
                 </div>
             </div>

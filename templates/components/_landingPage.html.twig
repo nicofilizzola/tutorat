@@ -1,3 +1,22 @@
+{% set links = {
+	"accueil": "/",
+	"mes_cours": "/ownSessions",
+	"cours": "/sessions",
+	"create": "/sessions/create",
+	"en_attente": "/sessions/pending",
+	"logs": "/sessions/log",
+	"utilisateurs": "/users",
+	"modules": "/subject",
+	"salles": "/classroom",
+	"semestre": "/semester",
+	"contact": "/contact",
+	"inscription": "/register",
+	"connexion": "/login",
+	"deco": "/logout"
+} %}
+
+<div data-lg-preloader="slide-to-top" data-lg-preloader-duration="1"></div>
+
 <div class="landingPage--container">
    <div class="landingPage--content">
       <div class="text">
@@ -7,14 +26,24 @@
       </div>
       <div class="buttons">
          <div class="buttons--container">
-            <a href="{{ path('app_register') }}"><button class="btn btn__tinyEffect hoveredItems"><span>Inscription</span></button></a>
-            <a href="{{ path('app_login') }}"><button class="btn btn__tinyEffect hoveredItems"><span>Connexion</span></button></a>
+            {% include "components/_button.html.twig" with {
+               "link": links.inscription,
+               "class_modifier": "w_landing",
+               "title": "Inscription",
+               "type": ""
+            } %}
+            {% include "components/_button.html.twig" with {
+               "link": links.connexion,
+               "class_modifier": "w_landing",
+               "title": "Connexion",
+               "type": ""
+            } %}
          </div>
       </div>
    </div>
 
 
    <div class="background--picture">
-      <img src="{{ asset('./build/images/bg2.jpg') }}" />
+      <img hidden src="{{ asset('./build/images/bg2.jpg') }}" />
    </div>
 </div>

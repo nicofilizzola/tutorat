@@ -1,5 +1,6 @@
 import "../sass/utils/users.scss";
 
+import checkUserDevice from "../functions/checkUserDevice.js";
 var distance = require('jaro-winkler');
 
 const domCache = {
@@ -12,7 +13,19 @@ const domCache = {
    usersListContainer: document.querySelector('.content--container'),
    usersList: document.querySelectorAll('.userContent--container__user'),
 
-   searchBar: document.querySelector('.search--content input')
+   searchBar: document.querySelector('.search--content input'),
+
+
+   desktopDisplay: document.querySelector('.container'),
+   phoneDisplay: document.querySelector('.phone--container')
+}
+
+if (checkUserDevice()) {
+   domCache.phoneDisplay.hidden = false
+   domCache.phoneDisplay.style.display = "flex"
+   domCache.desktopDisplay.remove()
+} else {
+   domCache.phoneDisplay.remove()
 }
 
 const sortedUsersList = []

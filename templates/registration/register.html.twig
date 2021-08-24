@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block body %}
+
+    {% set links = {
+        "inscription": "/register"
+    } %}
+
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
@@ -63,7 +68,12 @@
                             {{ form_label(registrationForm.agreeTerms, registrationForm.agreeTerms, {'label_attr': {'class':'hoveredItems'}}) }}
                         </div>
 
-                        <button type="submit" class="btn btn__register hoveredItems">S'inscrire</button>
+                        {% include "components/_button.html.twig" with {
+                            "link": links.inscription,
+                            "class_modifier": "w_100p",
+                            "title": "S'inscrire",
+                            "type": "submit"
+                        } %}
                     {{ form_end(registrationForm) }}
                 </div>
             </div>

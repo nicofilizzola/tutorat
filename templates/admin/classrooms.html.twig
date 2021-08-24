@@ -13,7 +13,13 @@
                 <div class="form--content">
                     {{ form_start(form) }}
                         {{ form_row(form.name, {"label": "Numéro", 'attr': {'class':'hoveredItems'}}) }}
-                        <button type="submit" class="btn hoveredItems">Ajouter</button>
+                        {# <button type="submit" class="btn hoveredItems">Ajouter</button> #}
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Ajouter",
+                            "type": "submit"
+                        } %}
                     {{ form_end(form) }}
                 </div>
             </div>

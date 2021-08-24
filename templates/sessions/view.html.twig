@@ -7,6 +7,24 @@
 
 
 {% block body %}
+
+    {% set links = {
+        "accueil": "/",
+        "mes_cours": "/ownSessions",
+        "cours": "/sessions",
+        "create": "/sessions/create",
+        "en_attente": "/sessions/pending",
+        "logs": "/sessions/log",
+        "utilisateurs": "/users",
+        "modules": "/subject",
+        "salles": "/classroom",
+        "semestre": "/semester",
+        "contact": "/contact",
+        "inscription": "/register",
+        "connexion": "/login",
+        "deco": "/logout"
+    } %}
+
     <span id="navSessionTitle" hidden>{{ currentSession.title }}</span>
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
@@ -61,8 +79,10 @@
                     </div>
 
                     {% if sessionViewMode == 3 %}
-                        {% if currentSession.students | length < currentSession.studentLimit %}    
-                            <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">S'inscrire</button>
+                        {% if currentSession.students | length < currentSession.studentLimit %}
+                            <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">
+                                <span>S'inscrire</span>
+                            </button>
                             <form 
                                 method="POST" 
                                 hidden="hidden" 
@@ -71,11 +91,13 @@
                                 <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
                             </form>
                         {% else %}
-                            <button class="form--button hoveredItems" disabled>S'inscrire</button>  
+                            <button class="btn btn__w_default hoveredItems" disabled>S'inscrire</button>  
                         {% endif %}
 
                     {% elseif sessionViewMode == 1 %}
-                        <button class="form--button hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-leave-{{ currentSession.id }}').submit();">Se désinscrire</button>
+                        <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-leave-{{ currentSession.id }}').submit();">
+                            <span>Se désinscrire</span>
+                        </button>
                         <form 
                             method="POST" 
                             hidden="hidden" 
@@ -85,7 +107,9 @@
                         </form>
 
                     {% elseif (sessionViewMode == 2) or (sessionViewMode == 4) %}
-                        <button class="form--button hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">Annuler le cours</button>
+                        <button class="btn btn__w_default hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">
+                            <span>Annuler le cours</span>
+                        </button>
                         <form 
                             method="POST" 
                             hidden="hidden" 
@@ -96,8 +120,16 @@
 
                         {% if (currentSession.students is empty) or (currentSession.participants is empty == false) %}
                         {% else %}
+                            {# {% include "components/_button.html.twig" with {
+                                "link": "{{ path('app_sessions_participants', {'id': currentSession.id}) }}",
+                                "class_modifier": "w_default",
+                                "title": "Faire l'appel",
+                                "type": ""
+                            } %} #}
                             <a href="{{ path("app_sessions_participants", {"id": currentSession.id}) }}">
-                                <button class="form--button hoveredItems">Faire l'appel</button>
+                                <button class="btn btn__w_default hoveredItems">
+                                    <span>Faire l'appel</span>
+                                </button>
                             </a>
                         {% endif %}
                     {% endif %}

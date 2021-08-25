@@ -262,7 +262,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                     $validatedSessionHours += $addedTime;
                 }
             }
-            return $validatedSessionHours . "h";
+            $timeComponents = explode('.', number_format((float)$validatedSessionHours * 30 / 50, 2));
+            if ($timeComponents[1] == 60){
+                $timeComponents[0] = intval($timeComponents[0]) + 1;
+                $timeComponents[1] = '00';
+            }
+
+            return $timeComponents[0] . 'h' . $timeComponents[1];
         } else {
             return;
         }

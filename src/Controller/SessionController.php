@@ -195,9 +195,9 @@ class SessionController extends AbstractController
 
                 $this->sendEmail(
                     $mailer, 
-                    [$userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty())]
-                    , 'Salle attribuée', 
-                    'email/session-validated.html.twig', 
+                    [$userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty())], 
+                    'Demande de salle', 
+                    'email/new-pending-session.html.twig', 
                     [
                         'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
                         'session' => $session,
@@ -324,7 +324,6 @@ class SessionController extends AbstractController
                 "La liste d'appel a été transmise et le cours a bien été validé !"
             );
             return $this->redirectToRoute('app_sessions');
-
         }
 
         return $this->render(

@@ -162,11 +162,12 @@ class AdminController extends AbstractController
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        if ($this->isCsrfTokenValid('refuse-user' . $user->getId(), $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('refuse-user' . $user->getId(), $request->request->get('token'))) {
             $this->addFlash('danger', "Une erreur est survenue.");
             return $this->redirectToRoute('app_users');
         }
 
+        $user->setRoles($this->setRoles(0));
         $user->setIsValid(3);
 
         $entityManager->persist($user);

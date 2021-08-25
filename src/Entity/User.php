@@ -240,7 +240,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getTutorHours(SessionRepository $sessionRepository){
-        if (in_array("ROLE_TUTOR", $this->getRoles())){
+        if (in_array("ROLE_TUTOR", $this->getRoles()) && $this->isVerified() && $this->getIsValid() == 2){
             $tutorSessions = $sessionRepository->findBy([
                 'tutor' => $this,
                 'isValid' => true

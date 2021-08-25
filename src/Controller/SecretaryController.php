@@ -30,7 +30,7 @@ class SecretaryController extends AbstractController
         if (
             !$this->getUser() ||
             !in_array($this->getRoles()[2], $userRoles) || 
-            in_array($this->getRoles()[3], $userRoles) || 
+            // in_array($this->getRoles()[3], $userRoles) || 
             $this->getUser()->getIsValid() !== 2 || 
             !$this->getUser()->isVerified()
         ){
@@ -72,7 +72,7 @@ class SecretaryController extends AbstractController
         }
 
         $selectedClassroom = $request->request->get('classroom-for-' . $session->getId());
-        if (is_null($selectedClassroom) || !$this->isCsrfTokenValid('session-validate' . $session->getId(), $request->request->get('token'))){
+        if ($selectedClassroom == "" || is_null($selectedClassroom) || !$this->isCsrfTokenValid('session-validate' . $session->getId(), $request->request->get('token'))){
             $this->addFlash('danger', 'Une erreur est survenue.');
             return $this->redirectToRoute('app_sessions_pending');
         }

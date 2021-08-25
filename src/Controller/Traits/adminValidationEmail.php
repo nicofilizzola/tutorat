@@ -10,10 +10,12 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 trait adminValidationEmail{
+    use emailData;
+
     private function sendAdminsEmailForPendingUser(MailerInterface $mailer, UserRepository $userRepository, User $user = null){
         $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@tutorat-iut-tarbes.fr', 'Tutorat IUT de Tarbes'))
-            ->to(...$userRepository->findFacultyAdminEmails($user->getFaculty() ?? $this->getUser()->getFaculty()))
+            ->from(new Address($this->mailerEmail, $this->mailerName))
+            ->to(...$userRepository->findFacultyAdminEmails($user ? $user->getFaculty() : $this->getUser()->getFaculty()))
             ->subject('Tutoru : Nouveau compte à valider')
             ->htmlTemplate('email/new-pending-user.html.twig')
             ->context([

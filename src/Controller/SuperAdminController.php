@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use App\Controller\Traits\emailData;
 use App\Entity\User;
 use App\Entity\Faculty;
+use App\Entity\Semester;
 use App\Traits\getRoles;
 use App\Form\FacultyType;
 use App\Form\SuperAdminType;
 use App\Repository\UserRepository;
+use App\Controller\Traits\emailData;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -79,6 +80,7 @@ class SuperAdminController extends AbstractController
             $data = $request->request->get('faculty');
             $admin = new User;
             $secretary = new User;
+            $semester = new Semester;
 
             $em->persist($faculty);
             $em->flush();
@@ -119,8 +121,14 @@ class SuperAdminController extends AbstractController
                 )
             );
 
+            // setup semester
+            $semester->setStartYear($data['semesterStartYear']);
+            $semester->setEndYear($data['semesterEndYear']);
+            $semester->setYearOrder($data['semesterYearOrder']);
+
             $em->persist($admin);
             $em->persist($secretary);
+            $em->persist($semester);
             $em->flush();
 
             $this->sendEmail($mailer, [$admin->getEmail()], 'Création de département', 'email/admin-new-faculty.html.twig', [

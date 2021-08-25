@@ -27,7 +27,7 @@
                         {% endif %}
                         
                         <form action="{{ path('app_session_validate', {'id': session.id}) }}" id="js-session-validate-{{ session.id }}" method="POST">
-                            <div id="room" class="hoveredItems">
+                            {# <div id="room" class="hoveredItems">
                                 {% for classroom in classrooms %}
                                     <div class="choice--container">
                                         <label for="classroom-{{ classroom.id }}-for-{{ session.id }}" class="required notRequired">
@@ -38,7 +38,13 @@
                                         </label>
                                     </div>
                                 {% endfor %}
-                            </div>
+                            </div> #}
+                            <select name="classroom-for-{{ session.id }}" id="classroom-for-{{ session.id }}">
+                                <option value="">Choissisez une salle</option>
+                                {% for classroom in classrooms %}
+                                    <option value="{{ classroom.id }}">{{ classroom.name }}</option>    
+                                {% endfor %}
+                            </select>
                             <input type="hidden" name="token" value="{{ csrf_token('session-validate' ~ session.id) }}"/>
                         </form>
 

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Faculty;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -58,6 +59,29 @@ class FacultyType extends AbstractType
                 'attr' => [
                     'readonly' => true
                 ]
+            ])
+            ->add('startYear', ChoiceType::class, [
+                'choices' => [
+                    date('Y', strtotime('-1 year')) => date('Y', strtotime('-1 year')),
+                    date('Y') => date('Y'),
+                    date('Y', strtotime('+1 year')) => date('Y', strtotime('+1 year')),
+                ],
+                'mapped' => false
+            ])
+            ->add('endYear', ChoiceType::class, [
+                'choices' => [
+                    date('Y') => date('Y'),
+                    date('Y', strtotime('+1 year')) => date('Y', strtotime('+1 year')),
+                    date('Y', strtotime('+2 year')) => date('Y', strtotime('+2 year')),
+                ],
+                'mapped' => false
+            ])
+            ->add('semesterYearOrder', ChoiceType::class, [
+                'choices' => [
+                    'S1' => 1,
+                    'S2' => 2,
+                ],
+                'mapped' => false
             ])
         ;
     }

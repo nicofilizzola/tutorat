@@ -39,7 +39,7 @@ class DefaultController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
-        $faculty = $this->getUser()->getFaculty();
+        $faculty = $this->getUser() && in_array($this->getRoles()[2], $this->getUser()->getRoles()) ? $this->getUser()->getFaculty() : null;
 
         return $this->render('default/index.html.twig', [
             'sessions' => $this->isVerifiedUser() ? $sessionRepository->findByStudentAwaiting($this->getUser()) : null,

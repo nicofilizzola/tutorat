@@ -59,6 +59,16 @@ textarea, input {
       transform-origin: bottom left;
       transform: scaleX(1);
    }
+
+   &__reverse {
+      span::after {
+         transform: scaleX(1);
+      }
+
+      &:hover span::after {
+         transform: scaleX(0);
+      }
+   }
 }
 
 // Cursor

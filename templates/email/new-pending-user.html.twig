@@ -1,15 +1,8 @@
-<div class="container">
-    <div class="title">
-        <h1>Tutorat</h1>
-        <span>Validation de compte</span>
-    </div>
+{% include "email/components/_header.html.twig" with { title: "Nouvelle demande de tuteur !" } %}
 
-    <div class="request">
         <span>Quelqu'un à effectué une demande pour obtenir les droits de tuteur, secrétaire ou admnistrateur.</span>
         <span>Vous pouvez :</span>
-    </div>
 
-    <div class="content">
         <ul>
             <li>Valider la demande</li>
             <li>Annuler la demande</li>
@@ -19,9 +12,6 @@
         <span>Cliquez sur le bouton ci-dessous pour gérer cette demande ou allez directement dans votre espace d'administrateur.</span>
     </div>
 
-    <div class="link">
-        <a href="{{ link }}"><button class="btn btn__mediumEffect">Gérer cette demande</button></a>
-    </div>
-</div>
+{% include "email/components/_footer.html.twig" %}
 
 {% include "email/components/_globalStyle.html.twig" %}

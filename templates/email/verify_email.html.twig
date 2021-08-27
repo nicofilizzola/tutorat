@@ -1,19 +1,12 @@
-<div class="container">
-    <div class="title">
-        <h1>Tutorat</h1>
-        <span>Vérification de ton compte</span>
-    </div>
+{% include "email/components/_header.html.twig" with { title: "Vérification de compte" } %}
 
-    <div class="request">
-        <span>Vérifie ton compte de Tutorat en cliquant sur le lien ci-dessous : </span>
-        <a href="{{ signedUrl }}" class="lineHoverEffect"><span><b>Vérifier mon compte</b></span></a>
-        <span>Ce lien ne marchera plus après une semaine.</span>
-    </div>
+    <span>Vérifie ton compte de Tutorat en cliquant sur le lien ci-dessous : </span>
+    <a href="{{ signedUrl }}" class="lineHoverEffect"><span><b>Vérifier mon compte</b></span></a>
+    <span>Ce lien ne marchera plus après une semaine.</span>
 
-    <div class="content">
-        <span>Si tu as créé un compte d'étudiant tuteur ou d'administrateur, tu n'auras accès qu'aux fonctionnalités de base jusqu'à ce que ton compte soit validé par ton département d'enseignement.</span>
-        <span>À de suite !</span>
-    </div>
-</div>
+    <span>Si tu as créé un compte d'étudiant tuteur ou d'administrateur, tu n'auras accès qu'aux fonctionnalités de base jusqu'à ce que ton compte soit validé par ton département d'enseignement.</span>
+    <span>À de suite !</span>
+
+{% include "email/components/_footer.html.twig" %}
 
 {% include "email/components/_globalStyle.html.twig" %}

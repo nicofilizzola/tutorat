@@ -10,6 +10,7 @@ use App\Form\FacultyType;
 use App\Form\SuperAdminType;
 use App\Repository\UserRepository;
 use App\Controller\Traits\emailData;
+use App\Repository\FacultyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -125,6 +126,7 @@ class SuperAdminController extends AbstractController
             $semester->setStartYear($data['semesterStartYear']);
             $semester->setEndYear($data['semesterEndYear']);
             $semester->setYearOrder($data['semesterYearOrder']);
+            $semester->setFaculty($faculty);
 
             $em->persist($admin);
             $em->persist($secretary);
@@ -149,6 +151,30 @@ class SuperAdminController extends AbstractController
 
         return $this->render('super_admin/index.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/changeFaculty", name="app_changeFaculty")
+     */
+    public function changeFaculty(Request $request, EntityManagerInterface $em, FacultyRepository $facultyRepository): Response
+    {
+        if (!$this->isSuperAdmin()){
+            return $this->redirectToRoute('app_home');
+        }
+
+        if ($request->isMethod('post')){
+            $selectedFaculty = $request->request->get('faculty');
+            $this->getUser()->setFaculty($selectedFaculty == 'none' ? null : $facultyRepository->findOneBy(['id' => $selectedFaculty]));
+            $em->persist($this->getUser());
+            $em->flush();
+
+            $this->addFlash('success', 'Faculty successfully changed');
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('super_admin/changeFaculty.html.twig', [
+            'faculties' => $facultyRepository->findAll(),
         ]);
     }
 }

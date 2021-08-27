@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    ">
+        <form action="{{ path('app_changeFaculty') }}" method="POST">
+            <select name="faculty" id="faculty">
+                <option value="none">None</option>
+                {% for faculty in faculties %}
+                    {% if faculty == app.user.faculty %}
+                        <option value="{{ faculty.id }}" selected="selected">{{ faculty.name }}</option>
+                    {% else %}
+                        <option value="{{ faculty.id }}">{{ faculty.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit">Change faculty</button>
+        </form>
+    </div>
+
+{% endblock %}

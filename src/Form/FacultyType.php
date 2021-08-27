@@ -60,7 +60,7 @@ class FacultyType extends AbstractType
                     'readonly' => true
                 ]
             ])
-            ->add('startYear', ChoiceType::class, [
+            ->add('semesterStartYear', ChoiceType::class, [
                 'choices' => [
                     date('Y', strtotime('-1 year')) => date('Y', strtotime('-1 year')),
                     date('Y') => date('Y'),
@@ -68,7 +68,7 @@ class FacultyType extends AbstractType
                 ],
                 'mapped' => false
             ])
-            ->add('endYear', ChoiceType::class, [
+            ->add('semesterEndYear', ChoiceType::class, [
                 'choices' => [
                     date('Y') => date('Y'),
                     date('Y', strtotime('+1 year')) => date('Y', strtotime('+1 year')),

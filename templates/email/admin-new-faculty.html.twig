@@ -4,8 +4,11 @@
 <h2>Vos identifiants d'administrateur</h2>
 <ul>
     <li>Adresse mail : <b>{{ mail }}</b></li>
-    <li>Mot de passe : <b>{{ password }}</b></li>
+    <li>Mot de passe provisoire : <b>{{ password }}</b></li>
 </ul>
 <h2>Code secret d'administrateur</h2>
 <p>Si d'autres membres du département souhaitent créér leur compte d'administrateur sur Tutoru, ce code leur sera demandé au moment de l'inscription :</p>
 <p><b>{{ adminCode }}</b></p>
+
+{% include "email/components/_globalStyle.html.twig" %}
+

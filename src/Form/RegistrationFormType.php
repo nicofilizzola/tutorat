@@ -100,7 +100,12 @@ class RegistrationFormType extends AbstractType
                 'label' => "Département d'enseignement",
                 'class' => Faculty::class,
                 'choice_label' => 'Name',
-                'required' => true
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Valeur invalide'
+                    ])
+                ]
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,

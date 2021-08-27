@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
             $user->updateTimestamp();
         }
 
-        if ($this->getUser()) {
+        if ($this->getUser() || empty($facultyRepository->findAll())) {
             return $this->redirectToRoute('app_home');
         }
 

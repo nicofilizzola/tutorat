@@ -323,7 +323,9 @@ class SessionController extends AbstractController
                 'success', 
                 "La liste d'appel a été transmise et le cours a bien été validé !"
             );
-            return $this->redirectToRoute('app_sessions');
+            return $this->redirectToRoute('app_session_view', [
+                'id' => $session->getId()
+            ]);
         }
 
         return $this->render(

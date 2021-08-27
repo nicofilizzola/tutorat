@@ -43,6 +43,7 @@ Encore
     .addEntry('app_forgot_password_request', './assets/routes/app_forgot_password_request.js')
     .addEntry('app_check_email', './assets/routes/app_check_email.js')
     .addEntry('app_reset_password', './assets/routes/app_reset_password.js')
+    .addEntry('app_changeFaculty', './assets/routes/app_changeFaculty.js')
     
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

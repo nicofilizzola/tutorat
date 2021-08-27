@@ -2,16 +2,17 @@
 
 namespace App\Controller\Traits;
 
+// requires getRoles in controller
 trait roleValidation {
-    private function isSecretary(){
+    private function isSecretary($onlySecretary = null){
         $userRoles = $this->getUser() ? $this->getUser()->getRoles() : null;
-        if (
-            !$this->getUser() ||
+        $condition = !$this->getUser() ||
             !in_array($this->getRoles()[2], $userRoles) || 
-            // in_array($this->getRoles()[3], $userRoles) || 
             $this->getUser()->getIsValid() !== 2 || 
-            !$this->getUser()->isVerified()
-        ){
+            !$this->getUser()->isVerified();
+        $condition = $onlySecretary ? $condition || in_array($this->getRoles()[3], $userRoles) : $condition;
+         
+        if ($condition){
             return false;
         }
         return true;

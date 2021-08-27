@@ -1,5 +1,7 @@
-<h1>Votre demande de droits a été refusée !</h1>
+{% include "email/components/_header.html.twig" with { title: "Votre demande a été réfusée !" } %}
+
 <p>Votre demande afin de devenir administrateur/tuteur dans le département a été réfusée.</p>
 <p>Pour plus de renseignements, veuillez contacter directement votre département.</p>
+{% include "email/components/_footer.html.twig" %}
 
 {% include "email/components/_globalStyle.html.twig" %}

@@ -1,13 +1,8 @@
-<div class="container">
-   <div class="title">
-      <h1>Tutorat</h1>
-      <span>Vous avez un nouveau message</span>
-   </div>
+{% include "email/components/_header.html.twig" with { title: "Ton cours a été annulé !" } %}
 
-   <div class="content">
       <span><b>Un cours de tutorat auquel tu étais inscrit(e) a été annulé</b></span>
       <span>Malheureusement, le cours '{{ session.title }}' prévu pour le {{ session.datetime | date('d/m/Y') }} à {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }} a été annulé.</span>
-   </div>
-</div>
+
+{% include "email/components/_footer.html.twig" %}
 
 {% include "email/components/_globalStyle.html.twig" %}

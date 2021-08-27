@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
-use App\Controller\Traits\adminValidationEmail;
-use App\Controller\Traits\isVerifiedUser;
+use App\Traits\getRoles;
+use App\Traits\emailRegex;
+use Symfony\Component\Mime\Email;
+use App\Repository\UserRepository;
+use App\Controller\Traits\emailData;
 use App\Repository\FacultyRepository;
 use App\Repository\SessionRepository;
 use App\Repository\SemesterRepository;
-use Symfony\Component\Mime\Email;
-use App\Repository\UserRepository;
-use App\Traits\emailRegex;
-use App\Traits\getRoles;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\Traits\emailData;
+use App\Controller\Traits\isVerifiedUser;
+use App\Controller\Traits\roleValidation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use App\Controller\Traits\adminValidationEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,7 @@ class DefaultController extends AbstractController
     use getRoles;
     use emailRegex;
     use isVerifiedUser;
+    use roleValidation;
 
 
     private function isOnlyStudent(){
@@ -39,17 +41,17 @@ class DefaultController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
-        $faculty = $this->getUser() && in_array($this->getRoles()[2], $this->getUser()->getRoles()) ? $this->getUser()->getFaculty() : null;
+        $faculty = $this->isSecretary() ? $this->getUser()->getFaculty() : null;
 
         return $this->render('default/index.html.twig', [
             'sessions' => $this->isVerifiedUser() ? $sessionRepository->findByStudentAwaiting($this->getUser()) : null,
-            'awaiting_sessions' => $sessionRepository->findByFacultyAfterToday(
+            'awaiting_sessions' => $this->isSecretary() ? $sessionRepository->findByFacultyAfterToday(
                 $faculty,
                [
                    'isValid' => 0,
                    'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
                 ],
-            ),
+            ) : null,
             'users' => $this->getUser() && in_array($this->getRoles()[3], $this->getUser()->getRoles()) ? 
                 $userRepository->findBy([
                     'isValid' => 1, 

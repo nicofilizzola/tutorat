@@ -32,9 +32,11 @@
                 "Secrétaire",
                 "Administrateur",
             ] %}
+
             <div class="welcome--container">
                 {% if app.user %}
-                    {% if roles.3 not in app.user.roles %}
+                    {% if (roles.3 not in app.user.roles) and (roles.2 not in app.user.roles) %}
+                    {# ÉTUDIANT #}
                         <div class="leftSide">
                             <div class="home--container">
                                 <div class="welcome">
@@ -62,8 +64,6 @@
                                             "title": "Mes cours",
                                             "type": ""
                                         } %}
-                                        {# <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Chercher un cours</button></a> #}
-                                        {# <a href="{{ path('app_ownSessions') }}"><button class="btn btn__tinyEffect hoveredItems">Mes cours</button></a> #}
                                         {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
                                             {% include "components/_button.html.twig" with {
                                                 "link": links.create,
@@ -71,7 +71,6 @@
                                                 "title": "Proposer un cours",
                                                 "type": ""
                                             } %}
-                                            {# <a href="{{ path('app_sessions_create') }}"><button class="btn btn__tinyEffect hoveredItems">Proposer un cours</button></a> #}
                                         {% else %}
                                             <button class="btn btn__w_default hoveredItems" id="becomeTutor">Proposer un cours</button>
                                         {% endif %}
@@ -82,7 +81,6 @@
                                             "title": "Se déconnecter",
                                             "type": ""
                                         } %}
-                                        {# <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a> #}
                                     </div>
                                 </div>
                             </div>                        
@@ -112,98 +110,154 @@
                                 {% endfor %}
                             </div>
                         </div>
-
-                    {% elseif (roles.3 in app.user.roles) and (app.user.isValid == 2) %} 
+                    {% elseif (roles.2 in app.user.roles) and (roles.3 not in app.user.roles) and (app.user.isValid == 2) %} 
+                    {# SECRETAIRE #}
                         <div class="leftSide">
                             <div class="home--container">
-                                        <div class="welcome">
-                                            <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
-                                            <span><b>Heureux de te revoir !</b></span>
-                                        </div>
+                                <div class="welcome">
+                                    <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
+                                    <span><b>Heureux de vous revoir !</b></span>
+                                </div>
 
-                                        {% if users | length == 0 %}
-                                            <span class="infos">Pas de demandes en attente.</span>
-                                        {% else %}
-                                            <span class="infos">Voici les dernières demandes reçues :</span>
-                                        {% endif %}
+                                {% if awaiting_sessions | length == 0 %}
+                                    <span class="infos">Pas de demandes en attente.</span>
+                                {% else %}
+                                    <span class="infos">Voici les dernières demandes reçues :</span>
+                                {% endif %}
 
-                                        <div class="requests--container">
-                                            {% for user in users %}
-                                                <div class="request">
-                                                    <div class="link hoveredItems">
-                                                        <a href="{{ path('app_users') }}">
-                                                            <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
-                                                                <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
-                                                                    <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                                    <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                                    <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
-                                                                </g>
-                                                            </svg>
-                                                        </a>
-                                                    </div>
-                                                    <div class="lineGap"></div>
-                                                    <div class="infos">
-                                                        {% set userRoleIndex = user.roles | length - 1 %}
-                                                        <span>{{ roleViewLabels[userRoleIndex] }} - {{ user.year }}e année</span>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <div class="buttons">
-                                            <div class="buttons--container">
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.logs,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Logs admin",
-                                                    "type": ""
-                                                } %}
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.cours,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Liste des cours",
-                                                    "type": ""
-                                                } %}
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.utilisateurs,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Gérer les utilisateurs",
-                                                    "type": ""
-                                                } %}
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.modules,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Gérer les modules",
-                                                    "type": ""
-                                                } %}
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.salles,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Gérer les salles de cours",
-                                                    "type": ""
-                                                } %}
-                                                {% include "components/_button.html.twig" with {
-                                                    "link": links.semestre,
-                                                    "class_modifier": "w_default",
-                                                    "title": "Gérer les semestres",
-                                                    "type": ""
-                                                } %}
-                                                {# <a href="{{ path('app_sessions_log') }}"><button class="btn btn__tinyEffect hoveredItems">Logs admin</button></a> #}
-                                                {# <a href="{{ path('app_sessions') }}"><button class="btn btn__tinyEffect hoveredItems">Liste des cours</button></a> #}
-                                                {# <a href="{{ path('app_users') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les utilisateurs</button></a> #}
-                                                {# <a href="{{ path('app_subject') }}"><button class="btn btn__tinyEffect hoveredItems">Gérer les modules</button></a> #}
-                                                {# <a href="{{ path('app_classroom') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les salles de cours</button></a> #}
-                                                {# <a href="{{ path('app_semester') }}"><button class="btn btn__mediumEffect hoveredItems">Gérer les semestres</button></a> #}
+                                <div class="requests--container">
+                                    {% for session in awaiting_sessions %}
+                                        <div class="request">
+                                            <div class="link hoveredItems">
+                                                <a href="{{ path('app_sessions_view', {"id": session.id}) }}">
+                                                    <span>{{ session.title }} - {{ session.subject }}</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                                        <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                            <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                            <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                            <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                        </g>
+                                                    </svg>
+                                                </a>
                                             </div>
-                                            {% include "components/_button.html.twig" with {
-                                                "link": links.deco,
-                                                "class_modifier": "w_tiny",
-                                                "title": "Se déconnecter",
-                                                "type": ""
-                                            } %}
-                                            {# <a href="{{ path('app_logout') }}"><button class="btn btn__tinyEffect btn__tiny hoveredItems">Se déconnecter</button></a> #}
+                                            <div class="lineGap"></div>
+                                            <div class="infos">
+                                                {# {% set sessionRoleIndex = session.roles | length - 1 %} #}
+                                                <span>{{ session.tutor.firstName }} {{ session.tutor.lastName }} - {{ session.dateTime |  date('d/m/Y') }} - {{ session.datetime | date('h') }}h{{ session.datetime | date('i') }}</span>
+                                            </div>
                                         </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="buttons">
+                                    <div class="buttons--container">
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.cours,
+                                            "class_modifier": "w_default",
+                                            "title": "Liste des cours",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.en_attente,
+                                            "class_modifier": "w_default",
+                                            "title": "Cours en attente",
+                                            "type": ""
+                                        } %}
+                                    </div>
+                                    {% include "components/_button.html.twig" with {
+                                        "link": links.deco,
+                                        "class_modifier": "w_tiny",
+                                        "title": "Se déconnecter",
+                                        "type": ""
+                                    } %}
+                                </div>
+                            </div>
+                        </div>
+                    {% elseif (roles.3 in app.user.roles) and (app.user.isValid == 2) %} 
+                    {# ADMIN #}
+                        <div class="leftSide">
+                            <div class="home--container">
+                                <div class="welcome">
+                                    <h1>Bonjour <span>{{ app.user.firstname }}</span> 👋</h1>
+                                    <span><b>Heureux de te revoir !</b></span>
+                                </div>
+
+                                {% if users | length == 0 %}
+                                    <span class="infos">Pas de demandes en attente.</span>
+                                {% else %}
+                                    <span class="infos">Voici les dernières demandes reçues :</span>
+                                {% endif %}
+
+                                <div class="requests--container">
+                                    {% for user in users %}
+                                        <div class="request">
+                                            <div class="link hoveredItems">
+                                                <a href="{{ path('app_users') }}">
+                                                    <span>{{ user.firstName | upper }} {{ user.lastName | capitalize }}</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
+                                                        <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
+                                                            <line id="Ligne_6" data-name="Ligne 6" x2="13.664" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                            <line id="Ligne_7" data-name="Ligne 7" y1="5.23" x2="5.23" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                            <line id="Ligne_8" data-name="Ligne 8" x2="5.23" y2="5.23" transform="translate(0 5.23)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="1"/>
+                                                        </g>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="lineGap"></div>
+                                            <div class="infos">
+                                                {% set userRoleIndex = user.roles | length - 1 %}
+                                                <span>{{ roleViewLabels[userRoleIndex] }} - {{ user.year }}e année</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="buttons">
+                                    <div class="buttons--container">
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.logs,
+                                            "class_modifier": "w_default",
+                                            "title": "Logs admin",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.cours,
+                                            "class_modifier": "w_default",
+                                            "title": "Liste des cours",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.utilisateurs,
+                                            "class_modifier": "w_default",
+                                            "title": "Gérer les utilisateurs",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.modules,
+                                            "class_modifier": "w_default",
+                                            "title": "Gérer les modules",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.salles,
+                                            "class_modifier": "w_default",
+                                            "title": "Gérer les salles de cours",
+                                            "type": ""
+                                        } %}
+                                        {% include "components/_button.html.twig" with {
+                                            "link": links.semestre,
+                                            "class_modifier": "w_default",
+                                            "title": "Gérer les semestres",
+                                            "type": ""
+                                        } %}
+                                    </div>
+                                    {% include "components/_button.html.twig" with {
+                                        "link": links.deco,
+                                        "class_modifier": "w_tiny",
+                                        "title": "Se déconnecter",
+                                        "type": ""
+                                    } %}
+                                </div>
                             </div>
                         </div>
                     {% endif %}
@@ -221,8 +275,6 @@
                             "title": "Se connecter",
                             "type": ""
                         } %}
-                        {# <a href="{{ path('app_register') }}"><button class="btn btn__tinyEffect hoveredItems">S'inscrire</button></a>
-                        <a href="{{ path('app_login') }}"><button class="btn btn__tinyEffect hoveredItems">Se connecter</button></a> #}
                     </div>
                 {% endif %}
 

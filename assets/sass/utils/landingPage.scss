@@ -15,10 +15,20 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      width: 90vw;
+      max-width: 700px;
 
       h1 {
          color: $primaryRed;
          font-size: 5em;
+
+         @include tablet-sm() {
+            font-size: 4em;
+         }
+
+         @include phone-sm() {
+            font-size: 3.5em;
+         }
       }
 
       h1, h2 {

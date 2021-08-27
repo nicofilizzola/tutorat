@@ -88,4 +88,9 @@
          transform: scale(12);
       }
    }
+
+   &__disabled {
+      cursor: not-allowed;
+      background-color: $greyLessOpacity;
+   }
 }

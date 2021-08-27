@@ -78,16 +78,12 @@
                         <span class="participants"><b>{{ currentSession.students | length}}</b> étudiant.es inscrit.es sur <b>{{ currentSession.studentLimit}}</b></span>
                     </div>
 
-                    {% if sessionViewMode == 3 %}
+                    {% if (sessionViewMode == 3) and (app.user.roles.2 not in roles) %}
                         {% if currentSession.students | length < currentSession.studentLimit %}
                             <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">
                                 <span>S'inscrire</span>
                             </button>
-                            <form 
-                                method="POST" 
-                                hidden="hidden" 
-                                action="{{ path("app_sessions_join", {"id": currentSession.id}) }}"
-                                id="js-join-session-{{ currentSession.id }}">
+                            <form method="POST" hidden="hidden" action="{{ path("app_sessions_join", {"id": currentSession.id}) }}" id="js-join-session-{{ currentSession.id }}">
                                 <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
                             </form>
                         {% else %}
@@ -98,11 +94,7 @@
                         <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-leave-{{ currentSession.id }}').submit();">
                             <span>Se désinscrire</span>
                         </button>
-                        <form 
-                            method="POST" 
-                            hidden="hidden" 
-                            action="{{ path("app_sessions_leave", {"id": currentSession.id}) }}"
-                            id="js-session-leave-{{ currentSession.id }}">
+                        <form method="POST" hidden="hidden" action="{{ path("app_sessions_leave", {"id": currentSession.id}) }}" id="js-session-leave-{{ currentSession.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('leave-session' ~ currentSession.id) }}"/>
                         </form>
 
@@ -110,22 +102,12 @@
                         <button class="btn btn__w_default hoveredItems" onclick="document.querySelector('#js-session-delete-{{ currentSession.id }}').submit();">
                             <span>Annuler le cours</span>
                         </button>
-                        <form 
-                            method="POST" 
-                            hidden="hidden" 
-                            action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}"
-                            id="js-session-delete-{{ currentSession.id }}">
+                        <form method="POST" hidden="hidden" action="{{ path("app_sessions_delete", {"id": currentSession.id}) }}" id="js-session-delete-{{ currentSession.id }}">
                             <input type="hidden" name="token" value="{{ csrf_token('delete-session' ~ currentSession.id) }}"/>
                         </form>
 
                         {% if (currentSession.students is empty) or (currentSession.participants is empty == false) %}
                         {% else %}
-                            {# {% include "components/_button.html.twig" with {
-                                "link": "{{ path('app_sessions_participants', {'id': currentSession.id}) }}",
-                                "class_modifier": "w_default",
-                                "title": "Faire l'appel",
-                                "type": ""
-                            } %} #}
                             <a href="{{ path("app_sessions_participants", {"id": currentSession.id}) }}">
                                 <button class="btn btn__w_default hoveredItems">
                                     <span>Faire l'appel</span>

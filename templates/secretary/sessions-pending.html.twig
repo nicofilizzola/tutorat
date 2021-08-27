@@ -7,67 +7,69 @@
 
 {% block body %}
 
-{% if sessions is empty == false %}
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
-            <div class="requests--container">
-                {% for session in sessions %}
-                    <div class="request--container">
-                        <div class="request--content">
-                            <span>Titre : <b>{{ session.title }}</b></span>
-                            <span>Module : <b>{{ session.subject }}</b></span>
-                            <span>Département : <b>{{ session.tutor.faculty.name }}</b></span>
-                            <span>Étudiant référent : <b>{{ session.tutor }} - {{ session.tutor.year }}e année ({{ session.tutor.email }})</b></span>
-                            <span>Date : <b>{{ session.dateTime | date('d/m/Y') }}</b> à <b>{{ session.dateTime | date('h') }}h{{ session.dateTime | date('i') }}</b></span>
-                            <span>Pour <b>{{ session.studentLimit + 1 }}</b> étudiants</span>
-                        </div>
+            {% if sessions is empty == false %}
+                <div class="requests--container">
+                    {% for session in sessions %}
+                        <div class="request--container">
+                            <div class="request--content">
+                                <span>Titre : <b>{{ session.title }}</b></span>
+                                <span>Module : <b>{{ session.subject }}</b></span>
+                                <span>Département : <b>{{ session.tutor.faculty.name }}</b></span>
+                                <span>Étudiant référent : <b>{{ session.tutor }} - {{ session.tutor.year }}e année ({{ session.tutor.email }})</b></span>
+                                <span>Date : <b>{{ session.dateTime | date('d/m/Y') }}</b> à <b>{{ session.dateTime | date('h') }}h{{ session.dateTime | date('i') }}</b></span>
+                                <span>Pour <b>{{ session.studentLimit + 1 }}</b> étudiants</span>
+                            </div>
 
-                        {% if session.comment is null == false %}
-                            <span>{{ session.comment }}</span>
-                        {% endif %}
-                        
-                        <form action="{{ path('app_session_validate', {'id': session.id}) }}" id="js-session-validate-{{ session.id }}" method="POST">
-                            {# <div id="room" class="hoveredItems">
-                            <div id="room">
-                                {% for classroom in classrooms %}
-                                    <div class="choice--container hoveredItems">
-                                        <label for="classroom-{{ classroom.id }}-for-{{ session.id }}" class="required notRequired">
-                                            <input type="radio" id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" required="required" value="{{ classroom.id }}"/>
-                                            <div class="choice">
-                                                <span>{{ classroom.name }}</span>
+                            {% if session.comment is null == false %}
+                                <span>{{ session.comment }}</span>
+                            {% endif %}
+
+                            <div class="form--content">
+                                <form action="{{ path('app_session_validate', {'id': session.id}) }}" id="js-session-validate-{{ session.id }}" method="POST">
+                                    {# <div id="room" class="hoveredItems">
+                                    <div id="room">
+                                        {% for classroom in classrooms %}
+                                            <div class="choice--container hoveredItems">
+                                                <label for="classroom-{{ classroom.id }}-for-{{ session.id }}" class="required notRequired">
+                                                    <input type="radio" id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" required="required" value="{{ classroom.id }}"/>
+                                                    <div class="choice">
+                                                        <span>{{ classroom.name }}</span>
+                                                    </div>
+                                                </label>
                                             </div>
-                                        </label>
-                                    </div>
-                                {% endfor %}
-                            </div> #}
-                            <select name="classroom-for-{{ session.id }}" id="classroom-for-{{ session.id }}">
-                                <option value="">Choissisez une salle</option>
-                                {% for classroom in classrooms %}
-                                    <option value="{{ classroom.id }}">{{ classroom.name }}</option>    
-                                {% endfor %}
-                            </select>
-                            <input type="hidden" name="token" value="{{ csrf_token('session-validate' ~ session.id) }}"/>
-                        </form>
+                                        {% endfor %}
+                                    </div> #}
+                                    <select name="classroom-for-{{ session.id }}" id="classroom-for-{{ session.id }}">
+                                        <option value="">Choissisez une salle</option>
+                                        {% for classroom in classrooms %}
+                                            <option value="{{ classroom.id }}">{{ classroom.name }}</option>    
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" name="token" value="{{ csrf_token('session-validate' ~ session.id) }}"/>
+                                </form>
+                            </div>
 
-                        <form action="{{ path('app_session_refuse', {'id': session.id}) }}" method="POST" id="js-session-refuse-{{ session.id }}" display="none">
-                            <input type="hidden" name="token" value="{{ csrf_token('session-refuse' ~ session.id) }}"/>
-                        </form>
+                            <form action="{{ path('app_session_refuse', {'id': session.id}) }}" method="POST" id="js-session-refuse-{{ session.id }}" display="none">
+                                <input type="hidden" name="token" value="{{ csrf_token('session-refuse' ~ session.id) }}"/>
+                            </form>
 
-                        <div class="buttons">
-                            <button class="btn btn__w_45p hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-validate-{{ session.id }}').submit();">
-                                <span>Valider</span>
-                            </button>
-                            <button class="btn btn__w_45p hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-refuse-{{ session.id }}').submit();">
-                                <span>Refuser</span>
-                            </button>
+                            <div class="buttons">
+                                <button class="btn btn__w_45p hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-validate-{{ session.id }}').submit();">
+                                    <span>Valider</span>
+                                </button>
+                                <button class="btn btn__w_45p hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-session-refuse-{{ session.id }}').submit();">
+                                    <span>Refuser</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Pas de cours à valider</p>
+            {% endif %}
         </div>
     </div>
-{% else %}
-    <p>Pas de cours à valider</p>
-{% endif %}
 
 {% endblock %}

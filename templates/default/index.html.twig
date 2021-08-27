@@ -72,7 +72,7 @@
                                                 "type": ""
                                             } %}
                                         {% else %}
-                                            <button class="btn btn__w_default hoveredItems" id="becomeTutor">Proposer un cours</button>
+                                            <button class="btn btn__w_default hoveredItems" id="becomeTutor"><span>Proposer un cours</span></button>
                                         {% endif %}
 
                                         {% include "components/_button.html.twig" with {
@@ -129,7 +129,7 @@
                                     {% for session in awaiting_sessions %}
                                         <div class="request">
                                             <div class="link hoveredItems">
-                                                <a href="{{ path('app_sessions_view', {"id": session.id}) }}">
+                                                <a href="{{ path('app_sessions_pending') }}">
                                                     <span>{{ session.title }} - {{ session.subject }}</span>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18.03" height="16.857" viewBox="0 0 18.03 16.857">
                                                         <g id="back_arrow" data-name="back arrow" transform="translate(17.064 10.025) rotate(150)">
@@ -284,7 +284,7 @@
                         <div class="text--container">
                             <span>Tu dois être un tuteur pour pouvoir proposer un cours.</span>
                             <br>
-                            <a href="{{ path('app_become-tutor') }}" style="color:#fff" class="hoveredItems lineHoverEffect"><span>Clique ici pour faire la demande.</span></a>
+                            <a href="{{ path('app_become-tutor') }}" style="color:#fff" class="hoveredItems lineHoverEffect lineHoverEffect__reverse"><span>Clique ici pour faire la demande.</span></a>
                             <span class="cross">&times;</span>
                         </div>
                         <div class="background">

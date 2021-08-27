@@ -7,6 +7,7 @@ use App\Controller\Traits\isVerifiedUser;
 use App\Entity\Session;
 use App\Repository\FacultyRepository;
 use App\Repository\SessionRepository;
+use App\Repository\SemesterRepository;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use App\Traits\emailRegex;
@@ -29,6 +30,7 @@ class DefaultController extends AbstractController
     use emailRegex;
     use isVerifiedUser;
 
+
     private function isOnlyStudent(){
         return !$this->isVerifiedUser() || in_array($this->getRoles()[1], $this->getUser()->getRoles()) ? false : true;
     }
@@ -36,10 +38,19 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(SessionRepository $sessionRepository, UserRepository $userRepository): Response
+    public function index(SessionRepository $sessionRepository, UserRepository $userRepository, SemesterRepository $semesterRepository): Response
     {
+        $faculty = $this->getUser()->getFaculty();
+
         return $this->render('default/index.html.twig', [
             'sessions' => $this->isVerifiedUser() ? $sessionRepository->findByStudentAwaiting($this->getUser()) : null,
+            'awaiting_sessions' => $sessionRepository->findByFacultyAfterToday(
+                $faculty,
+               [
+                   'isValid' => 0,
+                   'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
+                ],
+            ),
             'users' => $this->getUser() && in_array($this->getRoles()[3], $this->getUser()->getRoles()) ? 
                 $userRepository->findBy([
                     'isValid' => 1, 

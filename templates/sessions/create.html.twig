@@ -10,6 +10,23 @@
 {% endblock %}
 
 {% block body %}
+    {% set links = {
+        "accueil": "/",
+        "mes_cours": "/ownSessions",
+        "cours": "/sessions",
+        "create": "/sessions/create",
+        "en_attente": "/sessions/pending",
+        "logs": "/sessions/log",
+        "utilisateurs": "/users",
+        "modules": "/subject",
+        "salles": "/classroom",
+        "semestre": "/semester",
+        "contact": "/contact",
+        "inscription": "/register",
+        "connexion": "/login",
+        "deco": "/logout"
+    } %}
+    
 	<div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -123,8 +140,12 @@
                             'rows':'5'
                         }
                     }) }}
-
-                    <button type="submit" class="btn btn__propose hoveredItems">Proposer</button>
+                    {% include "components/_button.html.twig" with {
+                        "link": links.create,
+                        "class_modifier": "w_100p",
+                        "title": "Proposer",
+                        "type": "submit"
+                    } %}
                     {{ form_end(form) }}
 
                 </div>

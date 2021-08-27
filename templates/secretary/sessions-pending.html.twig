@@ -29,9 +29,9 @@
                         {% endif %}
                         
                         <form action="{{ path('app_session_validate', {'id': session.id}) }}" id="js-session-validate-{{ session.id }}" method="POST">
-                            <div id="room" class="hoveredItems">
+                            <div id="room">
                                 {% for classroom in classrooms %}
-                                    <div class="choice--container">
+                                    <div class="choice--container hoveredItems">
                                         <label for="classroom-{{ classroom.id }}-for-{{ session.id }}" class="required notRequired">
                                             <input type="radio" id="classroom-{{ classroom.id }}-for-{{ session.id }}" name="classroom-for-{{ session.id }}" required="required" value="{{ classroom.id }}"/>
                                             <div class="choice">

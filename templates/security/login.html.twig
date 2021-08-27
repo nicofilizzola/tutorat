@@ -55,9 +55,12 @@
                                     <span>@iut-tarbes.fr</span>
                                 </div>
                             </div>
-                            <div>
-                                <label for="inputPassword">Mot de passe</label>
-                                <input type="password" name="password" id="inputPassword" class="form-control hoveredItems" autocomplete="current-password" required>
+                            <div class="mail">
+                                <div>
+                                    <label for="inputPassword">Mot de passe</label>
+                                    <input type="password" name="password" id="inputPassword" class="form-control hoveredItems" autocomplete="current-password" required>
+                                </div>
+                                <a href="{{ path('app_forgot_password_request') }}" class="hoveredItems lineHoverEffect"><span>J'ai oublié mon mot de passe</span></a>
                             </div>
 
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -74,9 +77,9 @@
                                 "link": links.connexion,
                                 "class_modifier": "w_100p",
                                 "title": "Se connecter",
-                                "type": "submit"
+                                "type": "submit",
+                                "isDisabled": false
                             } %}
-                            <a href="{{ path('app_forgot_password_request') }}">J'ai oublié mon mot de passe</a>
                         </form>
                     </div>
                 {# </div> #}

@@ -70,3 +70,9 @@
    z-index: -1;
    opacity: .8;
 }
+
+div[data-lg-preloader] {
+   width: 100vw;
+   height: 100vh;
+   background-color: $grey;
+}

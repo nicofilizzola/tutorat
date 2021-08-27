@@ -1,4 +1,6 @@
 import "../sass/utils/form.scss";
+import "../sass/utils/login.scss";
+
 import { manageEmailInputOnSubmit, manageEmailInputBeforeSubmit } from "../functions/manageEmailInput.js";
 import { fieldsError } from "../functions/checkFieldsErrors.js";
 

@@ -56,20 +56,23 @@
                                             "link": links.cours,
                                             "class_modifier": "w_default",
                                             "title": "Chercher un cours",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.mes_cours,
                                             "class_modifier": "w_default",
                                             "title": "Mes cours",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% if (roles.1 in app.user.roles) and (app.user.isValid == 2) %}
                                             {% include "components/_button.html.twig" with {
                                                 "link": links.create,
                                                 "class_modifier": "w_default",
                                                 "title": "Proposer un cours",
-                                                "type": ""
+                                                "type": "",
+                                                "isDisabled": false
                                             } %}
                                         {% else %}
                                             <button class="btn btn__w_default hoveredItems" id="becomeTutor"><span>Proposer un cours</span></button>
@@ -79,7 +82,8 @@
                                             "link": links.deco,
                                             "class_modifier": "w_tiny",
                                             "title": "Se déconnecter",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                     </div>
                                 </div>
@@ -155,20 +159,23 @@
                                             "link": links.cours,
                                             "class_modifier": "w_default",
                                             "title": "Liste des cours",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.en_attente,
                                             "class_modifier": "w_default",
                                             "title": "Cours en attente",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                     </div>
                                     {% include "components/_button.html.twig" with {
                                         "link": links.deco,
                                         "class_modifier": "w_tiny",
                                         "title": "Se déconnecter",
-                                        "type": ""
+                                        "type": "",
+                                        "isDisabled": false
                                     } %}
                                 </div>
                             </div>
@@ -218,44 +225,51 @@
                                             "link": links.logs,
                                             "class_modifier": "w_default",
                                             "title": "Logs admin",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.cours,
                                             "class_modifier": "w_default",
                                             "title": "Liste des cours",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.utilisateurs,
                                             "class_modifier": "w_default",
                                             "title": "Gérer les utilisateurs",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.modules,
                                             "class_modifier": "w_default",
                                             "title": "Gérer les modules",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.salles,
                                             "class_modifier": "w_default",
                                             "title": "Gérer les salles de cours",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                         {% include "components/_button.html.twig" with {
                                             "link": links.semestre,
                                             "class_modifier": "w_default",
                                             "title": "Gérer les semestres",
-                                            "type": ""
+                                            "type": "",
+                                            "isDisabled": false
                                         } %}
                                     </div>
                                     {% include "components/_button.html.twig" with {
                                         "link": links.deco,
                                         "class_modifier": "w_tiny",
                                         "title": "Se déconnecter",
-                                        "type": ""
+                                        "type": "",
+                                        "isDisabled": false
                                     } %}
                                 </div>
                             </div>
@@ -267,13 +281,15 @@
                             "link": links.inscription,
                             "class_modifier": "w_default",
                             "title": "S'inscrire",
-                            "type": ""
+                            "type": "",
+                            "isDisabled": false
                         } %}
                         {% include "components/_button.html.twig" with {
                             "link": links.connexion,
                             "class_modifier": "w_default",
                             "title": "Se connecter",
-                            "type": ""
+                            "type": "",
+                            "isDisabled": false
                         } %}
                     </div>
                 {% endif %}

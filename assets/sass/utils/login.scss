@@ -1,0 +1,20 @@
+@import 'var';
+
+.mail {
+   align-items: flex-end;
+
+   div {
+      margin-bottom: 5px;
+   }
+
+   a {
+      font-size: .8em;
+      opacity: .5;
+      transition: opacity .25s ease-in-out;
+
+      &:hover {
+         opacity: 1;
+         transition: opacity .25s ease-in-out;
+      }
+   }
+}

@@ -47,8 +47,13 @@
                             <textarea id="contact-form-message" name="message" rows="8" placeholder="Ton message ici"required="required"></textarea>
                         </div>
 
-
-                        <button type="submit" class="btn">Envoyer</button>
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Envoyer",
+                            "type": "submiy",
+                            "isDisabled": false
+                        } %}
 
                         <input type="hidden" name="token" value="{{ csrf_token('contact') }}"/>
                     </form>

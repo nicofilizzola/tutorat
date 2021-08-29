@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+    {% include "components/_submitModals.html.twig" %}
     <div class="container" data-lg-smooth>
         <div class="search--container">
             <div class="search--content">
@@ -253,7 +254,6 @@
                         </div>
                     </div>
                 {% endfor %}
-
             {% else %}
                 <h2>Pas d'utilisateurs à valider</h2>
             {% endif %}

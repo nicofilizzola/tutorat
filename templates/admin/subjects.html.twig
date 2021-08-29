@@ -7,6 +7,7 @@
 
 
 {% block body %}
+    {% include "components/_submitModals.html.twig" %}
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -59,7 +60,7 @@
                                     <span>🗑️</span>
                                 </button>
                             {% else %} #}
-                                <button title="Supprimer le module." onclick="event.preventDefault(); document.querySelector('#js-subject-delete-form-{{ subject.id }}').submit()" class="delete hoveredItems refuse">
+                                <button title="Supprimer le module." data-id="{{ subject.id }}" onclick="event.preventDefault();" class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                                 <form 

@@ -4,6 +4,12 @@ import checkUserDevice from "../functions/checkUserDevice.js";
 var distance = require('jaro-winkler');
 
 const domCache = {
+   buttons: document.querySelectorAll('button'),
+
+   modalContainer: document.querySelector('.modal--container'),
+   modalYes: document.querySelector('.choice .yes'),
+   modalNo: document.querySelector('.choice .no'),
+
    validateFormButtons: document.querySelectorAll('.validate'),
    refuseFormButtons: document.querySelectorAll('.refuse'),
    deleteFormButtons: document.querySelectorAll('.delete'),
@@ -14,7 +20,6 @@ const domCache = {
    usersList: document.querySelectorAll('.userContent--container__user'),
 
    searchBar: document.querySelector('.search--content input'),
-
 
    desktopDisplay: document.querySelector('.container'),
    phoneDisplay: document.querySelector('.phone--container')
@@ -334,4 +339,20 @@ domCache.downgradeFormButtons.forEach(button => {
    button.addEventListener('mouseleave', () => {
       getCard(button, 1).children[0].style.color = ''
    })
+})
+
+domCache.buttons.forEach(button => {
+   button.addEventListener('click', () => {
+      domCache.modalContainer.style.pointerEvents = 'all'
+      domCache.modalContainer.style.opacity = 1
+
+      domCache.modalYes.addEventListener('click', () => {
+         document.querySelector(`#js-user-${button.dataset.action}-form-${button.dataset.id}`).submit()
+      })
+   })
+})
+
+domCache.modalNo.addEventListener('click', () => {
+   domCache.modalContainer.style.opacity = 0
+   domCache.modalContainer.style.pointerEvents = 'none'
 })

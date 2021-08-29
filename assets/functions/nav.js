@@ -17,6 +17,7 @@ const nav = () => {
       'ownSessions':'mes cours',
       'pending':'attribution',
       'become_tutor':'devenir tuteur',
+      'reset-password':'réinitialiser le mot de passe',
    }
 
    const cutPath = domCache.navPath.innerHTML.split('/')

@@ -37,8 +37,9 @@ if (cross || flashContainerBackground) {
 }
 
 // Landing page
-
-const imageSrc = document.querySelector('.background--picture img').src
-const background = document.querySelector('.background--picture')
-
-background.style.backgroundImage = `url('${imageSrc}')`
+if (document.querySelector('.background--picture img')) {
+   const imageSrc = document.querySelector('.background--picture img').src
+   const background = document.querySelector('.background--picture')
+   
+   background.style.backgroundImage = `url('${imageSrc}')`
+}

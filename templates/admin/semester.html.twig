@@ -7,6 +7,7 @@
 
 
 {% block body %}
+    {% include "components/_submitModals.html.twig" %}
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -50,7 +51,7 @@
                                     <span>🗑️</span>
                                 </button>
                             {% else %}
-                                <button title="Supprimer ce semestre" onclick="event.preventDefault(); document.querySelector('#js-semester-delete-form-{{ semester.id }}').submit()" class="delete hoveredItems refuse">
+                                <button title="Supprimer ce semestre" data-id="{{ semester.id }}" onclick="event.preventDefault(); class="delete hoveredItems refuse">
                                     <span>🗑️</span>
                                 </button>
                             {% endif %}

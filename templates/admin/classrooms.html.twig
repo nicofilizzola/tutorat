@@ -7,6 +7,7 @@
 
 
 {% block body %}
+    {% include "components/_submitModals.html.twig" %}
     <div class="smooth--container" data-lg-smooth>
         <div class="container">
             <div class="form--container">
@@ -34,7 +35,7 @@
                         </div>
                         
                         <div class="content manage">
-                            <button title="Supprimer la salle de cours." onclick="event.preventDefault(); document.querySelector('#js-classroom-delete-form-{{ classroom.id }}').submit()" class="delete hoveredItems refuse">
+                            <button title="Supprimer la salle de cours." data-id="{{ classroom.id }}" onclick="event.preventDefault();" class="delete hoveredItems refuse">
                                 <span>🗑️</span>
                             </button>
                             <form 

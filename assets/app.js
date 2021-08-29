@@ -65,37 +65,39 @@ domCache.menuContentLink.forEach(content => {
    content.children[0].appendChild(fragment)
 })
 
-// Success messages
-// let flashMessageCross, flashContainerBackground = null
-// if (document.querySelector("p.success")) {
-//    manageFlashMessages(document.querySelector("p.success"))
-//    flashMessageCross = document.querySelector('.flash--container .cross')
-//    flashContainerBackground = document.querySelector('.flash--container .background')
-// }
-// if (document.querySelector("p.danger")) {
-//    manageFlashMessages(document.querySelector("p.danger"))
-//    flashMessageCross = document.querySelector('.flash--container .cross')
-//    flashContainerBackground = document.querySelector('.flash--container .background')
-// }
-// if (document.querySelector("div.alert")) {
-//    manageFlashMessages(document.querySelector("div.alert"))
-//    flashMessageCross = document.querySelector('.flash--container .cross')
-//    flashContainerBackground = document.querySelector('.flash--container .background')
-// }
+// flash messages
 if (document.querySelector('.flash_message')) {
    document.querySelector('.flash--container .cross').addEventListener('click', () => {
       const flashContainer = document.querySelector('.flash--container')
-      gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
+      flashContainer.style.opacity = 0
       setTimeout(() => {
          flashContainer.remove()
       }, 750);
    })
    document.querySelector('.flash--container .background').addEventListener('click', () => {
       const flashContainer = document.querySelector('.flash--container')
-      gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
+      flashContainer.style.opacity = 0
       setTimeout(() => {
          flashContainer.remove()
       }, 750);
+   })
+}
+
+// modal messages
+if (document.querySelector('.modal_message')) {
+   document.querySelector('.modal--container .cross').addEventListener('click', () => {
+      const modalContainer = document.querySelector('.modal--container')
+      modalContainer.style.opacity = 0
+      setTimeout(() => {
+         modalContainer.style.pointerEvents = 'none'
+      }, 500);
+   })
+   document.querySelector('.modal--container .background').addEventListener('click', () => {
+      const modalContainer = document.querySelector('.modal--container')
+      modalContainer.style.opacity = 0
+      setTimeout(() => {
+         modalContainer.style.pointerEvents = 'none'
+      }, 500);
    })
 }
 

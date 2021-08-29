@@ -144,7 +144,7 @@ textarea, input {
 }
 
 // flash message
-.flash--container {
+.flash--container, .modal--container {
    position: fixed;
    display: flex;
    flex-direction: column;
@@ -155,6 +155,7 @@ textarea, input {
    top: 0;
    left: 0;
    z-index: 5;
+   transition: opacity .5s ease-in-out;
 
    .text--container {
       position: relative;
@@ -184,6 +185,21 @@ textarea, input {
       height: 100vh;
       background-color: rgba($grey, .1);
       z-index: -1;
+   }
+}
+
+.modal--container {
+   opacity: 0;
+   pointer-events: none;
+   
+   .choice {
+      margin-top: 5px;
+
+      a {
+         color: #fff;
+         cursor: pointer;
+         margin: 10px;
+      }
    }
 }
 

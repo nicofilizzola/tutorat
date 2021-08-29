@@ -3,11 +3,12 @@
         <span>De : <b>{{ data.email }}</b></span>
         <span>Le : <b>{{ data.date }}</b></span>
         <span>Objet : <b>{{ data.subject }}</b></span>
+        <br>
         <span>{{ data.message }}</span>
-
+        <br>
         <span>Pour y répondre, veuillez ajouter les autres administrateurs du département en CC dans votre mail afin de leur informer que ce message a été traité :</span>
         {% for email in adminEmails %}
-            <span>{{ loop.index0 == 0 ? '' : ', ' }}{{ email }}</span>
+            <code>{{ loop.index0 == 0 ? '' : ', ' }}{{ email }}</code>
         {% endfor %}
 
 {% include "email/components/_footer.html.twig" %}

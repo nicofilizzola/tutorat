@@ -1,17 +1,36 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_reset_password') }}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-    {% for flashError in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-    <h1>Réinitialiser mot de passe</h1>
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            {% for flashError in app.flashes('reset_password_error') %}
+                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+            {% endfor %}
+            <div class="form--container">
+                <div class="form--content">
+                    <h1>Réinitialiser mot de passe</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <span>Entrez votre mail et on vous enverra un lien vous permettant de réinitialiser votre mot de passe.</span>    
+                    {{ form_start(requestForm) }}
+                        {{ form_row(requestForm.email) }}
+                        <div>
+                            <span>Entrez votre mail et on vous enverra un lien vous permettant de réinitialiser votre mot de passe.</span>    
+                        </div>
+
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Envoyer",
+                            "type": "",
+                            "isDisabled": false
+                        } %}
+                    {{ form_end(requestForm) }}
+                </div>
+            </div>
         </div>
-
-        <button class="btn btn-primary">Envoyer mail de réinitialisation</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}

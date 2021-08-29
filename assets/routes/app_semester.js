@@ -5,6 +5,12 @@ import "../sass/utils/semesters.scss";
 const deleteFormButtons = document.querySelectorAll('.delete')
 const yearSelects = document.querySelectorAll('select[data-year]')
 
+const buttons = document.querySelectorAll('button')
+
+const modalContainer = document.querySelector('.modal--container')
+const modalYes = document.querySelector('.choice .yes')
+const modalNo = document.querySelector('.choice .no')
+
 const getCard = (button) => {
    return button.parentNode.parentNode
 }
@@ -28,4 +34,20 @@ yearSelects[0].addEventListener('change', () => {
          yearSelects[1].children[i].disabled = false
       }
    }
+})
+
+buttons.forEach(button => {
+   button.addEventListener('click', () => {
+      modalContainer.style.pointerEvents = 'all'
+      modalContainer.style.opacity = 1
+
+      modalYes.addEventListener('click', () => {
+         document.querySelector(`#js-semester-delete-form-${ button.dataset.id }`).submit()
+      })
+   })
+})
+
+modalNo.addEventListener('click', () => {
+   modalContainer.style.opacity = 0
+   modalContainer.style.pointerEvents = 'none'
 })

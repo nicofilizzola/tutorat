@@ -1,10 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Réinitialisez votre mot de passe</h1>
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_reset_password') }}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+{% block body %}
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--container">
+                <div class="form--content">        
+                    <h1>Réinitialiser mot de passe</h1>
+
+                    {{ form_start(resetForm) }}
+                        {{ form_row(resetForm.plainPassword) }}
+                        {% include "components/_button.html.twig" with {
+                            "link": "",
+                            "class_modifier": "w_100p",
+                            "title": "Réinitialiser",
+                            "type": "",
+                            "isDisabled": false
+                        } %}
+                    {{ form_end(resetForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

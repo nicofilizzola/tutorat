@@ -92,5 +92,13 @@
    &__disabled {
       cursor: not-allowed;
       background-color: $greyLessOpacity;
+   
+      &:before {
+         background: $grey;
+      }
+      
+      &:hover:before {
+         transform: scale(0);
+      }
    }
 }

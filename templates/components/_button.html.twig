@@ -1,1 +1,5 @@
-<a href="{{ link }}"><button class="btn btn__{{ class_modifier }} hoveredItems" type="{{ type }}"><span>{{ title }}</span></button></a>
+<a href="{{ isDisabled ? "" : link }}">
+   <button class="btn btn__{{ class_modifier }} {{ isDisabled ? "btn__disabled" }} hoveredItems" {{ isDisabled ? "disabled" }} type="{{ type }}">
+      <span>{{ title }}</span>
+   </button>
+</a>

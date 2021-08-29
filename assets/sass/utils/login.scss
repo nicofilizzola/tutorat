@@ -18,3 +18,40 @@
       }
    }
 }
+
+.errorField {
+   background-color: rgba($primaryRed, .3);
+   border: 1px solid $primaryRed;
+   border-radius: 2px;
+}
+
+div.alert-danger {
+   display: flex;
+   flex-direction: row;
+   position: relative;
+   list-style: none;
+   width: fit-content;
+   background-color: $darkerRed;
+   border-radius: 2px;
+   padding: 10px;
+   padding-right: 25px;
+
+   &:after {
+      content: 'x';
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0 5px;
+      color: #fff;
+      cursor: pointer;
+   }
+
+   // li {
+   //    font-size: 1em;
+   //    color: #fff;
+   
+      &::before {
+         content: ' ⚠️ ';
+      }
+   // }
+}

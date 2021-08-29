@@ -6,8 +6,10 @@ const formContainer = document.querySelector(".form--container .form--content fo
 const switchOptionContainer = document.getElementById("switchOption--container");
 const yearInput = document.getElementById("registration_form_year");
 const adminCodeInput = document.getElementById("registration_form_adminCode");
-const roleInput = document.getElementById("registration_form_role");
+const roleInput = document.querySelector("select#registration_form_role");
 const fields = [];
+
+console.log(roleInput)
 
 fieldsError(formContainer, fields);
 const errorMessages = document.querySelectorAll(".form--content ul");
@@ -20,7 +22,7 @@ errorMessages.forEach(error => {
 
 const manageAdminYearRole = () => {
   const manageDisabledInputs = (roleInputValue) => {
-    if (roleInputValue == 3) {
+    if (roleInputValue == 4) {
       switchOptionContainer.children[0].style.display = "flex";
       switchOptionContainer.children[0].hidden = false;
       switchOptionContainer.children[1].style.display = "none";
@@ -38,13 +40,11 @@ const manageAdminYearRole = () => {
   };
 
   manageDisabledInputs(roleInput.value); // if default value is admin when reloaded with error
-  roleInput.addEventListener("change", function () {
-    manageDisabledInputs(roleInput.value);
-  });
 };
 
-
-
+roleInput.addEventListener("change", function () {
+  manageAdminYearRole();
+})
 
 manageAdminYearRole();
 manageEmailInputOnSubmit("#registration_form", "#registration_form_email");

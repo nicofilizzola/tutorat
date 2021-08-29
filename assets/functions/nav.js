@@ -15,7 +15,8 @@ const nav = () => {
       'login':'connexion',
       'register':'inscription',
       'ownSessions':'mes cours',
-      'pending':'attribution'
+      'pending':'attribution',
+      'become_tutor':'devenir tuteur',
    }
 
    const cutPath = domCache.navPath.innerHTML.split('/')
@@ -38,12 +39,12 @@ const nav = () => {
          linkPath.classList.add('lineHoverEffect')
          
          const textPath = document.createElement('span')
-         if (navPathNames[path] != undefined)
+         if (navPathNames[path] != undefined) {
             textPath.innerHTML = navPathNames[path]
-         else
+         } else {
             textPath.innerHTML = path
+         }
 
-   
          linkPath.appendChild(textPath)
    
          customPathFragment.appendChild(gap)

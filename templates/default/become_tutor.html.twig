@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ encore_entry_link_tags('app_become_tutor') }}
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="smooth--container" data-lg-smooth>
+        <div class="container">
+            <div class="form--content">
+                <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque labore facere placeat sint blanditiis nesciunt totam, maxime non quo exercitationem quidem officia aliquam, ipsa, nisi porro. Necessitatibus veniam ea iste.</span>
+
+                <form action="{{ path("app_become_tutor") }}" method="POST">
+                    <input type="hidden" name="token" value="{{ csrf_token('become_tutor') }}"/>
+                    <button class="btn btn__w_100p hoveredItems" type="submit"><span>Faire la demande</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

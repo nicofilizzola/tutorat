@@ -30,7 +30,7 @@ Encore
     .addEntry('app_sessions_view', './assets/routes/app_sessions_view.js')
     .addEntry('app_sessions_create', './assets/routes/app_sessions_create.js')
     .addEntry('app_users', './assets/routes/app_users.js')
-    .addEntry('app_become-tutor', './assets/routes/app_become-tutor.js')
+    .addEntry('app_become_tutor', './assets/routes/app_become_tutor.js')
     .addEntry('app_subject', './assets/routes/app_subject.js')
     .addEntry('app_sessions_pending', './assets/routes/app_sessions_pending.js')
     .addEntry('app_sessions_log', './assets/routes/app_sessions_log.js')

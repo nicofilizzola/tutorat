@@ -16,7 +16,7 @@ import './bootstrap';
 import { gsap } from 'gsap'
 import luge from '@waaark/luge'
 
-import { manageFlashMessages } from "./functions/manageFlashMessages.js";
+// import { manageFlashMessages } from "./functions/manageFlashMessages.js";
 import { nav } from "./functions/nav.js";
 
 const domCache = {
@@ -66,26 +66,31 @@ domCache.menuContentLink.forEach(content => {
 })
 
 // Success messages
-let flashMessageCross, flashContainerBackground = null
-if (document.querySelector("p.success")) {
-   manageFlashMessages(document.querySelector("p.success"))
-   flashMessageCross = document.querySelector('.flash--container .cross')
-   flashContainerBackground = document.querySelector('.flash--container .background')
-}
-if (document.querySelector("p.danger")) {
-   manageFlashMessages(document.querySelector("p.danger"))
-   flashMessageCross = document.querySelector('.flash--container .cross')
-   flashContainerBackground = document.querySelector('.flash--container .background')
-}
-if (flashMessageCross || flashContainerBackground) {
-   flashMessageCross.addEventListener('click', () => {
+// let flashMessageCross, flashContainerBackground = null
+// if (document.querySelector("p.success")) {
+//    manageFlashMessages(document.querySelector("p.success"))
+//    flashMessageCross = document.querySelector('.flash--container .cross')
+//    flashContainerBackground = document.querySelector('.flash--container .background')
+// }
+// if (document.querySelector("p.danger")) {
+//    manageFlashMessages(document.querySelector("p.danger"))
+//    flashMessageCross = document.querySelector('.flash--container .cross')
+//    flashContainerBackground = document.querySelector('.flash--container .background')
+// }
+// if (document.querySelector("div.alert")) {
+//    manageFlashMessages(document.querySelector("div.alert"))
+//    flashMessageCross = document.querySelector('.flash--container .cross')
+//    flashContainerBackground = document.querySelector('.flash--container .background')
+// }
+if (document.querySelector('.flash_message')) {
+   document.querySelector('.flash--container .cross').addEventListener('click', () => {
       const flashContainer = document.querySelector('.flash--container')
       gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
       setTimeout(() => {
          flashContainer.remove()
       }, 750);
    })
-   flashContainerBackground.addEventListener('click', () => {
+   document.querySelector('.flash--container .background').addEventListener('click', () => {
       const flashContainer = document.querySelector('.flash--container')
       gsap.to(flashContainer, .75, { opacity: 0, ease: 'Power3.easeInOut' })
       setTimeout(() => {

@@ -63,7 +63,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/become-tutor", name="app_become-tutor", methods={"GET", "POST"})
+     * @Route("/become_tutor", name="app_become_tutor", methods={"GET", "POST"})
      */
     public function becomeTutor(Request $request, EntityManagerInterface $em, MailerInterface $mailer, UserRepository $userRepository): Response
     {
@@ -72,7 +72,7 @@ class DefaultController extends AbstractController
         }
 
         $submittedToken = $request->request->get('token');
-        if ($this->isCsrfTokenValid('become-tutor', $submittedToken)) {
+        if ($this->isCsrfTokenValid('become_tutor', $submittedToken)) {
             $this->getUser()->setRoles([$this->getRoles()[0], $this->getRoles()[1]]);
             $this->getUser()->setIsValid(1);
 
@@ -91,7 +91,7 @@ class DefaultController extends AbstractController
         }
 
 
-        return $this->render('default/become-tutor.html.twig');
+        return $this->render('default/become_tutor.html.twig');
     }
 
     /**

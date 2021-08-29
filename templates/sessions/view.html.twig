@@ -78,7 +78,7 @@
                         <span class="participants"><b>{{ currentSession.students | length}}</b> étudiant.es inscrit.es sur <b>{{ currentSession.studentLimit}}</b></span>
                     </div>
 
-                    {% if (sessionViewMode == 3) and (app.user.roles.2 not in roles) %}
+                    {% if sessionViewMode == 3 %}
                         {% if currentSession.students | length < currentSession.studentLimit %}
                             <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">
                                 <span>S'inscrire</span>
@@ -87,7 +87,9 @@
                                 <input type="hidden" name="token" value="{{ csrf_token('join-session' ~ currentSession.id) }}"/>
                             </form>
                         {% else %}
-                            <button class="btn btn__w_default hoveredItems" disabled>S'inscrire</button>  
+                            <button class="btn btn__w_default btn__disabled hoveredItems" disabled>
+                                <span>S'inscrire</span>
+                            </button>  
                         {% endif %}
 
                     {% elseif sessionViewMode == 1 %}

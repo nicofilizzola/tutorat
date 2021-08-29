@@ -249,7 +249,7 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_sessions');
         }
 
-        if (!empty($session->getStudents())){
+        if (!is_null($session->getStudents()[0])){
             $this->sendEmail(
                 $mailer, 
                 $userRepository->findSessionJoinedStudentEmails($session), 
@@ -284,27 +284,27 @@ class SessionController extends AbstractController
         }
 
         // for testing: comment from here
-        // if (empty($session->getStudents())){
-        //     $this->addFlash(
-        //         "danger", 
-        //         "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
-        //     );
-        //     return $this->redirectToRoute(
-        //         'app_sessions_view', 
-        //         ['id' => $session->getId()]
-        //     );
-        // }
+        if (empty($session->getStudents())){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }
 
-        // if (strtotime("today") < $session->getDateTime()->getTimestamp()){
-        //     $this->addFlash(
-        //         "danger", 
-        //         "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
-        //     );
-        //     return $this->redirectToRoute(
-        //         'app_sessions_view', 
-        //         ['id' => $session->getId()]
-        //     );
-        // }        
+        if (strtotime("today") < $session->getDateTime()->getTimestamp()){
+            $this->addFlash(
+                "danger", 
+                "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
+            );
+            return $this->redirectToRoute(
+                'app_sessions_view', 
+                ['id' => $session->getId()]
+            );
+        }        
         // to here
 
         if ($request->isMethod('post')){

@@ -18,14 +18,16 @@
             <h1 class="course--title">Mes cours ({{ semester }})</h1>
 
             {% if (noTutorSessions == true) and (noJoinedSessions == true) %}
-                <p>Rien à voir par ici... <a href="{{ path('app_sessions') }}">[Voir les cours proposés]</a></p>
+                <p>Rien à voir par ici... </p>
+                <a href="{{ path('app_sessions') }}" class="lineHoverEffect hoveredItems"><span><b>Voir les cours proposés</b></span></a>
             {% else %}
                 {% if noJoinedSessions == false %}
                     <div class="studentCourses">
                         <span class="role--title">En tant qu'étudiant</span>
                         <div class="session--container">
                             {% if joinedSessions is empty %}
-                                <p>Rien à voir par ici... <a href="{{ path('app_sessions') }}">[Voir les cours proposés]</a></p>
+                                <p>Rien à voir par ici... </p>
+                                <a href="{{ path('app_sessions') }}" class="lineHoverEffect hoveredItems"><span><b>Voir les cours proposés</b></span></a>
                             {% else %}
                                 <div id="splide" class="splide splide__1">
                                     <div class="splide__track">

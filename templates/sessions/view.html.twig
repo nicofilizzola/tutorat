@@ -78,7 +78,7 @@
                         <span class="participants"><b>{{ currentSession.students | length}}</b> étudiant.es inscrit.es sur <b>{{ currentSession.studentLimit}}</b></span>
                     </div>
 
-                    {% if sessionViewMode == 3 %}
+                    {% if (sessionViewMode == 3) and (roles.2 not in app.user.roles) %}
                         {% if currentSession.students | length < currentSession.studentLimit %}
                             <button class="btn btn__w_default hoveredItems" onclick="event.preventDefault(); document.querySelector('#js-join-session-{{ currentSession.id }}').submit();">
                                 <span>S'inscrire</span>

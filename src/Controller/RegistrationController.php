@@ -103,10 +103,16 @@ class RegistrationController extends AbstractController
                     ->to($user->getEmail())
                     ->subject('Tutoru : Vérifiez votre adresse email')
                     ->htmlTemplate('email/verify_email.html.twig')
+                    ->context([
+                        'homeLink' => $this->generateUrl('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                        'loginLink' => $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                        'registerLink' => $this->generateUrl('app_register', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                    ])
             );
             
-            // admin email
-            $this->sendAdminsEmailForPendingUser($mailer, $userRepository, $user);
+            if (in_array($this->getRoles()[1], $user->getRoles())){
+                $this->sendAdminsEmailForPendingUser($mailer, $userRepository, $user);
+            }
 
             return $this->render('registration/after.html.twig', [
                 'user' => $user,

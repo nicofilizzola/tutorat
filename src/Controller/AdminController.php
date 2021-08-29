@@ -97,11 +97,7 @@ class AdminController extends AbstractController
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
 
-        $users = $userRepository->findBy([
-            'isVerified' => 1,
-            'faculty' => $this->getUser()->getFaculty()    
-        ],
-        ['isValid' => 'ASC']);
+        $users = $userRepository->findVerifiedUsersByFacultyNoSuperAdmin($this->getUser()->getFaculty());
 
         $adminCount = 0;
         $tutorHours = [];
@@ -149,7 +145,7 @@ class AdminController extends AbstractController
             $mailer, 
             [$user->getEmail()], 
             $isAdmin ? "Demande d'admin validée" : "Demande de tuteur validée", 
-            $isAdmin ? 'email/admin-validated.html.twig' : 'email/tutor-validated.html.twig'
+            $isAdmin ? 'admin-validated.html.twig' : 'tutor-validated.html.twig'
         );
 
         $this->addFlash("success", "L'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été validé !");
@@ -173,7 +169,7 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $this->sendEmail($mailer, [$user->getEmail()], 'Demande refusée', 'email/user-refused.html.twig');
+        $this->sendEmail($mailer, [$user->getEmail()], 'Demande refusée', 'user-refused.html.twig');
 
         $this->addFlash("success", "La demande de l'utilisateur " . $user->getFirstName() . " " . $user->getLastName() . " a été refusée !");
         return $this->redirectToRoute('app_users');
@@ -208,7 +204,7 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $this->sendEmail($mailer, [$user->getEmail()], 'Compte suprimmé', 'email/user-deleted.html.twig');
+        $this->sendEmail($mailer, [$user->getEmail()], 'Compte suprimmé', 'user-deleted.html.twig');
 
         $this->addFlash(
             "success", 
@@ -240,7 +236,7 @@ class AdminController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $this->sendEmail($mailer, [$user->getEmail()], 'Droits de tuteur révoqués', 'email/user-demoted.html.twig');
+        $this->sendEmail($mailer, [$user->getEmail()], 'Droits de tuteur révoqués', 'user-demoted.html.twig');
 
         $this->addFlash(
             "success", 
@@ -351,7 +347,9 @@ class AdminController extends AbstractController
         Request $request, 
         EntityManagerInterface $em, 
         SemesterRepository $semesterRepository,
-        SessionRepository $sessionRepository
+        SessionRepository $sessionRepository,
+        UserRepository $userRepository,
+        MailerInterface $mailer
         ): Response
     {
         if (!$this->isAdmin()){return $this->redirectToRoute('app_home');}
@@ -395,6 +393,11 @@ class AdminController extends AbstractController
 
                 return $deleteMessage;
             }
+            function updateUsers($userRepository, $semester){
+                if ($semester->getYearOrder() == 1){
+                    // update all users's year
+                }
+            }
             $facultySemesters = $semesterRepository->findBy(
                 ['faculty' => $faculty],
                 ['id' => 'DESC']
@@ -413,6 +416,11 @@ class AdminController extends AbstractController
             updatePendingSessions($facultySemesterSessions, $semester, $em);
 
             $em->flush();
+
+            $tutorEmails = $userRepository->findFacultyTutorEmails($faculty);
+            if (!empty($tutorEmails)){
+                $this->sendEmail($mailer, $tutorEmails, 'Nouveau semestre', 'new-semester.html.twig');  
+            }
 
             $this->addFlash('success', "Le nouveau semestre a bien été ajouté et tout a été remis à 0 !" . $deleteMessage ?? "");
             return $this->redirectToRoute('app_semester');

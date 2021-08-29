@@ -133,13 +133,13 @@ class SuperAdminController extends AbstractController
             $em->persist($semester);
             $em->flush();
 
-            $this->sendEmail($mailer, [$admin->getEmail()], 'Création de département', 'email/admin-new-faculty.html.twig', [
+            $this->sendEmail($mailer, [$admin->getEmail()], 'Création de département', 'admin-new-faculty.html.twig', [
                 'faculty' => $faculty->getName(),
                 'mail' => $admin->getEmail(),
                 'password' => $adminPlainPwd,
                 'adminCode' => $faculty->getCode()
             ]);
-            $this->sendEmail($mailer, [$secretary->getEmail()], 'Création de département', 'email/secretary-new-faculty.html.twig', [
+            $this->sendEmail($mailer, [$secretary->getEmail()], 'Création de département', 'secretary-new-faculty.html.twig', [
                 'faculty' => $faculty->getName(),
                 'mail' => $secretary->getEmail(),
                 'password' => $secretaryPlainPwd,

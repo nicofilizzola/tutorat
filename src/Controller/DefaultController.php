@@ -130,7 +130,7 @@ class DefaultController extends AbstractController
                 return $this->redirectToRoute('app_contact');
             }
 
-            $this->sendEmail($mailer, $adminEmails, 'Nouveau message', 'email/contact.html.twig', [
+            $this->sendEmail($mailer, $adminEmails, 'Nouveau message', 'contact.html.twig', [
                 // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'data' => $data,
                 'adminEmails' => $adminEmails

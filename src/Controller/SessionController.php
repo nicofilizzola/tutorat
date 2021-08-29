@@ -115,7 +115,8 @@ class SessionController extends AbstractController
                 ]) : null,
             'joinedSessions' => $sessionRepository->findByJoinedSessions($semesterRepository, $this->getUser()),
             'user' => $this->getUser(),
-            'roles' => $this->getRoles()
+            'roles' => $this->getRoles(),
+            'semester' => $semesterRepository->findCurrentFacultySemester($faculty)
         ]);
     }
 
@@ -197,7 +198,7 @@ class SessionController extends AbstractController
                     $mailer, 
                     [$userRepository->findFacultySecretaryEmail($this->getUser()->getFaculty())], 
                     'Demande de salle', 
-                    'email/new-pending-session.html.twig', 
+                    'new-pending-session.html.twig', 
                     [
                         'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
                         'session' => $session,
@@ -248,15 +249,17 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('app_sessions');
         }
 
-        $this->sendEmail(
-            $mailer, 
-            $userRepository->findSessionJoinedStudentEmails($session), 
-            'Cours annulé', 
-            'email/deleted-session.html.twig', 
-            [
-                'session' => $session,
-            ]
-        );
+        if (!empty($session->getStudents())){
+            $this->sendEmail(
+                $mailer, 
+                $userRepository->findSessionJoinedStudentEmails($session), 
+                'Cours annulé', 
+                'deleted-session.html.twig', 
+                [
+                    'session' => $session,
+                ]
+            );
+        }
         
         $em->remove($session);
         $em->flush();
@@ -281,27 +284,27 @@ class SessionController extends AbstractController
         }
 
         // for testing: comment from here
-        if (empty($session->getStudents())){
-            $this->addFlash(
-                "danger", 
-                "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
-            );
-            return $this->redirectToRoute(
-                'app_sessions_view', 
-                ['id' => $session->getId()]
-            );
-        }
+        // if (empty($session->getStudents())){
+        //     $this->addFlash(
+        //         "danger", 
+        //         "L'appel ne peut pas être fait car aucun étudiant ne s'est inscrit à ce cours"
+        //     );
+        //     return $this->redirectToRoute(
+        //         'app_sessions_view', 
+        //         ['id' => $session->getId()]
+        //     );
+        // }
 
-        if (strtotime("today") < $session->getDateTime()->getTimestamp()){
-            $this->addFlash(
-                "danger", 
-                "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
-            );
-            return $this->redirectToRoute(
-                'app_sessions_view', 
-                ['id' => $session->getId()]
-            );
-        }        
+        // if (strtotime("today") < $session->getDateTime()->getTimestamp()){
+        //     $this->addFlash(
+        //         "danger", 
+        //         "L'appel ne peut pas être fait car la date du cours n'a pas encore été atteinte"
+        //     );
+        //     return $this->redirectToRoute(
+        //         'app_sessions_view', 
+        //         ['id' => $session->getId()]
+        //     );
+        // }        
         // to here
 
         if ($request->isMethod('post')){
@@ -323,7 +326,7 @@ class SessionController extends AbstractController
                 'success', 
                 "La liste d'appel a été transmise et le cours a bien été validé !"
             );
-            return $this->redirectToRoute('app_session_view', [
+            return $this->redirectToRoute('app_sessions_view', [
                 'id' => $session->getId()
             ]);
         }

@@ -82,7 +82,7 @@ class SecretaryController extends AbstractController
         $em->persist($session);
         $em->flush();
 
-        $this->sendEmail($mailer, [$session->getTutor()->getEmail()], 'Salle attribuée', 'email/session-validated.html.twig', [
+        $this->sendEmail($mailer, [$session->getTutor()->getEmail()], 'Salle attribuée', 'session-validated.html.twig', [
             // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'session' => $session,
         ]);
@@ -111,7 +111,7 @@ class SecretaryController extends AbstractController
         $em->remove($session);
         $em->flush();
 
-        $this->sendEmail($mailer, [$session->getTutor()->getEmail()], 'Demande de salle refusée', 'email/session-refused.html.twig', [
+        $this->sendEmail($mailer, [$session->getTutor()->getEmail()], 'Demande de salle refusée', 'session-refused.html.twig', [
             // 'link' => $this->generateUrl('app_sessions_pending', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'session' => $session,
         ]);

@@ -22,7 +22,7 @@ trait emailData {
             ->from(new Address($this->mailerEmail, $this->mailerName))
             ->to(...$toAddress)
             ->subject("Tutoru : " . $subject)
-            ->htmlTemplate($template)
+            ->htmlTemplate("email/" . $template)
             ->context(is_null($context) ? $contextLinks : array_merge($contextLinks, $context));
         $mailer->send($email);
     }

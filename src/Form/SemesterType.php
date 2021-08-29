@@ -25,7 +25,7 @@ class SemesterType extends AbstractType
                     date('Y') => date('Y'),
                     date('Y', strtotime('+1 year')) => date('Y', strtotime('+1 year')),
                     date('Y', strtotime('+2 year')) => date('Y', strtotime('+2 year')),
-                ]
+                ],
             ])
             ->add('yearOrder', ChoiceType::class, [
                 'choices' => [

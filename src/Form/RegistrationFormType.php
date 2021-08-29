@@ -82,7 +82,6 @@ class RegistrationFormType extends AbstractType
                         'message' => "Valeur invalide"
                     ])
                 ]
-
             ])
             ->add('adminCode', PasswordType::class, [
                 'label' => "Insérez le code d'administrateur",

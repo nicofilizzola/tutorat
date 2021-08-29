@@ -13,13 +13,17 @@ trait adminValidationEmail{
     use emailData;
 
     private function sendAdminsEmailForPendingUser(MailerInterface $mailer, UserRepository $userRepository, User $user = null){
+    $user = $user ?? $this->getUser();
         $email = (new TemplatedEmail())
             ->from(new Address($this->mailerEmail, $this->mailerName))
-            ->to(...$userRepository->findFacultyAdminEmails($user ? $user->getFaculty() : $this->getUser()->getFaculty()))
+            ->to(...$userRepository->findFacultyAdminEmails($user->getFaculty()))
             ->subject('Tutoru : Nouveau compte à valider')
             ->htmlTemplate('email/new-pending-user.html.twig')
             ->context([
-                'link' => $this->generateUrl('app_users', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'homeLink' => $this->generateUrl('app_home', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'loginLink' => $this->generateUrl('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'registerLink' => $this->generateUrl('app_register', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'user' => $user
             ]);
         $mailer->send($email);
     }

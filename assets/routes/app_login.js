@@ -16,5 +16,12 @@ errorMessages.forEach(error => {
    })
 })
 
+if (document.querySelector('.alert-danger')) {
+   const error = document.querySelector('.alert-danger')
+   error.addEventListener('click', () => {
+      error.remove()
+   })
+}
+
 manageEmailInputOnSubmit("#login_form", "#inputEmail");
 manageEmailInputBeforeSubmit("#login_form", "#inputEmail");

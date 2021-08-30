@@ -26,8 +26,11 @@
 }
 
 div.alert-danger {
+   cursor: pointer;
+   color: #fff;
    display: flex;
    flex-direction: row;
+   align-items: baseline;
    position: relative;
    list-style: none;
    width: fit-content;

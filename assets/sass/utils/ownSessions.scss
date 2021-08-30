@@ -10,6 +10,9 @@
 }
 
 .splide__list {
+   display: flex;
+   flex-direction: row;
+
    li {
       max-width: 450px !important;
       width: 100vw !important;
@@ -53,4 +56,8 @@
 
 .card--container {
    margin: auto;
+}
+
+.studentCourses, .tutorCourse {
+   margin-bottom: 25px;
 }

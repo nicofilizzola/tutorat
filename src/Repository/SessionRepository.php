@@ -129,13 +129,20 @@ class SessionRepository extends ServiceEntityRepository
             $session
         );
 
-        if (!is_null($allSessions) && count($allSessions) >= 3){
+        $awaitingSessions = []; 
+        foreach ($awaitingSessions as $session) {
+            if (empty($session->getParticipants)){
+                $awaitingSessions[] = $session;
+            }
+        }
+
+        if (!is_null($awaitingSessions) && count($awaitingSessions) >= 3){
             $sessions = [];
             for ($i = 0; $i < 2; $i++){
-                array_push($sessions, $allSessions[$i]);
+                array_push($sessions, $awaitingSessions[$i]);
             }
         } else {
-            $sessions = $allSessions;
+            $sessions = $awaitingSessions;
         }
 
         return $sessions;

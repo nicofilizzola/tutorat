@@ -12,6 +12,7 @@ const nav = () => {
       'users':'utilisateurs',
       'subject':'modules',
       'classroom':'salles',
+      'semester':'semestres',
       'login':'connexion',
       'register':'inscription',
       'ownSessions':'mes cours',

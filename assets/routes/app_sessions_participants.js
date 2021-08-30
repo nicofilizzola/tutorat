@@ -3,6 +3,12 @@ import "../sass/utils/button.scss";
 
 import checkUserDevice from "../functions/checkUserDevice.js";
 
+const form = document.querySelector('form')
+
+const modalContainer = document.querySelector('.modal--container')
+const modalYes = document.querySelector('.choice .yes')
+const modalNo = document.querySelector('.choice .no')
+
 let maxNavCustomPathLength
 checkUserDevice()?maxNavCustomPathLength = 5:maxNavCustomPathLength = 15
 
@@ -24,3 +30,19 @@ setTimeout(() => {
 
    navSessionTitle.remove()
 }, 1)
+
+form.addEventListener('submit', (event) => {
+   event.preventDefault()
+
+   modalContainer.style.pointerEvents = 'all'
+   modalContainer.style.opacity = 1
+
+   modalYes.addEventListener('click', () => {
+      event.target.submit();
+   })
+})
+
+modalNo.addEventListener('click', () => {
+   modalContainer.style.opacity = 0
+   modalContainer.style.pointerEvents = 'none'
+})

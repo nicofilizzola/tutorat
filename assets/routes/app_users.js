@@ -4,7 +4,7 @@ import checkUserDevice from "../functions/checkUserDevice.js";
 var distance = require('jaro-winkler');
 
 const domCache = {
-   buttons: document.querySelectorAll('button'),
+   buttons: document.querySelectorAll('.manage button'),
 
    modalContainer: document.querySelector('.modal--container'),
    modalYes: document.querySelector('.choice .yes'),

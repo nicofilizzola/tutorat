@@ -5,7 +5,8 @@ import "../sass/utils/semesters.scss";
 const deleteFormButtons = document.querySelectorAll('.delete')
 const yearSelects = document.querySelectorAll('select[data-year]')
 
-const buttons = document.querySelectorAll('button')
+const buttons = document.querySelectorAll('.manage utton')
+const form = document.querySelector('.form--content form')
 
 const modalContainer = document.querySelector('.modal--container')
 const modalYes = document.querySelector('.choice .yes')
@@ -44,6 +45,17 @@ buttons.forEach(button => {
       modalYes.addEventListener('click', () => {
          document.querySelector(`#js-semester-delete-form-${ button.dataset.id }`).submit()
       })
+   })
+})
+
+form.addEventListener('submit', (event) => {
+   event.preventDefault()
+
+   modalContainer.style.pointerEvents = 'all'
+   modalContainer.style.opacity = 1
+
+   modalYes.addEventListener('click', () => {
+      event.target.submit();
    })
 })
 

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+	{% include "components/_submitModals.html.twig" %}
    <span id="navSessionTitle" hidden>{{ session.title }}</span>
 
    <div class="smooth--container" data-lg-smooth>
@@ -32,7 +33,13 @@
 							</div>
 						</div>
 					{% endfor %}
-					<button type="submit" class="btn btn__mediumEffect hoveredItems">Envoyer</button>
+					{% include "components/_button.html.twig" with {
+						"link": "",
+						"class_modifier": "w_100p btn__w_default",
+						"title": "Envoyer",
+						"type": "submit",
+						"isDisabled": false
+					} %}
 				</form>
 			</div>
 		</div>
